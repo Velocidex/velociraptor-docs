@@ -1,0 +1,450 @@
+name: Generic.Detection.PHP2Shell
+author: Chris DiSalle - @chrisdfir
+description: |
+   Hunt for suspicious PHP-related process behavior, request markers,
+   session-file content, possible webshells, and a PHP version inventory.
+   Matches require investigation; they do not establish exploitation, a
+   particular CVE, or compromise. Version verdicts compare against the
+   official fixed-version thresholds for CVE-2026-109618 and CVE-2026-109619
+   (confirmed 2026-10-21 against php.net and the php-src GHSAs). They do not
+   assess other PHP vulnerabilities, including CVE-2026-115560, or prior
+   compromise. Re-verify against current advisories before acting. Process
+   results are a snapshot. File and log coverage depends on configured paths,
+   permissions, retention, and the read limits below.
+
+reference:
+  - https://www.php.net/archive/2026.php
+  - https://github.com/php/php-src/security/advisories/GHSA-w8hw-w9fx-j79w
+  - https://github.com/php/php-src/security/advisories/GHSA-6wmf-4rv5-p3rp
+  - https://github.com/php/php-src/pull/22113
+  - https://github.com/cyb3r-monk/Threat-Hunting-and-Detection/blob/main/Uncategorized/PHP2Shell.md
+  - https://docs.velociraptor.app/exchange/artifacts/pages/phpinventory/
+  - https://laracraft.tech/en/blog/php2shell-were-you-hit-a-read-only-triage-script-for-your-server
+  - https://www.slcyber.io/research/high-fidelity-detection-mechanism-for-php2shell-cve-2026-109618-and-cve-2026-109619
+  - https://github.com/assetnote/php2shell-scanner
+  - https://calif.io/php2shell/
+  - https://github.com/ikow/php2shell-poc
+  - https://github.com/9bie/php2shell-bypass-aslr-exp
+
+required_permissions:
+  - EXECVE
+
+type: CLIENT
+
+parameters:
+  - name: SessionPaths
+    description: Session directories to scan (comma-separated)
+    default: "/tmp,/var/lib/php/sessions,/var/lib/php/session,C:/Windows/Temp,C:/temp"
+  - name: WebRoots
+    description: Web roots to scan (comma-separated)
+    default: "/var/www,/srv,C:/inetpub/wwwroot,C:/xampp/htdocs"
+  - name: AccessLogGlobs
+    description: Access log globs (comma-separated); markers must be present in logged fields
+    default: "/var/log/apache2/*access*,/var/log/nginx/*access*,/var/log/httpd/*access*,C:/inetpub/logs/LogFiles/**/*.log"
+  - name: ErrorLogGlobs
+    description: FPM/PHP error-log globs (comma-separated) scanned for Allowed-memory-size fatal errors and session-destruction failures, nonspecific PHP fatal-error evidence associated with php2shell paths. Compressed logs (.gz etc.) are skipped; point at decompressed copies for deep sweeps.
+    default: "/var/log/php*fpm*.log*,/var/log/php*fpm/*.log*,/var/log/php-fpm/*.log*,/var/log/apache2/*error*,/var/log/httpd/*error*,/var/log/nginx/*error*.log*"
+  - name: SinceDate
+    type: timestamp
+    description: Include low-scoring PHP files modified after this UTC date; blank uses the last seven days
+  - name: ProcessCreatedAfter
+    type: timestamp
+    description: Only report child processes created after this UTC date (newly-observed view); blank reports all matching children
+  - name: FixedVersions
+    description: Official first-fixed-version per PHP branch (JSON), confirmed against the php.net advisory and php-src GHSA advisories 2026-10-21; re-verify against future advisories before acting on verdicts
+    default: '{"8.2": "8.2.35", "8.3": "8.3.36", "8.4": "8.4.27", "8.5": "8.5.12"}'
+  - name: AdditionalBinaryGlobs
+    type: multiline
+    description: Extra absolute glob patterns for PHP binaries, one per line. Entries must still match the runtime-name allowlist in PHPInstallations. Use for local layouts not covered by the defaults (MAMP/Bitnami Windows, FreeBSD, custom prefixes).
+    default: ''
+  - name: EnableProbing
+    type: bool
+    description: When enabled (default), discovered binaries are executed with -n -v to read the authoritative version and issue verdicts. When disabled the source is discovery-only and reports no version verdicts.
+    default: "Y"
+  - name: MaxProbes
+    type: int64
+    description: PHPInstallations only. Hard cap on binary executions per collection - at most MaxProbes-1 discovered runtimes are probed, reserving one slot for the PATH probe. When discoveries exceed the budget nothing is executed and every candidate is reported as "budget exceeded - unverified".
+    default: 100
+  - name: FilterToToolAllowlist
+    type: bool
+    description: ProcessBehavior only. When N (default), every immediate child of a matched parent is reported with a MatchesToolAllowlist classification column. When Y, output is restricted to children whose names match the shell/tool allowlist.
+    default: "N"
+
+sources:
+  - name: ProcessBehavior
+    query: |
+      // Generic behavior: children of PHP/web-server parents are CLASSIFIED,
+      // not filtered - every immediate child is reported with
+      // MatchesToolAllowlist (shell/interpreter/tool set), and
+      // FilterToToolAllowlist=Y optionally restricts output to those. An
+      // allowlist match is a triage signal, never a verdict on its own;
+      // unlisted children (conhost, renamed binaries) stay visible so nothing
+      // is hidden. ProcessCreatedAfter is the newly-observed view (cf.
+      // cyb3r-monk's PHP2Shell KQL first-seen approach): blank reports every
+      // matching child, a date limits results to processes created since
+      // then. Parent match includes versioned PHP binaries (php8.3,
+      // php-fpm8.3, php-cgi8.3, php-dbg).
+      LET proc_cutoff <= if(condition=ProcessCreatedAfter,
+                            then=ProcessCreatedAfter,
+                            else=timestamp(epoch=0))
+      LET procs <= SELECT * FROM pslist()
+      LET parents <= SELECT Pid AS ParentPid, Name AS ParentName,
+                            Exe AS ParentExe, CreateTime AS ParentCreateTime
+             FROM procs
+             WHERE Name =~ "(?i)^(php(?:[0-9.]*|-fpm[0-9.]*|-cgi[0-9.]*|-dbg[0-9.]*)?|httpd|apache2?|nginx|w3wp)(?:\\.exe)?$"
+      LET child_rows = SELECT Pid, Ppid, Name, CommandLine, Exe, CreateTime,
+                              Username, ParentName, ParentExe, ParentCreateTime,
+                              if(condition=Name =~ "(?i)^(sh|bash|dash|zsh|python[0-9.]*|perl|php|nc|ncat|netcat|curl|wget|powershell|pwsh|cmd|certutil|bitsadmin|whoami|id|cat|chmod|chown|touch|tee)(?:\\.exe)?$",
+                                 then=TRUE, else=FALSE) AS MatchesToolAllowlist
+             FROM foreach(row=parents,
+               query={ SELECT Pid, Ppid, Name, CommandLine, Exe, CreateTime,
+                              Username, ParentName, ParentExe, ParentCreateTime
+                       FROM procs WHERE Ppid = ParentPid })
+
+      SELECT Pid AS ChildPid, Ppid AS ParentPid,
+             Name AS ChildName, CommandLine AS ChildCmdline,
+             Exe AS ChildExe, CreateTime AS ChildCreateTime,
+             Username AS ChildUser, MatchesToolAllowlist,
+             ParentName, ParentExe, ParentCreateTime
+      FROM child_rows
+      WHERE CreateTime > proc_cutoff
+        AND (NOT FilterToToolAllowlist OR MatchesToolAllowlist)
+
+  - name: AccessLogEvidence
+    query: |
+      // Marker strings can be forged and may occur in benign research traffic.
+      // Ordinary access logs generally do not contain multipart request bodies.
+      // The method is not restricted: PHP 8.4 request_parse_body() can parse
+      // multipart input on GET, PUT, PATCH and DELETE as well as POST.
+      LET logs = SELECT OSPath AS LogFile FROM glob(
+          globs=split(string=AccessLogGlobs, sep=","))
+      WHERE NOT IsDir AND NOT OSPath =~ "(?i)\\.(gz|zip|bz2|xz)$"
+
+      LET matched <= SELECT LogFile, Line
+      FROM foreach(row=logs,
+        query={ SELECT LogFile, Line FROM parse_lines(filename=LogFile) })
+      WHERE Line =~ "(?i)php2shell|PHP_SESSION_UPLOAD_PROGRESS"
+
+      // count() over a materialized query emits running counts; the total
+      // is the maximum (ORDER BY N DESC LIMIT 1).
+      LET n_matched <= SELECT count() AS N FROM matched ORDER BY N DESC LIMIT 1
+
+      // Cap so a chatty log cannot flood the collection; raise for deeper sweeps.
+      SELECT LogFile, Line, n_matched[0].N > 10000 AS PossiblyTruncated
+      FROM matched
+      LIMIT 10000
+
+  - name: FpmErrorLogEvidence
+    query: |
+      // NONSPECIFIC PHP fatal-error evidence. The php2shell paths are
+      // reached through a PHP fatal error: OOM during multipart parsing
+      // (before application code runs) logs "Allowed memory size ...
+      // exhausted", and session-store cleanup failures can log "Session
+      // object destruction failed". A burst of either around the exploitation
+      // window is CONSISTENT with the trigger (cf. the laracraft triage script
+      // and Searchlight Cyber's OOM-based remote detection, see reference) -
+      // but both patterns are nonspecific, so density alone never establishes
+      // an attack. OOM is not a mandatory footprint of every php2shell path.
+      // A handful is normal on busy apps - judge DENSITY and timestamps, not
+      // single lines. IsMemoryExhaustion, IsSessionDestructionFailure and
+      // HasUnknownLineZero classify each row; the last marks OOM emitted
+      // during SAPI parsing ("in Unknown on line 0"), not user code.
+      // Compressed logs are skipped (see parameter). Trade-offs: all matching
+      // lines are materialized to compute the total, and a very large log
+      // with few matches is still scanned in full (bytes scanned are not
+      // bounded by the output cap); output is capped at 10000 rows with
+      // PossiblyTruncated set when the cap bit.
+      LET elogs = SELECT OSPath AS LogFile FROM glob(
+          globs=split(string=ErrorLogGlobs, sep=","))
+      WHERE NOT IsDir AND NOT OSPath =~ "(?i)\\.(gz|zip|bz2|xz)$"
+      GROUP BY LogFile
+
+      LET matched <= SELECT LogFile, Line,
+             Line =~ "Allowed memory size.*exhausted" AS IsMemoryExhaustion,
+             Line =~ "Session object destruction failed" AS IsSessionDestructionFailure,
+             Line =~ "Allowed memory size.*exhausted"
+               AND Line =~ "in Unknown on line 0\\b" AS HasUnknownLineZero
+      FROM foreach(row=elogs,
+        query={ SELECT LogFile, Line FROM parse_lines(filename=LogFile) })
+      WHERE Line =~ "Allowed memory size.*exhausted"
+         OR Line =~ "Session object destruction failed"
+
+      // count() over a materialized query emits running counts; the total
+      // is the maximum (ORDER BY N DESC LIMIT 1).
+      LET n_matched <= SELECT count() AS N FROM matched ORDER BY N DESC LIMIT 1
+
+      SELECT LogFile, Line, IsMemoryExhaustion, IsSessionDestructionFailure,
+             HasUnknownLineZero, n_matched[0].N > 10000 AS PossiblyTruncated
+      FROM matched
+      LIMIT 10000
+
+  - name: SessionFileEvidence
+    query: |
+      // Content co-occurrence is suspicious, not proof of code execution.
+      // Object form matches pipe-delimited (php/php_serialize hybrid),
+      // pipeless (php_serialize) and C: custom-serializer representations,
+      // including objects nested inside arrays (a:1:{i:0;O:8:"…"}).
+      LET session_matches <= SELECT Dir, FullPath, Size, ModTime, Content,
+             Content =~ "(?i)<\\?(php|=)" AS HasPhpTag,
+             Content =~ "(O|C):[0-9]+:\"" AS HasSerializedObject,
+             Content =~ "upload_progress_" AS HasUploadProgress
+      FROM foreach(row=split(string=SessionPaths, sep=","),
+        query={ SELECT _value AS Dir, FullPath, Size, ModTime,
+                  read_file(filename=FullPath, length=1000000) AS Content
+                FROM glob(globs=[_value + "/sess_*"])
+                WHERE NOT IsDir })
+      WHERE HasUploadProgress AND (HasPhpTag OR HasSerializedObject)
+
+      LET n_session <= SELECT count() AS N FROM session_matches ORDER BY N DESC LIMIT 1
+
+      // ReadTruncated flags a session file larger than the 1 MB read limit;
+      // PossiblyTruncated flags an output cap of 10000 rows.
+      SELECT *, Size > 1000000 AS ReadTruncated,
+             n_session[0].N > 10000 AS PossiblyTruncated
+      FROM session_matches
+      LIMIT 10000
+
+  - name: RecentPhpFiles
+    query: |
+      // Webshell hunt. mtime alone is noisy (deploys, plugin updates), so files
+      // are scored on CONTENT first; the mtime window is a secondary signal.
+      //   Signal = STRONG: multiple code-exec primitives, excluding the
+      //     request_input+callback_vectors pair alone (calibrated 2026-10-21
+      //     against a WordPress core baseline: 74% of benign STRONG rows were
+      //     exactly that pair; the classic eval($_POST[...]) shell keeps
+      //     STRONG via eval,request_input).
+      //   Signal = WEAK: everything else reported (recent mtime or low score).
+      LET cutoff <= if(condition=SinceDate, then=SinceDate,
+                       else=timestamp(epoch=now() - 604800))
+      LET scored = SELECT FullPath, ModTime, Size, HashSHA256,
+             if(condition=Content =~ "(?i)\\beval\\s*\\(", then=1, else=0) +
+             if(condition=Content =~ "(?i)\\bassert\\s*\\(", then=1, else=0) +
+             if(condition=Content =~ "(?i)\\b(system|exec|shell_exec|passthru|popen|proc_open)\\s*\\(", then=1, else=0) +
+             if(condition=Content =~ "(?i)\\b(base64_decode|gzinflate|gzuncompress|str_rot13|rawurldecode)\\s*\\(", then=1, else=0) +
+             if(condition=Content =~ "(?i)\\$_(GET|POST|REQUEST|COOKIE)\\s*\\[", then=1, else=0) +
+             if(condition=Content =~ "(?i)\\b(call_user_func|create_function|array_map|usort|register_shutdown_function)\\s*\\(", then=1, else=0) +
+             if(condition=Content =~ "(?i)\\b(file_put_contents|fwrite)\\s*\\([^)]*\\$_", then=1, else=0) +
+             if(condition=Content =~ "(?i)\\b(curl_exec|fsockopen|stream_socket_client)\\s*\\(", then=1, else=0) AS WebshellScore,
+             regex_replace(source=
+               if(condition=Content =~ "(?i)\\beval\\s*\\(", then='eval,', else='') +
+               if(condition=Content =~ "(?i)\\bassert\\s*\\(", then='assert,', else='') +
+               if(condition=Content =~ "(?i)\\b(system|exec|shell_exec|passthru|popen|proc_open)\\s*\\(", then='exec_family,', else='') +
+               if(condition=Content =~ "(?i)\\b(base64_decode|gzinflate|gzuncompress|str_rot13|rawurldecode)\\s*\\(", then='decoders,', else='') +
+               if(condition=Content =~ "\\$_(GET|POST|REQUEST|COOKIE)\\s*\\[", then='request_input,', else='') +
+               if(condition=Content =~ "(?i)\\b(call_user_func|create_function|array_map|usort|register_shutdown_function)\\s*\\(", then='callback_vectors,', else='') +
+               if(condition=Content =~ "(?i)\\b(file_put_contents|fwrite)\\s*\\([^)]*\\$_", then='file_write_input,', else='') +
+               if(condition=Content =~ "(?i)\\b(curl_exec|fsockopen|stream_socket_client)\\s*\\(", then='outbound_conn,', else=''),
+               re=",+$", replace="") AS MatchedPatterns
+      FROM foreach(row=split(string=WebRoots, sep=","),
+        query={ SELECT FullPath, ModTime, Size,
+                  hash(path=FullPath).SHA256 AS HashSHA256,
+                  read_file(filename=FullPath, length=500000) AS Content
+                FROM glob(globs=[_value + "/**/*.php"])
+                WHERE IsDir = FALSE })
+      LET selected <= SELECT *, if(condition=WebshellScore >= 2 AND MatchedPatterns != 'request_input,callback_vectors',
+                   then='STRONG',
+                   else='WEAK (heuristic: recent mtime only - review required)') AS Signal
+      FROM scored
+      WHERE WebshellScore >= 2 OR ModTime > cutoff
+
+      LET n_selected <= SELECT count() AS N FROM selected ORDER BY N DESC LIMIT 1
+
+      // ReadTruncated flags a PHP file larger than the 500 KB read limit;
+      // PossiblyTruncated flags an output cap of 10000 rows.
+      SELECT *, Size > 500000 AS ReadTruncated,
+             n_selected[0].N > 10000 AS PossiblyTruncated
+      FROM selected
+      LIMIT 10000
+
+  - name: PHPInstallations
+    query: |
+      // Version inventory only. Whether a build is affected by any specific
+      // vulnerability depends on the vendor advisory; FixedVersions above is
+      // official (confirmed 2026-10-21, see README) and verdicts here are
+      // leads, not confirmations. Distro packages often backport the fix
+      // WITHOUT bumping the upstream version, so a below-fixed verdict on a
+      // distro PHP must be confirmed against the package changelog (apt
+      // changelog / rpm -q --changelog, grep the CVE numbers). Malformed
+      // FixedVersions values are treated as unmapped (manual review), never
+      // as an affirmative verdict.
+      //
+      // Comparison is NUMERIC and component-wise. A string comparison is wrong
+      // here: "8.3.9" sorts lexicographically after "8.3.36" and would report
+      // a vulnerable build as patched. key() maps a.b.c to a*1000000 + b*1000
+      // + c (PHP branches have single-digit major/minor and patch < 1000).
+      //
+      // Discovery layouts adapted from Generic.Applications.PHPInventory
+      // (Matt Green, see reference). Boundaries: no macOS/FreeBSD support and
+      // no container discovery; uncovered layouts (MAMP/Bitnami Windows,
+      // custom prefixes) go through AdditionalBinaryGlobs.
+      //
+      // Evidence policy: the directory name is a HINT, the binary is the
+      // evidence. Every discovered runtime is probed (-n -v, no php.ini
+      // loading) within a HARD execution budget (MaxProbes: at most
+      // MaxProbes-1 probes plus one PATH probe; over budget, nothing
+      // executes and every candidate reports "budget exceeded -
+      // unverified"). The probed version drives any verdict, and only a
+      // ZERO-EXIT probe can issue one - a nonzero exit with version-looking
+      // stdout is surfaced, never trusted. A path-derived version is
+      // reported only as an unverified hint (PathHint) and never issues an
+      // affirmative verdict; path/binary disagreement is flagged.
+      LET key(v) = atoi(string=split(string=v, sep_string=".")[0]) * 1000000 +
+                   atoi(string=split(string=v, sep_string=".")[1]) * 1000 +
+                   atoi(string=split(string=v, sep_string=".")[2])
+      LET fixed <= parse_json(data=FixedVersions)
+
+      // OS gate: the PATH probe executes php and must not run on Windows;
+      // the glob lists are harmless cross-OS but gated for clarity.
+      LET on_windows <= environ(var="OS") = "Windows_NT"
+
+      // Runtime-name allowlist on the BASENAME: PHP CLI/CGI/FPM/debug
+      // binaries and their versioned variants (php, php83, php8.3, php-cgi,
+      // php-fpm8.3, phpdbg, ... .exe). Deliberately excludes phpize,
+      // php-config and anything else that merely starts with "php":
+      // EXECVE authorizes execution, it does not make every php* file safe
+      // to run.
+      LET is_runtime(name) = name =~ "^(?i)php(?:[0-9]+(?:\\.[0-9]+)*)?(?:-?(?:cgi|fpm|dbg))?(?:[0-9]+(?:\\.[0-9]+)*)?(?:\\.exe)?$"
+
+      // Version token from the path: capture the FULL token following
+      // php[-/], then require exactly N.N.N. A directory such as
+      // php8.3.36-dev or php8.3.36.1 yields a token that FAILS validation,
+      // so that install is probed instead of path-asserted - a prerelease
+      // suffix must never truncate to a patched 8.3.36 verdict.
+      LET valid_version(tok) = tok =~ "^[0-8]\\.[0-9]+\\.[0-9]+$"
+
+      // Extra user globs (one per line, trimmed).
+      LET extra_globs <= filter(list=split(string=AdditionalBinaryGlobs, sep_string="\n"),
+                                condition="x=>x AND x != ''")
+
+      // Discovery is materialized once (<=) and deduplicated (GROUP BY):
+      // overlapping globs (C:\php\**5 and C:\php*\... etc.) must not cause
+      // duplicate probes. Glob notes (VQL docs): patterns are CASE
+      // INSENSITIVE (no php/PHP duplicate needed) and bare ** recurses only
+      // 3 levels deep - explicit depths (**5) are used where trees can be
+      // deeper.
+      LET nix_raw <= SELECT FullPath AS Binary, Name AS BinName,
+             parse_string_with_regex(string=FullPath,
+               regex="php[-/]?([0-9][0-9.a-zA-Z-]*)").g1 AS PathToken
+      FROM chain(
+            a={ SELECT FullPath, Name, IsDir FROM glob(globs=[
+            "/usr/{bin,sbin}/php*", "/usr/local/{bin,sbin}/php*",
+            "/usr/local/php*/{bin,sbin}/php*",
+            "/opt/remi/php*/root/usr/{bin,sbin}/php*",
+            "/opt/plesk/php/*/{bin,sbin}/php*",
+            "/opt/cpanel/ea-php*/root/usr/{bin,sbin}/php*",
+            "/opt/alt/php*/usr/{bin,sbin}/php*",
+            "/opt/lampp/{bin,sbin}/php*",
+            "/opt/bitnami/php/{bin,sbin}/php*"]) },
+            b={ SELECT * FROM if(condition=len(list=extra_globs) > 0 AND NOT on_windows,
+                    then={ SELECT FullPath, Name, IsDir FROM glob(globs=extra_globs) },
+                    else={ SELECT '' AS FullPath, '' AS Name, FALSE AS IsDir FROM scope() WHERE FALSE }) })
+      WHERE NOT IsDir AND is_runtime(name=Name)
+      GROUP BY Binary
+
+      LET win_raw <= SELECT FullPath AS Binary, Name AS BinName,
+             parse_string_with_regex(string=FullPath,
+               regex="php[-\\\\/]?([0-9][0-9.a-zA-Z-]*)").g1 AS PathToken
+      FROM chain(
+            a={ SELECT FullPath, Name, IsDir FROM glob(globs=[
+            "C:\\php\\**5\\php*.exe", "C:\\php*\\php*.exe",
+            "C:\\Program Files\\php\\**5\\php*.exe",
+            "C:\\Program Files (x86)\\PHP*\\**5\\php*.exe",
+            "C:\\Program Files\\Plesk\\Additional\\PHP*\\**5\\php*.exe",
+            "C:\\Program Files (x86)\\Plesk\\Additional\\PHP*\\**5\\php*.exe",
+            "C:\\xampp\\php\\php*.exe", "C:\\wamp*\\bin\\php\\**5\\php*.exe",
+            "C:\\laragon\\bin\\php\\**5\\php*.exe",
+            "C:\\inetpub\\**5\\php*.exe"]) },
+            b={ SELECT * FROM if(condition=len(list=extra_globs) > 0 AND on_windows,
+                    then={ SELECT FullPath, Name, IsDir FROM glob(globs=extra_globs) },
+                    else={ SELECT '' AS FullPath, '' AS Name, FALSE AS IsDir FROM scope() WHERE FALSE }) })
+      WHERE NOT IsDir AND is_runtime(name=Name)
+      GROUP BY Binary
+
+      // Path tokens that validate exactly become unverified hints.
+      LET nix_candidates <= SELECT Binary,
+             if(condition=valid_version(tok=PathToken), then=PathToken, else=NULL) AS PathVersion
+      FROM nix_raw
+      LET win_candidates <= SELECT Binary,
+             if(condition=valid_version(tok=PathToken), then=PathToken, else=NULL) AS PathVersion
+      FROM win_raw
+
+      LET all_candidates <= SELECT Binary, PathVersion FROM chain(a=nix_candidates, b=win_candidates)
+
+      // HARD EXECUTION BUDGET: count the deduplicated candidates, reserve
+      // one slot for the PATH probe, and if the total exceeds MaxProbes-1
+      // execute NOTHING - every candidate is reported with a "budget
+      // exceeded - unverified" note instead (no partial probing). count()
+      // over a materialized query emits running counts, so the total is
+      // the maximum (ORDER BY N DESC LIMIT 1).
+      LET n_cands <= SELECT count() AS N FROM all_candidates ORDER BY N DESC LIMIT 1
+      LET over_budget = n_cands[0].N > MaxProbes - 1
+
+      LET assessed <= SELECT Binary, PathVersion, ObservedVersion, ProbeReturnCode, BudgetNote FROM if(
+              condition=NOT EnableProbing OR over_budget,
+              then={ SELECT Binary, PathVersion, NULL AS ObservedVersion,
+                            NULL AS ProbeReturnCode,
+                            if(condition=over_budget,
+                               then="budget exceeded - unverified", else="") AS BudgetNote
+                     FROM all_candidates },
+              else={ SELECT Binary, PathVersion,
+                        parse_string_with_regex(string=Stdout,
+                          regex="PHP ([0-9]+\\.[0-9]+\\.[0-9]+)( |$)").g1 AS ObservedVersion,
+                        ReturnCode AS ProbeReturnCode, "" AS BudgetNote
+                     FROM foreach(row=all_candidates,
+                       query={ SELECT Binary, PathVersion, Stdout, ReturnCode FROM execve(argv=[Binary, "-n", "-v"], length=10000) }) })
+
+      // PATH probe (POSIX only): catches php even when no glob layout
+      // matches; skipped on Windows, in discovery-only mode and when the
+      // budget is exceeded. Failed probes are RETAINED (no filter on the
+      // observed version): a php-less host yields one unverified row with
+      // the nonzero return code, keeping the probe outcome visible. The
+      // label records provenance; it may duplicate a glob-discovered
+      // install (distinct row, distinct provenance).
+      LET skip_path_probe <= on_windows OR NOT EnableProbing OR over_budget
+      LET path_probe <= SELECT "php (PATH)" AS Binary, NULL AS PathVersion,
+              ReturnCode AS ProbeReturnCode, "" AS BudgetNote,
+              parse_string_with_regex(string=Stdout,
+                regex="PHP ([0-9]+\\.[0-9]+\\.[0-9]+)( |$)").g1 AS ObservedVersion
+      FROM if(condition=skip_path_probe,
+              then={ SELECT '' AS Binary FROM scope() WHERE FALSE },
+              else={ SELECT Stdout, ReturnCode FROM execve(argv=["php", "-n", "-v"], length=10000) })
+
+      LET assessed2 <= SELECT Binary, PathVersion, ObservedVersion, ProbeReturnCode, BudgetNote,
+             if(condition=ObservedVersion,
+                then=split(string=ObservedVersion, sep_string=".")[0] + "." +
+                     split(string=ObservedVersion, sep_string=".")[1],
+                else=NULL) AS Branch
+      FROM chain(a=path_probe, b=assessed)
+
+      SELECT Binary,
+        if(condition=ObservedVersion, then=ObservedVersion, else=PathVersion) AS Version,
+        if(condition=ObservedVersion, then="probed",
+           else=if(condition=PathVersion, then="path-derived (unverified)",
+                   else="unverified")) AS Source,
+        PathVersion AS PathHint,
+        if(condition=Branch, then=fixed[Branch], else=NULL) AS ConfiguredFixedVersion,
+        if(condition=ObservedVersion AND PathVersion AND ObservedVersion != PathVersion,
+           then="path/binary version disagreement - probed value used", else="") AS Note,
+        ProbeReturnCode,
+        BudgetNote,
+        // Affirmative verdicts require: a probed version, a ZERO probe
+        // exit, and a FixedVersions entry that is well-formed AND belongs
+        // to the observed branch (a valid-looking value for the WRONG
+        // branch, e.g. {"8.3":"8.2.35"}, is invalid here and routes to
+        // manual review). Missing vs invalid mappings are distinguished.
+        if(condition=ObservedVersion AND ProbeReturnCode = 0,
+           then=if(condition=fixed[Branch] AND fixed[Branch] =~ "^[0-8]\\.[0-9]+\\.[0-9]+$"
+                     AND split(string=fixed[Branch], sep_string=".")[0] = split(string=Branch, sep_string=".")[0]
+                     AND split(string=fixed[Branch], sep_string=".")[1] = split(string=Branch, sep_string=".")[1],
+                   then=if(condition=key(v=ObservedVersion) < key(v=fixed[Branch]),
+                           then="version below official fixed version for CVE-2026-109618/109619 - check distro backports and the vendor advisory",
+                           else="version at or above official fixed version for CVE-2026-109618/109619 (other vulnerabilities not assessed)"),
+                   else=if(condition=fixed[Branch],
+                           then="configured fixed version invalid for this branch - manual review",
+                           else="no official fixed version for this branch - manual review")),
+           else=if(condition=ObservedVersion,
+                   then="probe exited nonzero - version unconfirmed - manual review",
+                   else=if(condition=PathVersion,
+                           then="path-derived version unverified - manual review",
+                           else="version could not be determined - manual review"))) AS Status
+      FROM assessed2
