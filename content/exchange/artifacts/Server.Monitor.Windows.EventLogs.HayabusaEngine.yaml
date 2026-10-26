@@ -12,11 +12,16 @@ description: |
   the current scan finishes. Temporary files are removed when each analysis
   collection ends. Complete timelines and manifests remain in server collections.
   The monitor polls collection state, avoiding a completion-watch registration
-  race for fast scans. A wait exceeding AnalysisTimeout plus 60 seconds requests
+  race for fast scans. It waits for query closure as well as terminal state, since
+  logging an error can mark a still-running collection as ERROR. A wait exceeding
+  AnalysisTimeout plus 60 seconds requests
   cancellation and emits a WaitTimeout status; inspect the analysis collection.
 
-  Kind=Detection and Kind=Status rows come from the analyzer. Success on a Status
-  row indicates whether Hayabusa completed and produced its timeline. Separate
+  Kind=Detection and the final Kind=Status rows come from the analyzer. Success
+  requires engine completion, no generated diagnostic logs, and successful uploads.
+  HasDiagnostics means the preserved diagnostic files require review; partial
+  detections are still forwarded. A missing final Status row means results were
+  not completely delivered. Diagnostic uploads remain in the analysis flow. Separate
   Kind=AnalysisStatus rows report scheduling, collection state, or wait timeout.
   ClientId and FlowId identify the input collection; AnalysisFlowId identifies
   the server analysis containing logs and uploads. No detections alone does not
@@ -101,7 +106,10 @@ sources:
           SELECT get_flow(client_id="server", flow_id=Analysis.flow_id) AS Details,
                  now() > Deadline AS TimedOut
           FROM clock(period=2)
-          WHERE Details.state IN ("FINISHED", "ERROR") OR TimedOut
+          -- An ERROR log changes state before the process exits. This analyzer
+          -- has one query context; its duration is set only when it closes.
+          WHERE (Details.state IN ("FINISHED", "ERROR")
+                 AND Details.execution_duration > 0) OR TimedOut
           LIMIT 1
         })
         LET _ <= if(condition=Finished[0].TimedOut,

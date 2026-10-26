@@ -25,8 +25,15 @@ description: |
   files back to their original uploaded paths; duplicate basenames are preserved.
   Set EvtxRegex to include renamed EVTX files if needed. Empty uploads and index
   files are skipped. A scan with no detections still uploads its timeline.
-  A Kind=Status row reports Success and the terminal process return code.
-  Errors are also reported in collection logs; do not treat a failed scan as clean.
+  A final Kind=Status row reports EngineSuccess (zero exit code and timeline),
+  HasDiagnostics, UploadsComplete, and Success. Success requires engine completion,
+  no generated diagnostic logs, and successful output uploads. Hayabusa may return
+  zero despite unreadable files or partial parsing; generated error logs are
+  preserved as Kind=Diagnostic uploads and require review. Partial detections and
+  timelines remain available when diagnostics exist. Success does not establish
+  complete forensic coverage or absence of malicious activity. A missing final
+  Status row means the collection did not finish delivering its results; inspect
+  collection state and logs for limits, cancellation, and other errors.
 
   Requires permission to execute external programs. Allow temporary disk for the
   input copies, extracted bundle, and output. If security.allowed_file_accessor_prefix
@@ -84,6 +91,9 @@ precondition: SELECT * FROM info() WHERE OS = 'linux' AND Architecture = 'amd64'
 sources:
   - name: Results
     query: |
+      -- Keep work inside a named SELECT so server collection timeouts also
+      -- cover materialized LET statements on Velociraptor 0.77.2.
+      SELECT * FROM query(inherit=TRUE, query='''
       LET S = scope()
       LET InputClientId <= ClientId
       LET InputFlowId <= FlowId
@@ -207,13 +217,13 @@ sources:
 
       LET TimelineFiles <= SELECT Size
         FROM if(condition=HBSuccess, then={ SELECT * FROM stat(filename=Timeline) })
-      LET Success <= HBSuccess AND TimelineFiles
+      LET EngineSuccess <= HBSuccess AND TimelineFiles
       LET _ <= if(condition=HBSuccess AND NOT TimelineFiles,
           then=log(level="ERROR", message="Hayabusa exited successfully but its timeline is missing."))
 
       -- Preserve the full timeline, including successful scans with no detections.
       LET HBUploads <= SELECT *
-        FROM if(condition=Success,
+        FROM if(condition=EngineSuccess,
                 then={
           SELECT "Timeline" AS Kind, InputClientId AS ClientId, InputFlowId AS FlowId,
                  upload(file=Timeline, name="hayabusa_results.jsonl") AS Uploads
@@ -230,22 +240,52 @@ sources:
           FROM scope()
         })
 
+      -- Hayabusa can return zero and create a timeline despite unreadable inputs.
+      -- Preserve its diagnostic logs before removing the extracted bundle.
+      LET Diagnostics <= SELECT OSPath, Size
+        FROM glob(globs="logs/errorlog-*.log", root=HayabusaDir)
+        WHERE NOT IsDir AND Size > 0
+      LET DiagnosticUploads <= SELECT "Diagnostic" AS Kind,
+          InputClientId AS ClientId, InputFlowId AS FlowId,
+          upload(file=OSPath, name=path_join(components=["diagnostics", basename(path=OSPath)])) AS Uploads
+        FROM Diagnostics
+      LET DiagnosticStats <= SELECT count() AS Total,
+          sum(item=if(condition=Uploads.Path AND NOT Uploads.Error, then=1, else=0)) AS Uploaded
+        FROM DiagnosticUploads
+        GROUP BY 1
+      LET UploadsComplete <= HBUploads[0].Uploads.Path AND NOT HBUploads[0].Uploads.Error
+          AND ManifestUploads[0].Uploads.Path AND NOT ManifestUploads[0].Uploads.Error
+          AND NOT (DiagnosticStats.Total[0] > DiagnosticStats.Uploaded[0])
+      LET _ <= if(condition=Diagnostics,
+          then=log(level="WARN", message="Hayabusa wrote diagnostic logs; review the uploaded diagnostics and input manifest."))
+      LET _ <= if(condition=EngineSuccess AND NOT UploadsComplete,
+          then=log(level="ERROR", message="One or more analysis outputs could not be uploaded."))
+
       SELECT *
-      FROM chain(status={
-          SELECT "Status" AS Kind, InputClientId AS ClientId, InputFlowId AS FlowId,
-                 if(condition=Success, then=TRUE, else=FALSE) AS Success,
-                 StageStats.Total[0] AS InputCount, StageStats.Successful[0] AS StagedCount,
-                 HBTerminal.ReturnCode[0] AS ReturnCode
-          FROM scope()
-        }, timeline=HBUploads,
+      FROM chain(timeline=HBUploads,
                  manifest=ManifestUploads,
+                 diagnostics=DiagnosticUploads,
                  detections={
           SELECT *, "Detection" AS Kind,
                  InputClientId AS ClientId, InputFlowId AS FlowId
-          FROM if(condition=Success, then={
+          FROM if(condition=EngineSuccess, then={
             SELECT * FROM parse_jsonl(filename=Timeline)
           })
+        }, status={
+          -- Emit last: missing this marker means collection did not reach the end.
+          SELECT "Status" AS Kind, InputClientId AS ClientId, InputFlowId AS FlowId,
+                 if(condition=EngineSuccess AND NOT Diagnostics AND UploadsComplete,
+                    then=TRUE, else=FALSE) AS Success,
+                 if(condition=EngineSuccess, then=TRUE, else=FALSE) AS EngineSuccess,
+                 if(condition=Diagnostics, then=TRUE, else=FALSE) AS HasDiagnostics,
+                 if(condition=UploadsComplete, then=TRUE, else=FALSE) AS UploadsComplete,
+                 DiagnosticStats.Total[0] || 0 AS DiagnosticCount,
+                 DiagnosticStats.Uploaded[0] || 0 AS UploadedDiagnosticCount,
+                 StageStats.Total[0] AS InputCount, StageStats.Successful[0] AS StagedCount,
+                 HBTerminal.ReturnCode[0] AS ReturnCode
+          FROM scope()
         })
+      ''')
 
 column_types:
   - name: Timestamp
