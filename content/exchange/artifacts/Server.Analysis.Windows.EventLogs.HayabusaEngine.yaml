@@ -1,0 +1,256 @@
+name: Server.Analysis.Windows.EventLogs.HayabusaEngine
+author: Eric Capuano - @eric_capuano, Whitney Champion - @shortxstack, Zach Mathis - @yamatosecurity
+type: SERVER
+description: |
+  Run the Hayabusa executable on previously uploaded Windows EVTX files,
+  entirely on a Linux amd64 server. No analysis binary runs on the endpoint.
+  Supply the ClientId and FlowId of a completed raw EVTX collection.
+
+  This is an explicit alternative to `Server.Analysis.Windows.EventLogs.Hayabusa`,
+  which evaluates converted rules with Velociraptor's native Sigma engine.
+  The engines, bundled rule revisions, and filtering defaults differ; equivalent
+  detection coverage is not implied. This artifact does not require Takajo.
+
+  The hash-pinned Hayabusa 4.2.0 bundle includes its rules and configuration.
+  It produces unsorted verbose JSONL using the package's default rule selection
+  with a minimum severity of medium. Select informational to include all levels.
+  Deprecated, unsupported, and noisy rules are not explicitly enabled.
+  Thread count limits Hayabusa worker threads, not total memory or CPU usage.
+  Large collections still need adequate memory, temporary disk, and collection
+  timeout, row, and upload limits. No fixed performance or memory guarantee applies.
+
+  Results contain Kind=Detection rows with Hayabusa fields and the input ClientId
+  and FlowId. Kind=Timeline and Kind=Manifest rows link to the complete JSONL and
+  source manifest uploaded into this collection. The manifest maps numbered local
+  files back to their original uploaded paths; duplicate basenames are preserved.
+  Set EvtxRegex to include renamed EVTX files if needed. Empty uploads and index
+  files are skipped. A scan with no detections still uploads its timeline.
+  A Kind=Status row reports Success and the terminal process return code.
+  Errors are also reported in collection logs; do not treat a failed scan as clean.
+
+  Requires permission to execute external programs. Allow temporary disk for the
+  input copies, extracted bundle, and output. If security.allowed_file_accessor_prefix
+  is configured it must permit the server temporary directory. Temporary files
+  are removed when this collection finishes; original uploads are not modified.
+  Install `Server.Monitor.Windows.EventLogs.HayabusaEngine` separately to opt into
+  automatic analysis of future collections.
+
+reference:
+  - https://github.com/Yamato-Security/hayabusa/releases/tag/v4.2.0
+
+required_permissions:
+  - SERVER_ADMIN
+  - EXECVE
+  - READ_RESULTS
+  - FILESYSTEM_READ
+  - FILESYSTEM_WRITE
+  - NETWORK
+
+tools:
+  - name: Hayabusa-4.2.0-Linux-amd64
+    url: https://github.com/Yamato-Security/hayabusa/releases/download/v4.2.0/hayabusa-4.2.0-lin-x64-musl.zip
+    expected_hash: 8060dac9c6b61da5566a638bfc11b0db4c0c51b0600113901fd2a84b3360b4c6
+
+parameters:
+  - name: ClientId
+    type: string
+    default: ''
+    description: Client ID whose completed collection contains uploaded EVTX files.
+  - name: FlowId
+    type: string
+    default: ''
+    description: Completed collection ID containing uploaded EVTX files.
+  - name: EvtxRegex
+    type: regex
+    default: '(?i)\.evtx$'
+    description: Uploaded paths to analyze. Broaden this for renamed EVTX files.
+  - name: MinimumLevel
+    type: choices
+    default: medium
+    choices:
+      - informational
+      - low
+      - medium
+      - high
+      - critical
+    description: Minimum Hayabusa rule severity; informational includes all levels.
+  - name: Threads
+    type: int
+    default: '2'
+    description: Hayabusa worker threads (1-64). This is not a memory or CPU quota.
+
+precondition: SELECT * FROM info() WHERE OS = 'linux' AND Architecture = 'amd64'
+
+sources:
+  - name: Results
+    query: |
+      LET S = scope()
+      LET InputClientId <= ClientId
+      LET InputFlowId <= FlowId
+      LET ValidParameters <= ClientId AND FlowId AND Threads > 0 AND Threads <= 64
+          AND MinimumLevel IN ("informational", "low", "medium", "high", "critical")
+      LET Inputs <= SELECT vfs_path,
+                           client_path,
+                           file_size
+        FROM if(condition=ValidParameters,
+                then={
+          SELECT *
+          FROM uploads(client_id=ClientId, flow_id=FlowId)
+        },
+                else={
+          SELECT *
+          FROM scope()
+          WHERE log(level="ERROR", message="ClientId and FlowId are required; Threads must be 1-64 and MinimumLevel must be a listed level.")
+            AND FALSE
+        })
+        WHERE NOT S.Type = "idx"
+          AND (client_path || str(str=vfs_path)) =~ EvtxRegex
+          AND file_size > 0
+
+      LET WorkDir <= tempdir()
+
+      LET HayabusaDir <= tempdir()
+
+      LET EvtxDir <= path_join(components=[WorkDir, "evtx"])
+
+      LET Timeline <= path_join(components=[WorkDir, "hayabusa_results.jsonl"])
+
+      -- Copy from the filestore accessor: works with nonlocal filestores too.
+      -- A numeric prefix prevents collisions and preserves every uploaded file.
+      LET Staged <= SELECT vfs_path,
+                           client_path,
+                           file_size,
+                           copy(filename=vfs_path,
+                                accessor="fs",
+                                create_directories=TRUE,
+                                dest=path_join(
+                                  components=[EvtxDir, format(
+                                    format="%08d.evtx",
+                                    args=[count()])])) AS LocalPath
+        FROM Inputs
+
+      -- Aggregate by iterating the stored query, including when it spills to
+      -- disk for large collections. len() does not count spilled query rows.
+      LET StageStats <= SELECT
+          count() AS Total,
+          sum(item=if(condition=LocalPath, then=1, else=0)) AS Successful
+        FROM Staged
+        GROUP BY 1
+
+      LET Ready <= StageStats.Total[0] > 0
+         AND StageStats.Total[0] = StageStats.Successful[0]
+
+      LET _ <= if(
+          condition=NOT Ready,
+          then=log(
+            level="ERROR",
+            message="No nonempty uploaded EVTX files found, or staging failed."))
+
+      LET Manifest <= SELECT *
+        FROM if(condition=Ready,
+                then={
+          SELECT *
+          FROM write_jsonl(filename=path_join(
+                           components=[WorkDir, "input_manifest.jsonl"]),
+                           query=Staged)
+        })
+
+      LET HBArchive <= SELECT OSPath
+        FROM if(condition=Ready,
+                then={
+          SELECT *
+          FROM Artifact.Generic.Utils.FetchBinary(
+            ToolName="Hayabusa-4.2.0-Linux-amd64",
+            IsExecutable=FALSE)
+        })
+
+      -- Extract the entire bundle, but retain only the executable row. This
+      -- avoids materializing thousands of rule-file rows into a spilled query.
+      LET HBExtract <= SELECT NewPath
+        FROM if(condition=HBArchive,
+                then={
+          SELECT *
+          FROM unzip(filename=HBArchive.OSPath, output_directory=HayabusaDir)
+        })
+        WHERE OriginalPath = "hayabusa-4.2.0-lin-x64-musl"
+
+      LET HBExe <= if(
+          condition=HBExtract,
+          then=copy(filename=path_join(
+                    components=[HayabusaDir, "hayabusa-4.2.0-lin-x64-musl"]),
+                    dest=path_join(components=[HayabusaDir, "hayabusa"]),
+                    permissions="x"))
+
+      LET HBRun <= SELECT *
+        FROM if(condition=HBExe,
+                then={
+          SELECT *
+          FROM execve(argv=[HBExe, "dfir-timeline", "--directory",
+                      EvtxDir, "--output-type", "jsonl", "--output", Timeline,
+                      "--no-wizard", "--profile", "verbose", "--iso-8601",
+                      "--min-level", MinimumLevel, "--threads", str(str=Threads),
+                      "--no-color", "--no-summary"],
+                      cwd=HayabusaDir,
+                      sep="\n",
+                      length=65536)
+          WHERE log(message="Hayabusa: %v %v", args=[Stdout, Stderr])
+        })
+
+      LET HBTerminal <= SELECT * FROM HBRun WHERE Complete
+      LET HBSuccess <= SELECT * FROM HBTerminal WHERE ReturnCode = 0
+
+      LET _ <= if(
+          condition=Ready
+           AND NOT HBSuccess,
+          then=log(level="ERROR",
+                   message="Hayabusa failed; see command output in collection logs."))
+
+      LET TimelineFiles <= SELECT Size
+        FROM if(condition=HBSuccess, then={ SELECT * FROM stat(filename=Timeline) })
+      LET Success <= HBSuccess AND TimelineFiles
+      LET _ <= if(condition=HBSuccess AND NOT TimelineFiles,
+          then=log(level="ERROR", message="Hayabusa exited successfully but its timeline is missing."))
+
+      -- Preserve the full timeline, including successful scans with no detections.
+      LET HBUploads <= SELECT *
+        FROM if(condition=Success,
+                then={
+          SELECT "Timeline" AS Kind, InputClientId AS ClientId, InputFlowId AS FlowId,
+                 upload(file=Timeline, name="hayabusa_results.jsonl") AS Uploads
+          FROM scope()
+        })
+
+      LET ManifestUploads <= SELECT *
+        FROM if(condition=Ready,
+                then={
+          SELECT
+            "Manifest" AS Kind, InputClientId AS ClientId, InputFlowId AS FlowId,
+            upload(file=path_join(components=[WorkDir, "input_manifest.jsonl"]),
+                   name="input_manifest.jsonl") AS Uploads
+          FROM scope()
+        })
+
+      SELECT *
+      FROM chain(status={
+          SELECT "Status" AS Kind, InputClientId AS ClientId, InputFlowId AS FlowId,
+                 if(condition=Success, then=TRUE, else=FALSE) AS Success,
+                 StageStats.Total[0] AS InputCount, StageStats.Successful[0] AS StagedCount,
+                 HBTerminal.ReturnCode[0] AS ReturnCode
+          FROM scope()
+        }, timeline=HBUploads,
+                 manifest=ManifestUploads,
+                 detections={
+          SELECT *, "Detection" AS Kind,
+                 InputClientId AS ClientId, InputFlowId AS FlowId
+          FROM if(condition=Success, then={
+            SELECT * FROM parse_jsonl(filename=Timeline)
+          })
+        })
+
+column_types:
+  - name: Timestamp
+    type: timestamp
+  - name: ClientId
+    type: client
+  - name: FlowId
+    type: flow
