@@ -14,8 +14,8 @@ description: |
   | A1 heap pressure | upload-progress multipart, e.g. 9bie `POST /?q0000000=v&...q0000004=v` | PoC query string (High), pre-script OOM `in Unknown on line 0` (Medium) |
   | B1 disclosure | leaked heap returns in `PHPSESSID` (819,200 B for 9bie, 16/256 B for StealMyBitcoin) | percent-escaped PHPSESSID Set-Cookie in WAF/JSON access logs (High), >=800 KB no-UA POST response where Apache logs `%O` (Medium), startup session warning (Medium) |
   | A2 heap pressure | fixed-length multipart | pre-script OOM (Medium) |
-  | B2 execution | fake zend_array dtor -> `system()` -> `/bin/sh` / `cmd.exe` | shell stderr in server error log (High), worker crash: AH00051, FPM, kernel, nginx upstream (Low) |
-  | Pinning | `exploit.py --workers` holds N-1 prefork children | MaxRequestWorkers / pm.max_children reached (Low) |
+  | B2 execution | fake zend_array destructor -> `system()` -> `/bin/sh` / `cmd.exe` | shell stderr in server error log (High), worker crash: AH00051, FPM, kernel, nginx upstream (Low) |
+  | Pinning | `exploit.py --workers` holds N-1 pre-fork children | MaxRequestWorkers / pm.max_children reached (Low) |
 
   `PHP2Shell_Chain_Cluster` (High) marks logs where two pre-script OOMs fall
   within 256 KB with a startup limit or invalid-session warning nearby: the
@@ -115,7 +115,7 @@ parameters:
   - name: AdditionalGlobs
     type: multiline
     default: ''
-    description: Additional absolute log globs, one per line (custom vhost, application or container log paths).
+    description: Additional absolute log globs, one per line (custom virtual host, application or container log paths).
   - name: DateAfter
     type: timestamp
     description: Only scan files modified after this time (file Mtime). YYYY-MM-DDTHH:MM:SSZ
