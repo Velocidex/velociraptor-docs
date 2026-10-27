@@ -1,11 +1,12 @@
 name: Server.Enrichment.NetAPI
 author: Slava Olesik, NetAPI
 description: |
-  Check a domain, hostname, URL or IP address against the NetAPI
-  compromised feed: domains and IP addresses reported by public threat
-  feeds (among them CERT Polska and URLhaus), merged into one
-  deduplicated list with the dates each entry was seen. Works without an
-  API key: no account, key or secret is needed for the default lookup.
+  Check a domain, hostname or URL against the NetAPI compromised feed:
+  domains reported by public threat feeds, merged into one deduplicated
+  list with the dates each entry was seen. Works without an API key: no
+  account, key or secret is needed for the default lookup. IP addresses
+  are not supported: an IP indicator returns a row with Error set and is
+  not sent to the API.
 
   The row tells whether the indicator is listed now (reported within the
   last 24 hours) or was listed earlier, with the first and last dates it
@@ -50,7 +51,7 @@ type: SERVER
 parameters:
   - name: Indicator
     type: string
-    description: Domain, hostname, URL or IPv4 / IPv6 address to look up.
+    description: Domain, hostname or URL to look up. IP addresses are not supported.
   - name: IncludeRank
     type: bool
     description: Also return the rank of the host in the NetAPI Top 1M (one more request).
@@ -64,43 +65,27 @@ sources:
       LET UA <= "netapi-velociraptor/1.0"
 
       LET Value <= strip(string=Indicator)
-      LET IsIP <= Value =~ "^[0-9.]+$" OR Value =~ "^[0-9a-fA-F:]+:[0-9a-fA-F:]*$"
+      // NetAPI no longer publishes compromised IPs: IP input is not sent.
+      LET IsIP <= ip(parse=Value) != NULL
       LET WantRank <= IncludeRank AND Value AND NOT IsIP
 
+      // An empty SecretName is the same as no secret: the lookup is anonymous.
       LET CheckResponse <= SELECT Response, parse_json(data=Content) AS Body
-        FROM if(condition=Value, then={
-          SELECT * FROM if(condition=SecretName,
-            then={
-              SELECT * FROM http_client(
-                url=Base,
-                secret=SecretName,
-                params=dict(method="compromised-check", value=Value),
-                user_agent=UA)
-            },
-            else={
-              SELECT * FROM http_client(
-                url=Base,
-                params=dict(method="compromised-check", value=Value),
-                user_agent=UA)
-            })
+        FROM if(condition=Value AND NOT IsIP, then={
+          SELECT * FROM http_client(
+            url=Base,
+            secret=SecretName,
+            params=dict(method="compromised-check", value=Value),
+            user_agent=UA)
         })
 
       LET RankResponse <= SELECT Response, parse_json(data=Content) AS Body
         FROM if(condition=WantRank, then={
-          SELECT * FROM if(condition=SecretName,
-            then={
-              SELECT * FROM http_client(
-                url=Base,
-                secret=SecretName,
-                params=dict(method="domain-rank", domain=Value),
-                user_agent=UA)
-            },
-            else={
-              SELECT * FROM http_client(
-                url=Base,
-                params=dict(method="domain-rank", domain=Value),
-                user_agent=UA)
-            })
+          SELECT * FROM http_client(
+            url=Base,
+            secret=SecretName,
+            params=dict(method="domain-rank", domain=Value),
+            user_agent=UA)
         })
 
       LET Check <= CheckResponse[0]
@@ -131,7 +116,9 @@ sources:
           Check.Body.registrar.name AS Registrar,
           if(condition=WantRank, then=Rank.Body.rank) AS Top1MRank,
           if(condition=NOT Value, then="Indicator is empty.",
-             else=if(condition=CheckError, then=CheckError,
-                     else=RankError)) AS Error,
+             else=if(condition=IsIP,
+                     then="IP addresses are not supported: NetAPI no longer publishes compromised IPs.",
+                     else=if(condition=CheckError, then=CheckError,
+                             else=RankError))) AS Error,
           Check.Body AS Report
       FROM scope()
