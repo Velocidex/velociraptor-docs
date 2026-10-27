@@ -39,7 +39,8 @@ description: |
   create an HTTP Secrets credential, for example named `netapi`, with the
   URL https://netapi.com/api-json/ and the extra_headers
   {"Authorization":"Bearer <API token>"}, then set SecretName. An HTTP
-  429 is reported in Error rather than retried.
+  429 is reported in Error rather than retried. Private, loopback and
+  reserved IP addresses are never sent.
 
 reference:
   - https://netapi.com/compromised-urls/
@@ -64,43 +65,29 @@ sources:
       LET UA <= "netapi-velociraptor/1.0"
 
       LET Value <= strip(string=Indicator)
-      LET IsIP <= Value =~ "^[0-9.]+$" OR Value =~ "^[0-9a-fA-F:]+:[0-9a-fA-F:]*$"
+      LET Address <= ip(parse=Value)
+      LET IsIP <= Address != NULL
+      LET IsLocal <= IsIP AND (Address.IsPrivate OR Address.IsLoopback
+          OR Address.IsLinkLocalUnicast OR NOT Address.IsGlobalUnicast)
       LET WantRank <= IncludeRank AND Value AND NOT IsIP
 
+      // An empty SecretName is the same as no secret: the lookup is anonymous.
       LET CheckResponse <= SELECT Response, parse_json(data=Content) AS Body
-        FROM if(condition=Value, then={
-          SELECT * FROM if(condition=SecretName,
-            then={
-              SELECT * FROM http_client(
-                url=Base,
-                secret=SecretName,
-                params=dict(method="compromised-check", value=Value),
-                user_agent=UA)
-            },
-            else={
-              SELECT * FROM http_client(
-                url=Base,
-                params=dict(method="compromised-check", value=Value),
-                user_agent=UA)
-            })
+        FROM if(condition=Value AND NOT IsLocal, then={
+          SELECT * FROM http_client(
+            url=Base,
+            secret=SecretName,
+            params=dict(method="compromised-check", value=Value),
+            user_agent=UA)
         })
 
       LET RankResponse <= SELECT Response, parse_json(data=Content) AS Body
         FROM if(condition=WantRank, then={
-          SELECT * FROM if(condition=SecretName,
-            then={
-              SELECT * FROM http_client(
-                url=Base,
-                secret=SecretName,
-                params=dict(method="domain-rank", domain=Value),
-                user_agent=UA)
-            },
-            else={
-              SELECT * FROM http_client(
-                url=Base,
-                params=dict(method="domain-rank", domain=Value),
-                user_agent=UA)
-            })
+          SELECT * FROM http_client(
+            url=Base,
+            secret=SecretName,
+            params=dict(method="domain-rank", domain=Value),
+            user_agent=UA)
         })
 
       LET Check <= CheckResponse[0]
@@ -131,7 +118,9 @@ sources:
           Check.Body.registrar.name AS Registrar,
           if(condition=WantRank, then=Rank.Body.rank) AS Top1MRank,
           if(condition=NOT Value, then="Indicator is empty.",
-             else=if(condition=CheckError, then=CheckError,
-                     else=RankError)) AS Error,
+             else=if(condition=IsLocal,
+                     then="Private, loopback or reserved address: not looked up.",
+                     else=if(condition=CheckError, then=CheckError,
+                             else=RankError))) AS Error,
           Check.Body AS Report
       FROM scope()
