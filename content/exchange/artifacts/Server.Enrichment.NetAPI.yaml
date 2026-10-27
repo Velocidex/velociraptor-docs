@@ -1,11 +1,12 @@
 name: Server.Enrichment.NetAPI
 author: Slava Olesik, NetAPI
 description: |
-  Check a domain, hostname, URL or IP address against the NetAPI
-  compromised feed: domains and IP addresses reported by public threat
-  feeds (among them CERT Polska and URLhaus), merged into one
-  deduplicated list with the dates each entry was seen. Works without an
-  API key: no account, key or secret is needed for the default lookup.
+  Check a domain, hostname or URL against the NetAPI compromised feed:
+  domains reported by public threat feeds, merged into one deduplicated
+  list with the dates each entry was seen. Works without an API key: no
+  account, key or secret is needed for the default lookup. IP addresses
+  are not supported: an IP indicator returns a row with Error set and is
+  not sent to the API.
 
   The row tells whether the indicator is listed now (reported within the
   last 24 hours) or was listed earlier, with the first and last dates it
@@ -39,8 +40,7 @@ description: |
   create an HTTP Secrets credential, for example named `netapi`, with the
   URL https://netapi.com/api-json/ and the extra_headers
   {"Authorization":"Bearer <API token>"}, then set SecretName. An HTTP
-  429 is reported in Error rather than retried. Private, loopback and
-  reserved IP addresses are never sent.
+  429 is reported in Error rather than retried.
 
 reference:
   - https://netapi.com/compromised-urls/
@@ -51,7 +51,7 @@ type: SERVER
 parameters:
   - name: Indicator
     type: string
-    description: Domain, hostname, URL or IPv4 / IPv6 address to look up.
+    description: Domain, hostname or URL to look up. IP addresses are not supported.
   - name: IncludeRank
     type: bool
     description: Also return the rank of the host in the NetAPI Top 1M (one more request).
@@ -65,15 +65,13 @@ sources:
       LET UA <= "netapi-velociraptor/1.0"
 
       LET Value <= strip(string=Indicator)
-      LET Address <= ip(parse=Value)
-      LET IsIP <= Address != NULL
-      LET IsLocal <= IsIP AND (Address.IsPrivate OR Address.IsLoopback
-          OR Address.IsLinkLocalUnicast OR NOT Address.IsGlobalUnicast)
+      // NetAPI no longer publishes compromised IPs: IP input is not sent.
+      LET IsIP <= ip(parse=Value) != NULL
       LET WantRank <= IncludeRank AND Value AND NOT IsIP
 
       // An empty SecretName is the same as no secret: the lookup is anonymous.
       LET CheckResponse <= SELECT Response, parse_json(data=Content) AS Body
-        FROM if(condition=Value AND NOT IsLocal, then={
+        FROM if(condition=Value AND NOT IsIP, then={
           SELECT * FROM http_client(
             url=Base,
             secret=SecretName,
@@ -118,8 +116,8 @@ sources:
           Check.Body.registrar.name AS Registrar,
           if(condition=WantRank, then=Rank.Body.rank) AS Top1MRank,
           if(condition=NOT Value, then="Indicator is empty.",
-             else=if(condition=IsLocal,
-                     then="Private, loopback or reserved address: not looked up.",
+             else=if(condition=IsIP,
+                     then="IP addresses are not supported: NetAPI no longer publishes compromised IPs.",
                      else=if(condition=CheckError, then=CheckError,
                              else=RankError))) AS Error,
           Check.Body AS Report
