@@ -306,28 +306,28 @@ configuration file to make these service accessible to other network hosts.
 
 Open the configuration file in a text editor and change:
 
-```yaml
+```yaml {filename="server.config.yaml"}
 Frontend:
   bind_address: 127.0.0.1
 ```
 
 to:
 
-```yaml
+```yaml {filename="server.config.yaml"}
 Frontend:
   bind_address: 0.0.0.0
 ```
 
 If you need to access the GUI from a different network host then also change:
 
-```yaml
+```yaml {filename="server.config.yaml"}
 GUI:
   bind_address: 127.0.0.1
 ```
 
 to:
 
-```yaml
+```yaml {filename="server.config.yaml"}
 GUI:
   bind_address: 0.0.0.0
 ```

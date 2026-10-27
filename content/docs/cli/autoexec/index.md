@@ -91,7 +91,7 @@ commands.
 
 The `autoexec` section of the config has two parts:
 
-```yaml
+```yaml {filename="client.config.yaml"}
 autoexec:
   argv:
   - artifacts
@@ -116,7 +116,7 @@ element is the command, followed by any subcommands and flags.
 
 For example, to start a client automatically:
 
-```yaml
+```yaml {filename="client.config.yaml"}
 autoexec:
   argv:
   - client
@@ -126,7 +126,7 @@ autoexec:
 
 To run an artifact collection:
 
-```yaml
+```yaml {filename="client.config.yaml"}
 autoexec:
   argv:
   - artifacts
@@ -154,7 +154,7 @@ Values in `argv` are expanded at runtime using environment variable
 substitution. Both Unix-style `$VAR` and Windows-style `%VAR%`
 notations are supported:
 
-```yaml
+```yaml {filename="client.config.yaml"}
 autoexec:
   argv:
   - artifacts
@@ -166,7 +166,7 @@ autoexec:
 
 On Windows, `%VAR%` works the same way:
 
-```yaml
+```yaml {filename="client.config.yaml"}
 autoexec:
   argv:
   - artifacts
@@ -178,7 +178,7 @@ autoexec:
 
 To include a literal `$` character, escape it by doubling:
 
-```yaml
+```yaml {filename="client.config.yaml"}
 autoexec:
   argv:
   - echo
@@ -196,7 +196,7 @@ command, so autoexec mode still activates.
 For example, consider an offline collector binary that contains this
 `autoexec.argv` section:
 
-```yaml
+```yaml {filename="client.config.yaml"}
 autoexec:
   argv:
   - artifacts
@@ -218,7 +218,7 @@ Because no CLI command appears before `--`, autoexec mode activates.
 The post args are appended to the `autoexec.argv` command line,
 making it equivalent to:
 
-```yaml
+```yaml {filename="client.config.yaml"}
 autoexec:
   argv:
   - artifacts
@@ -251,7 +251,7 @@ You can combine embedded artifact definitions with autoexec to
 create self-contained binaries that run custom artifacts without
 any external dependencies:
 
-```yaml
+```yaml {filename="client.config.yaml"}
 autoexec:
   argv:
   - artifacts
@@ -324,7 +324,7 @@ which mints a client certificate and writes the connection details and
 key material to a YAML file. Then add an `autoexec` section to that
 config:
 
-```yaml
+```yaml {filename="client.config.yaml"}
 autoexec:
   argv:
   - query
@@ -399,7 +399,7 @@ the [`me` accessor](/vql_reference/accessors/me),
 copies the tool out to an executable temporary file, and runs it with
 [`execve`](/vql_reference/popular/execve):
 
-```yaml
+```yaml {filename="client.config.yaml"}
 autoexec:
   argv:
   - artifacts

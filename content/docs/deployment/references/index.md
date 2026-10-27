@@ -1,6 +1,5 @@
 ---
 title: Configuration File Reference
-date: 2026-09-20
 menutitle: "Config Reference"
 weight: 120
 no_children: true
@@ -542,7 +541,7 @@ description: |
 <li class="ref-item ref-leaf" id="Client.proxy" data-key="Client.proxy" data-depth="2">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L150">proxy</a> <a class="anchorlink" href="#Client.proxy" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L151">proxy</a> <a class="anchorlink" href="#Client.proxy" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">Client > proxy</div>
@@ -552,10 +551,11 @@ description: |
 
  A URL to a proxy that will be used to connect to the server. Some
  environments have egress filtering requiring Velociraptor to use
- a proxy to be able to reach the server. NOTE: We do not support
- PAC based proxy configurations or Windows domain authentication -
- you might need to add an allow rule to the proxy config to allow
- the Velociraptor server URL without authentication.
+ a proxy to be able to reach the server. NOTE: We do support PAC
+ based proxy configurations (see below), but we do not support
+ Windows domain authentication - you might need to add an allow
+ rule to the proxy config to allow the Velociraptor server URL
+ without authentication.
 
 </div>
 </div>
@@ -565,7 +565,7 @@ description: |
  <details>
 <summary class="ref-summary"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" width="1em" height="1em" fill="currentColor" class="category-icon" aria-hidden="true"><path d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z"/></svg>
     <div class="reference-key">
-      <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L157">proxy_config</a> <a class="anchorlink" href="#Client.proxy_config" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+      <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L158">proxy_config</a> <a class="anchorlink" href="#Client.proxy_config" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
     </div>
 <div class="item-comment">
 
@@ -582,7 +582,7 @@ description: |
 <li class="ref-item ref-leaf" id="Client.proxy_config.http" data-key="Client.proxy_config.http" data-depth="3">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L157">http</a> <a class="anchorlink" href="#Client.proxy_config.http" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L158">http</a> <a class="anchorlink" href="#Client.proxy_config.http" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">Client > proxy_config > http</div>
@@ -599,7 +599,7 @@ description: |
 <li class="ref-item ref-leaf" id="Client.proxy_config.https" data-key="Client.proxy_config.https" data-depth="3">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L158">https</a> <a class="anchorlink" href="#Client.proxy_config.https" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L159">https</a> <a class="anchorlink" href="#Client.proxy_config.https" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">Client > proxy_config > https</div>
@@ -617,7 +617,7 @@ description: |
  <details>
 <summary class="ref-summary"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" width="1em" height="1em" fill="currentColor" class="category-icon" aria-hidden="true"><path d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z"/></svg>
     <div class="reference-key">
-      <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L163">proxy_url_regexp</a> <a class="anchorlink" href="#Client.proxy_config.proxy_url_regexp" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+      <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L164">proxy_url_regexp</a> <a class="anchorlink" href="#Client.proxy_config.proxy_url_regexp" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
     </div>
 <div class="item-comment">
 
@@ -633,7 +633,7 @@ description: |
 <li class="ref-item ref-leaf" id="Client.proxy_config.proxy_url_regexp.^https://localhost/" data-key="Client.proxy_config.proxy_url_regexp.^https://localhost/" data-depth="4">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L163">^https://localhost/</a> <a class="anchorlink" href="#Client.proxy_config.proxy_url_regexp.^https://localhost/" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L164">^https://localhost/</a> <a class="anchorlink" href="#Client.proxy_config.proxy_url_regexp.^https://localhost/" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">Client > proxy_config > proxy_url_regexp > ^https://localhost/</div>
@@ -655,7 +655,7 @@ description: |
 <li class="ref-item ref-leaf" id="Client.proxy_config.pac" data-key="Client.proxy_config.pac" data-depth="3">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L167">pac</a> <a class="anchorlink" href="#Client.proxy_config.pac" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L169">pac</a> <a class="anchorlink" href="#Client.proxy_config.pac" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">Client > proxy_config > pac</div>
@@ -664,7 +664,8 @@ description: |
 <div class="item-comment">
 
  Location of a PAC file (overrides the above settings). This can
- be a file:// URL or even a data: url.
+ be a file:// URL or even a data: url (safest option - this
+ embeds the pac file in the config file).
 
 </div>
 </div>
@@ -673,7 +674,7 @@ description: |
 <li class="ref-item ref-leaf" id="Client.proxy_config.ignore_environment" data-key="Client.proxy_config.ignore_environment" data-depth="3">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L172">ignore_environment</a> <a class="anchorlink" href="#Client.proxy_config.ignore_environment" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L174">ignore_environment</a> <a class="anchorlink" href="#Client.proxy_config.ignore_environment" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">Client > proxy_config > ignore_environment</div>
@@ -697,7 +698,7 @@ description: |
 <li class="ref-item ref-leaf" id="Client.ca_certificate" data-key="Client.ca_certificate" data-depth="2">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L178">ca_certificate</a> <a class="anchorlink" href="#Client.ca_certificate" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L180">ca_certificate</a> <a class="anchorlink" href="#Client.ca_certificate" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">Client > ca_certificate</div>
@@ -721,7 +722,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="Client.nonce" data-key="Client.nonce" data-depth="2">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L187">nonce</a> <a class="anchorlink" href="#Client.nonce" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L189">nonce</a> <a class="anchorlink" href="#Client.nonce" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">Client > nonce</div>
@@ -741,7 +742,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="Client.writeback_darwin" data-key="Client.writeback_darwin" data-depth="2">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L195">writeback_darwin</a> <a class="anchorlink" href="#Client.writeback_darwin" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L197">writeback_darwin</a> <a class="anchorlink" href="#Client.writeback_darwin" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">Client > writeback_darwin</div>
@@ -763,7 +764,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="Client.writeback_linux" data-key="Client.writeback_linux" data-depth="2">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L196">writeback_linux</a> <a class="anchorlink" href="#Client.writeback_linux" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L198">writeback_linux</a> <a class="anchorlink" href="#Client.writeback_linux" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">Client > writeback_linux</div>
@@ -780,7 +781,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="Client.writeback_windows" data-key="Client.writeback_windows" data-depth="2">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L201">writeback_windows</a> <a class="anchorlink" href="#Client.writeback_windows" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L203">writeback_windows</a> <a class="anchorlink" href="#Client.writeback_windows" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">Client > writeback_windows</div>
@@ -799,7 +800,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="Client.level2_writeback_suffix" data-key="Client.level2_writeback_suffix" data-depth="2">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L208">level2_writeback_suffix</a> <a class="anchorlink" href="#Client.level2_writeback_suffix" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L210">level2_writeback_suffix</a> <a class="anchorlink" href="#Client.level2_writeback_suffix" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">Client > level2_writeback_suffix</div>
@@ -820,7 +821,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="Client.tempdir_windows" data-key="Client.tempdir_windows" data-depth="2">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L213">tempdir_windows</a> <a class="anchorlink" href="#Client.tempdir_windows" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L215">tempdir_windows</a> <a class="anchorlink" href="#Client.tempdir_windows" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">Client > tempdir_windows</div>
@@ -839,7 +840,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="Client.tempdir_linux" data-key="Client.tempdir_linux" data-depth="2">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L214">tempdir_linux</a> <a class="anchorlink" href="#Client.tempdir_linux" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L216">tempdir_linux</a> <a class="anchorlink" href="#Client.tempdir_linux" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">Client > tempdir_linux</div>
@@ -856,7 +857,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="Client.tempdir_darwin" data-key="Client.tempdir_darwin" data-depth="2">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L215">tempdir_darwin</a> <a class="anchorlink" href="#Client.tempdir_darwin" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L217">tempdir_darwin</a> <a class="anchorlink" href="#Client.tempdir_darwin" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">Client > tempdir_darwin</div>
@@ -873,7 +874,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="Client.max_poll" data-key="Client.max_poll" data-depth="2">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L222">max_poll</a> <a class="anchorlink" href="#Client.max_poll" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L224">max_poll</a> <a class="anchorlink" href="#Client.max_poll" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">Client > max_poll</div>
@@ -894,7 +895,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="Client.max_poll_std" data-key="Client.max_poll_std" data-depth="2">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L227">max_poll_std</a> <a class="anchorlink" href="#Client.max_poll_std" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L229">max_poll_std</a> <a class="anchorlink" href="#Client.max_poll_std" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">Client > max_poll_std</div>
@@ -913,7 +914,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="Client.nanny_max_connection_delay" data-key="Client.nanny_max_connection_delay" data-depth="2">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L234">nanny_max_connection_delay</a> <a class="anchorlink" href="#Client.nanny_max_connection_delay" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L236">nanny_max_connection_delay</a> <a class="anchorlink" href="#Client.nanny_max_connection_delay" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">Client > nanny_max_connection_delay</div>
@@ -934,7 +935,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="Client.prevent_execve" data-key="Client.prevent_execve" data-depth="2">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L238">prevent_execve</a> <a class="anchorlink" href="#Client.prevent_execve" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L240">prevent_execve</a> <a class="anchorlink" href="#Client.prevent_execve" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">Client > prevent_execve</div>
@@ -952,7 +953,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="Client.default_max_wait" data-key="Client.default_max_wait" data-depth="2">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L243">default_max_wait</a> <a class="anchorlink" href="#Client.default_max_wait" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L245">default_max_wait</a> <a class="anchorlink" href="#Client.default_max_wait" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">Client > default_max_wait</div>
@@ -971,7 +972,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="Client.concurrency" data-key="Client.concurrency" data-depth="2">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L249">concurrency</a> <a class="anchorlink" href="#Client.concurrency" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L251">concurrency</a> <a class="anchorlink" href="#Client.concurrency" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">Client > concurrency</div>
@@ -991,7 +992,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="Client.max_memory_hard_limit" data-key="Client.max_memory_hard_limit" data-depth="2">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L254">max_memory_hard_limit</a> <a class="anchorlink" href="#Client.max_memory_hard_limit" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L256">max_memory_hard_limit</a> <a class="anchorlink" href="#Client.max_memory_hard_limit" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">Client > max_memory_hard_limit</div>
@@ -1010,7 +1011,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="Client.client_info_update_time" data-key="Client.client_info_update_time" data-depth="2">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L260">client_info_update_time</a> <a class="anchorlink" href="#Client.client_info_update_time" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L262">client_info_update_time</a> <a class="anchorlink" href="#Client.client_info_update_time" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">Client > client_info_update_time</div>
@@ -1030,7 +1031,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="Client.disable_checkpoints" data-key="Client.disable_checkpoints" data-depth="2">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L267">disable_checkpoints</a> <a class="anchorlink" href="#Client.disable_checkpoints" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L269">disable_checkpoints</a> <a class="anchorlink" href="#Client.disable_checkpoints" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">Client > disable_checkpoints</div>
@@ -1052,7 +1053,7 @@ Generated by the config wizard!!!
  <details>
 <summary class="ref-summary"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" width="1em" height="1em" fill="currentColor" class="category-icon" aria-hidden="true"><path d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z"/></svg>
     <div class="reference-key">
-      <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L273">windows_installer</a> <a class="anchorlink" href="#Client.windows_installer" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+      <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L275">windows_installer</a> <a class="anchorlink" href="#Client.windows_installer" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
     </div>
 <div class="item-comment">
 
@@ -1069,7 +1070,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="Client.windows_installer.service_name" data-key="Client.windows_installer.service_name" data-depth="3">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L273">service_name</a> <a class="anchorlink" href="#Client.windows_installer.service_name" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L275">service_name</a> <a class="anchorlink" href="#Client.windows_installer.service_name" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">Client > windows_installer > service_name</div>
@@ -1086,7 +1087,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="Client.windows_installer.install_path" data-key="Client.windows_installer.install_path" data-depth="3">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L274">install_path</a> <a class="anchorlink" href="#Client.windows_installer.install_path" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L276">install_path</a> <a class="anchorlink" href="#Client.windows_installer.install_path" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">Client > windows_installer > install_path</div>
@@ -1103,7 +1104,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="Client.windows_installer.service_description" data-key="Client.windows_installer.service_description" data-depth="3">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L275">service_description</a> <a class="anchorlink" href="#Client.windows_installer.service_description" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L277">service_description</a> <a class="anchorlink" href="#Client.windows_installer.service_description" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">Client > windows_installer > service_description</div>
@@ -1126,7 +1127,7 @@ Generated by the config wizard!!!
  <details>
 <summary class="ref-summary"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" width="1em" height="1em" fill="currentColor" class="category-icon" aria-hidden="true"><path d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z"/></svg>
     <div class="reference-key">
-      <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L279">darwin_installer</a> <a class="anchorlink" href="#Client.darwin_installer" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+      <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L281">darwin_installer</a> <a class="anchorlink" href="#Client.darwin_installer" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
     </div>
 <div class="item-comment">
 
@@ -1141,7 +1142,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="Client.darwin_installer.service_name" data-key="Client.darwin_installer.service_name" data-depth="3">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L279">service_name</a> <a class="anchorlink" href="#Client.darwin_installer.service_name" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L281">service_name</a> <a class="anchorlink" href="#Client.darwin_installer.service_name" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">Client > darwin_installer > service_name</div>
@@ -1158,7 +1159,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="Client.darwin_installer.install_path" data-key="Client.darwin_installer.install_path" data-depth="3">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L280">install_path</a> <a class="anchorlink" href="#Client.darwin_installer.install_path" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L282">install_path</a> <a class="anchorlink" href="#Client.darwin_installer.install_path" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">Client > darwin_installer > install_path</div>
@@ -1180,7 +1181,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="Client.use_self_signed_ssl" data-key="Client.use_self_signed_ssl" data-depth="2">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L287">use_self_signed_ssl</a> <a class="anchorlink" href="#Client.use_self_signed_ssl" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L289">use_self_signed_ssl</a> <a class="anchorlink" href="#Client.use_self_signed_ssl" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">Client > use_self_signed_ssl</div>
@@ -1201,7 +1202,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="Client.pinned_server_name" data-key="Client.pinned_server_name" data-depth="2">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L290">pinned_server_name</a> <a class="anchorlink" href="#Client.pinned_server_name" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L292">pinned_server_name</a> <a class="anchorlink" href="#Client.pinned_server_name" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">Client > pinned_server_name</div>
@@ -1218,7 +1219,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="Client.max_upload_size" data-key="Client.max_upload_size" data-depth="2">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L294">max_upload_size</a> <a class="anchorlink" href="#Client.max_upload_size" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L296">max_upload_size</a> <a class="anchorlink" href="#Client.max_upload_size" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">Client > max_upload_size</div>
@@ -1236,7 +1237,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="Client.connection_timeout" data-key="Client.connection_timeout" data-depth="2">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L298">connection_timeout</a> <a class="anchorlink" href="#Client.connection_timeout" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L300">connection_timeout</a> <a class="anchorlink" href="#Client.connection_timeout" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">Client > connection_timeout</div>
@@ -1254,7 +1255,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="Client.disable_compression" data-key="Client.disable_compression" data-depth="2">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L302">disable_compression</a> <a class="anchorlink" href="#Client.disable_compression" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L304">disable_compression</a> <a class="anchorlink" href="#Client.disable_compression" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">Client > disable_compression</div>
@@ -1273,7 +1274,7 @@ Generated by the config wizard!!!
  <details>
 <summary class="ref-summary"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" width="1em" height="1em" fill="currentColor" class="category-icon" aria-hidden="true"><path d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z"/></svg>
     <div class="reference-key">
-      <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L310">labels</a> <a class="anchorlink" href="#Client.labels" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+      <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L312">labels</a> <a class="anchorlink" href="#Client.labels" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
     </div>
 <div class="item-comment">
 
@@ -1325,7 +1326,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="Client.logfile_name" data-key="Client.logfile_name" data-depth="2">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L323">logfile_name</a> <a class="anchorlink" href="#Client.logfile_name" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L325">logfile_name</a> <a class="anchorlink" href="#Client.logfile_name" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">Client > logfile_name</div>
@@ -1350,7 +1351,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="Client.logfile_size" data-key="Client.logfile_size" data-depth="2">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L324">logfile_size</a> <a class="anchorlink" href="#Client.logfile_size" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L326">logfile_size</a> <a class="anchorlink" href="#Client.logfile_size" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">Client > logfile_size</div>
@@ -1367,7 +1368,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="Client.panic_file" data-key="Client.panic_file" data-depth="2">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L335">panic_file</a> <a class="anchorlink" href="#Client.panic_file" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L337">panic_file</a> <a class="anchorlink" href="#Client.panic_file" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">Client > panic_file</div>
@@ -1393,7 +1394,7 @@ Generated by the config wizard!!!
  <details>
 <summary class="ref-summary"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" width="1em" height="1em" fill="currentColor" class="category-icon" aria-hidden="true"><path d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z"/></svg>
     <div class="reference-key">
-      <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L350">local_buffer</a> <a class="anchorlink" href="#Client.local_buffer" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+      <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L352">local_buffer</a> <a class="anchorlink" href="#Client.local_buffer" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
     </div>
 <div class="item-comment">
 
@@ -1414,7 +1415,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="Client.local_buffer.memory_size" data-key="Client.local_buffer.memory_size" data-depth="3">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L350">memory_size</a> <a class="anchorlink" href="#Client.local_buffer.memory_size" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L352">memory_size</a> <a class="anchorlink" href="#Client.local_buffer.memory_size" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">Client > local_buffer > memory_size</div>
@@ -1433,7 +1434,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="Client.local_buffer.disk_size" data-key="Client.local_buffer.disk_size" data-depth="3">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L354">disk_size</a> <a class="anchorlink" href="#Client.local_buffer.disk_size" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L356">disk_size</a> <a class="anchorlink" href="#Client.local_buffer.disk_size" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">Client > local_buffer > disk_size</div>
@@ -1451,7 +1452,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="Client.local_buffer.filename_linux" data-key="Client.local_buffer.filename_linux" data-depth="3">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L358">filename_linux</a> <a class="anchorlink" href="#Client.local_buffer.filename_linux" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L360">filename_linux</a> <a class="anchorlink" href="#Client.local_buffer.filename_linux" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">Client > local_buffer > filename_linux</div>
@@ -1469,7 +1470,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="Client.local_buffer.filename_windows" data-key="Client.local_buffer.filename_windows" data-depth="3">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L359">filename_windows</a> <a class="anchorlink" href="#Client.local_buffer.filename_windows" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L361">filename_windows</a> <a class="anchorlink" href="#Client.local_buffer.filename_windows" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">Client > local_buffer > filename_windows</div>
@@ -1486,7 +1487,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="Client.local_buffer.filename_darwin" data-key="Client.local_buffer.filename_darwin" data-depth="3">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L360">filename_darwin</a> <a class="anchorlink" href="#Client.local_buffer.filename_darwin" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L362">filename_darwin</a> <a class="anchorlink" href="#Client.local_buffer.filename_darwin" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">Client > local_buffer > filename_darwin</div>
@@ -1508,7 +1509,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="Client.insecure_network_trace_file" data-key="Client.insecure_network_trace_file" data-depth="2">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L373">insecure_network_trace_file</a> <a class="anchorlink" href="#Client.insecure_network_trace_file" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L375">insecure_network_trace_file</a> <a class="anchorlink" href="#Client.insecure_network_trace_file" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">Client > insecure_network_trace_file</div>
@@ -1535,7 +1536,7 @@ Generated by the config wizard!!!
  <details>
 <summary class="ref-summary"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" width="1em" height="1em" fill="currentColor" class="category-icon" aria-hidden="true"><path d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z"/></svg>
     <div class="reference-key">
-      <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L377">server_version</a> <a class="anchorlink" href="#Client.server_version" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+      <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L379">server_version</a> <a class="anchorlink" href="#Client.server_version" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
     </div>
 <div class="item-comment">
 
@@ -1550,7 +1551,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="Client.server_version.system" data-key="Client.server_version.system" data-depth="3">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L377">system</a> <a class="anchorlink" href="#Client.server_version.system" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L379">system</a> <a class="anchorlink" href="#Client.server_version.system" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">Client > server_version > system</div>
@@ -1572,7 +1573,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="Client.low_resource_max_cpu" data-key="Client.low_resource_max_cpu" data-depth="2">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L382">low_resource_max_cpu</a> <a class="anchorlink" href="#Client.low_resource_max_cpu" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L384">low_resource_max_cpu</a> <a class="anchorlink" href="#Client.low_resource_max_cpu" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">Client > low_resource_max_cpu</div>
@@ -1591,7 +1592,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="Client.low_resource_cpu_count" data-key="Client.low_resource_cpu_count" data-depth="2">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L387">low_resource_cpu_count</a> <a class="anchorlink" href="#Client.low_resource_cpu_count" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L389">low_resource_cpu_count</a> <a class="anchorlink" href="#Client.low_resource_cpu_count" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">Client > low_resource_cpu_count</div>
@@ -1610,7 +1611,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="Client.dns_cache_refresh_min" data-key="Client.dns_cache_refresh_min" data-depth="2">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L395">dns_cache_refresh_min</a> <a class="anchorlink" href="#Client.dns_cache_refresh_min" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L397">dns_cache_refresh_min</a> <a class="anchorlink" href="#Client.dns_cache_refresh_min" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">Client > dns_cache_refresh_min</div>
@@ -1627,6 +1628,25 @@ Generated by the config wizard!!!
 
 </div>
 </div>
+
+<div class="ref-block">
+<li class="ref-item ref-leaf" id="Client.Logging" data-key="Client.Logging" data-depth="2">
+ <span class="item-name"><i class="bullet-placeholder"></i>
+   <div class="reference-key">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L402">Logging</a> <a class="anchorlink" href="#Client.Logging" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+   </div>
+  </span>
+  <div class="item-breadcrumb">Client > Logging</div>
+  <div class="reference-value-mapping"></div>
+</li>
+<div class="item-comment">
+
+ Client specific logging configuration - this can be different from
+ the server configuration. Usually the client does not log anything
+ but you can enable this for debugging.
+
+</div>
+</div>
 </ul>
 </div>
  </details>
@@ -1638,7 +1658,7 @@ Generated by the config wizard!!!
  <details>
 <summary class="ref-summary"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" width="1em" height="1em" fill="currentColor" class="category-icon" aria-hidden="true"><path d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z"/></svg>
     <div class="reference-key">
-      <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L405">API</a> <a class="anchorlink" href="#API" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+      <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L413">API</a> <a class="anchorlink" href="#API" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
     </div>
 <div class="item-comment">
 
@@ -1655,7 +1675,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="API.hostname" data-key="API.hostname" data-depth="2">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L405">hostname</a> <a class="anchorlink" href="#API.hostname" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L413">hostname</a> <a class="anchorlink" href="#API.hostname" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">API > hostname</div>
@@ -1674,7 +1694,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="API.bind_address" data-key="API.bind_address" data-depth="2">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L410">bind_address</a> <a class="anchorlink" href="#API.bind_address" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L418">bind_address</a> <a class="anchorlink" href="#API.bind_address" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">API > bind_address</div>
@@ -1693,7 +1713,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="API.bind_port" data-key="API.bind_port" data-depth="2">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L413">bind_port</a> <a class="anchorlink" href="#API.bind_port" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L421">bind_port</a> <a class="anchorlink" href="#API.bind_port" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">API > bind_port</div>
@@ -1710,7 +1730,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="API.bind_scheme" data-key="API.bind_scheme" data-depth="2">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L416">bind_scheme</a> <a class="anchorlink" href="#API.bind_scheme" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L424">bind_scheme</a> <a class="anchorlink" href="#API.bind_scheme" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">API > bind_scheme</div>
@@ -1727,7 +1747,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="API.pinned_gw_name" data-key="API.pinned_gw_name" data-depth="2">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L421">pinned_gw_name</a> <a class="anchorlink" href="#API.pinned_gw_name" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L429">pinned_gw_name</a> <a class="anchorlink" href="#API.pinned_gw_name" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">API > pinned_gw_name</div>
@@ -1752,7 +1772,7 @@ Generated by the config wizard!!!
  <details>
 <summary class="ref-summary"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" width="1em" height="1em" fill="currentColor" class="category-icon" aria-hidden="true"><path d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z"/></svg>
     <div class="reference-key">
-      <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L429">GUI</a> <a class="anchorlink" href="#GUI" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+      <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L437">GUI</a> <a class="anchorlink" href="#GUI" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
     </div>
 <div class="item-comment">
 
@@ -1767,7 +1787,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="GUI.use_plain_http" data-key="GUI.use_plain_http" data-depth="2">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L429">use_plain_http</a> <a class="anchorlink" href="#GUI.use_plain_http" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L437">use_plain_http</a> <a class="anchorlink" href="#GUI.use_plain_http" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">GUI > use_plain_http</div>
@@ -1787,7 +1807,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="GUI.base_path" data-key="GUI.base_path" data-depth="2">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L433">base_path</a> <a class="anchorlink" href="#GUI.base_path" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L441">base_path</a> <a class="anchorlink" href="#GUI.base_path" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">GUI > base_path</div>
@@ -1805,7 +1825,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="GUI.public_url" data-key="GUI.public_url" data-depth="2">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L437">public_url</a> <a class="anchorlink" href="#GUI.public_url" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L445">public_url</a> <a class="anchorlink" href="#GUI.public_url" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">GUI > public_url</div>
@@ -1824,7 +1844,7 @@ Generated by the config wizard!!!
  <details>
 <summary class="ref-summary"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" width="1em" height="1em" fill="currentColor" class="category-icon" aria-hidden="true"><path d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z"/></svg>
     <div class="reference-key">
-      <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L445">allowed_cidr</a> <a class="anchorlink" href="#GUI.allowed_cidr" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+      <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L453">allowed_cidr</a> <a class="anchorlink" href="#GUI.allowed_cidr" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
     </div>
 <div class="item-comment">
 
@@ -1862,7 +1882,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="GUI.forwarded_proxy_header" data-key="GUI.forwarded_proxy_header" data-depth="2">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L454">forwarded_proxy_header</a> <a class="anchorlink" href="#GUI.forwarded_proxy_header" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L462">forwarded_proxy_header</a> <a class="anchorlink" href="#GUI.forwarded_proxy_header" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">GUI > forwarded_proxy_header</div>
@@ -1886,7 +1906,7 @@ Generated by the config wizard!!!
  <details>
 <summary class="ref-summary"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" width="1em" height="1em" fill="currentColor" class="category-icon" aria-hidden="true"><path d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z"/></svg>
     <div class="reference-key">
-      <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L458">links</a> <a class="anchorlink" href="#GUI.links" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+      <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L466">links</a> <a class="anchorlink" href="#GUI.links" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
     </div>
 <div class="item-comment">
 
@@ -1917,7 +1937,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="GUI.links.[0].text" data-key="GUI.links.[0].text" data-depth="4">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L460">text</a> <a class="anchorlink" href="#GUI.links.[0].text" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L468">text</a> <a class="anchorlink" href="#GUI.links.[0].text" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">GUI > links > [0] > text</div>
@@ -1934,7 +1954,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="GUI.links.[0].url" data-key="GUI.links.[0].url" data-depth="4">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L463">url</a> <a class="anchorlink" href="#GUI.links.[0].url" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L471">url</a> <a class="anchorlink" href="#GUI.links.[0].url" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">GUI > links > [0] > url</div>
@@ -1951,7 +1971,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="GUI.links.[0].new_tab" data-key="GUI.links.[0].new_tab" data-depth="4">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L466">new_tab</a> <a class="anchorlink" href="#GUI.links.[0].new_tab" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L474">new_tab</a> <a class="anchorlink" href="#GUI.links.[0].new_tab" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">GUI > links > [0] > new_tab</div>
@@ -1968,7 +1988,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="GUI.links.[0].type" data-key="GUI.links.[0].type" data-depth="4">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L471">type</a> <a class="anchorlink" href="#GUI.links.[0].type" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L479">type</a> <a class="anchorlink" href="#GUI.links.[0].type" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">GUI > links > [0] > type</div>
@@ -1987,7 +2007,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="GUI.links.[0].icon_url" data-key="GUI.links.[0].icon_url" data-depth="4">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L474">icon_url</a> <a class="anchorlink" href="#GUI.links.[0].icon_url" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L482">icon_url</a> <a class="anchorlink" href="#GUI.links.[0].icon_url" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">GUI > links > [0] > icon_url</div>
@@ -2004,7 +2024,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="GUI.links.[0].encode" data-key="GUI.links.[0].encode" data-depth="4">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L479">encode</a> <a class="anchorlink" href="#GUI.links.[0].encode" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L487">encode</a> <a class="anchorlink" href="#GUI.links.[0].encode" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">GUI > links > [0] > encode</div>
@@ -2023,7 +2043,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="GUI.links.[0].parameter" data-key="GUI.links.[0].parameter" data-depth="4">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L480">parameter</a> <a class="anchorlink" href="#GUI.links.[0].parameter" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L488">parameter</a> <a class="anchorlink" href="#GUI.links.[0].parameter" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">GUI > links > [0] > parameter</div>
@@ -2040,7 +2060,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="GUI.links.[0].method" data-key="GUI.links.[0].method" data-depth="4">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L483">method</a> <a class="anchorlink" href="#GUI.links.[0].method" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L491">method</a> <a class="anchorlink" href="#GUI.links.[0].method" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">GUI > links > [0] > method</div>
@@ -2057,7 +2077,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="GUI.links.[0].disabled" data-key="GUI.links.[0].disabled" data-depth="4">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L486">disabled</a> <a class="anchorlink" href="#GUI.links.[0].disabled" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L494">disabled</a> <a class="anchorlink" href="#GUI.links.[0].disabled" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">GUI > links > [0] > disabled</div>
@@ -2084,7 +2104,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="GUI.bind_address" data-key="GUI.bind_address" data-depth="2">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L494">bind_address</a> <a class="anchorlink" href="#GUI.bind_address" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L502">bind_address</a> <a class="anchorlink" href="#GUI.bind_address" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">GUI > bind_address</div>
@@ -2106,7 +2126,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="GUI.bind_port" data-key="GUI.bind_port" data-depth="2">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L499">bind_port</a> <a class="anchorlink" href="#GUI.bind_port" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L507">bind_port</a> <a class="anchorlink" href="#GUI.bind_port" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">GUI > bind_port</div>
@@ -2125,7 +2145,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="GUI.gw_certificate" data-key="GUI.gw_certificate" data-depth="2">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L503">gw_certificate</a> <a class="anchorlink" href="#GUI.gw_certificate" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L511">gw_certificate</a> <a class="anchorlink" href="#GUI.gw_certificate" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">GUI > gw_certificate</div>
@@ -2147,7 +2167,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="GUI.gw_private_key" data-key="GUI.gw_private_key" data-depth="2">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L507">gw_private_key</a> <a class="anchorlink" href="#GUI.gw_private_key" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L515">gw_private_key</a> <a class="anchorlink" href="#GUI.gw_private_key" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">GUI > gw_private_key</div>
@@ -2169,7 +2189,7 @@ Generated by the config wizard!!!
  <details>
 <summary class="ref-summary"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" width="1em" height="1em" fill="currentColor" class="category-icon" aria-hidden="true"><path d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z"/></svg>
     <div class="reference-key">
-      <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L515">reverse_proxy</a> <a class="anchorlink" href="#GUI.reverse_proxy" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+      <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L523">reverse_proxy</a> <a class="anchorlink" href="#GUI.reverse_proxy" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
     </div>
 <div class="item-comment">
 
@@ -2201,7 +2221,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="GUI.reverse_proxy.[0].route" data-key="GUI.reverse_proxy.[0].route" data-depth="4">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L519">route</a> <a class="anchorlink" href="#GUI.reverse_proxy.[0].route" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L527">route</a> <a class="anchorlink" href="#GUI.reverse_proxy.[0].route" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">GUI > reverse_proxy > [0] > route</div>
@@ -2219,7 +2239,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="GUI.reverse_proxy.[0].url" data-key="GUI.reverse_proxy.[0].url" data-depth="4">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L523">url</a> <a class="anchorlink" href="#GUI.reverse_proxy.[0].url" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L531">url</a> <a class="anchorlink" href="#GUI.reverse_proxy.[0].url" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">GUI > reverse_proxy > [0] > url</div>
@@ -2237,7 +2257,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="GUI.reverse_proxy.[0].require_auth" data-key="GUI.reverse_proxy.[0].require_auth" data-depth="4">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L527">require_auth</a> <a class="anchorlink" href="#GUI.reverse_proxy.[0].require_auth" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L535">require_auth</a> <a class="anchorlink" href="#GUI.reverse_proxy.[0].require_auth" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">GUI > reverse_proxy > [0] > require_auth</div>
@@ -2266,7 +2286,7 @@ Generated by the config wizard!!!
  <details>
 <summary class="ref-summary"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" width="1em" height="1em" fill="currentColor" class="category-icon" aria-hidden="true"><path d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z"/></svg>
     <div class="reference-key">
-      <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L533">trusted_origins</a> <a class="anchorlink" href="#GUI.trusted_origins" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+      <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L541">trusted_origins</a> <a class="anchorlink" href="#GUI.trusted_origins" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
     </div>
 <div class="item-comment">
 
@@ -2303,7 +2323,7 @@ Generated by the config wizard!!!
  <details>
 <summary class="ref-summary"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" width="1em" height="1em" fill="currentColor" class="category-icon" aria-hidden="true"><path d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z"/></svg>
     <div class="reference-key">
-      <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L541">initial_users</a> <a class="anchorlink" href="#GUI.initial_users" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+      <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L549">initial_users</a> <a class="anchorlink" href="#GUI.initial_users" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
     </div>
 <div class="item-comment">
 
@@ -2338,7 +2358,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="GUI.initial_users.[0].name" data-key="GUI.initial_users.[0].name" data-depth="4">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L543">name</a> <a class="anchorlink" href="#GUI.initial_users.[0].name" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L551">name</a> <a class="anchorlink" href="#GUI.initial_users.[0].name" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">GUI > initial_users > [0] > name</div>
@@ -2355,7 +2375,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="GUI.initial_users.[0].password_hash" data-key="GUI.initial_users.[0].password_hash" data-depth="4">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L548">password_hash</a> <a class="anchorlink" href="#GUI.initial_users.[0].password_hash" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L556">password_hash</a> <a class="anchorlink" href="#GUI.initial_users.[0].password_hash" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">GUI > initial_users > [0] > password_hash</div>
@@ -2374,7 +2394,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="GUI.initial_users.[0].password_salt" data-key="GUI.initial_users.[0].password_salt" data-depth="4">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L549">password_salt</a> <a class="anchorlink" href="#GUI.initial_users.[0].password_salt" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L557">password_salt</a> <a class="anchorlink" href="#GUI.initial_users.[0].password_salt" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">GUI > initial_users > [0] > password_salt</div>
@@ -2402,7 +2422,7 @@ Generated by the config wizard!!!
  <details>
 <summary class="ref-summary"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" width="1em" height="1em" fill="currentColor" class="category-icon" aria-hidden="true"><path d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z"/></svg>
     <div class="reference-key">
-      <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L553">initial_orgs</a> <a class="anchorlink" href="#GUI.initial_orgs" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+      <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L561">initial_orgs</a> <a class="anchorlink" href="#GUI.initial_orgs" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
     </div>
 <div class="item-comment">
 
@@ -2433,7 +2453,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="GUI.initial_orgs.[0].org_id" data-key="GUI.initial_orgs.[0].org_id" data-depth="4">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L554">org_id</a> <a class="anchorlink" href="#GUI.initial_orgs.[0].org_id" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L562">org_id</a> <a class="anchorlink" href="#GUI.initial_orgs.[0].org_id" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">GUI > initial_orgs > [0] > org_id</div>
@@ -2450,7 +2470,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="GUI.initial_orgs.[0].name" data-key="GUI.initial_orgs.[0].name" data-depth="4">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L555">name</a> <a class="anchorlink" href="#GUI.initial_orgs.[0].name" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L563">name</a> <a class="anchorlink" href="#GUI.initial_orgs.[0].name" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">GUI > initial_orgs > [0] > name</div>
@@ -2467,7 +2487,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="GUI.initial_orgs.[0].nonce" data-key="GUI.initial_orgs.[0].nonce" data-depth="4">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L560">nonce</a> <a class="anchorlink" href="#GUI.initial_orgs.[0].nonce" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L568">nonce</a> <a class="anchorlink" href="#GUI.initial_orgs.[0].nonce" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">GUI > initial_orgs > [0] > nonce</div>
@@ -2497,7 +2517,7 @@ Generated by the config wizard!!!
  <details>
 <summary class="ref-summary"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" width="1em" height="1em" fill="currentColor" class="category-icon" aria-hidden="true"><path d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z"/></svg>
     <div class="reference-key">
-      <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L568">authenticator</a> <a class="anchorlink" href="#GUI.authenticator" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+      <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L576">authenticator</a> <a class="anchorlink" href="#GUI.authenticator" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
     </div>
 <div class="item-comment">
 
@@ -2514,7 +2534,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="GUI.authenticator.type" data-key="GUI.authenticator.type" data-depth="3">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L568">type</a> <a class="anchorlink" href="#GUI.authenticator.type" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L576">type</a> <a class="anchorlink" href="#GUI.authenticator.type" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">GUI > authenticator > type</div>
@@ -2532,7 +2552,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="GUI.authenticator.saml_certificate" data-key="GUI.authenticator.saml_certificate" data-depth="3">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L571">saml_certificate</a> <a class="anchorlink" href="#GUI.authenticator.saml_certificate" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L579">saml_certificate</a> <a class="anchorlink" href="#GUI.authenticator.saml_certificate" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">GUI > authenticator > saml_certificate</div>
@@ -2552,7 +2572,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="GUI.authenticator.saml_private_key" data-key="GUI.authenticator.saml_private_key" data-depth="3">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L574">saml_private_key</a> <a class="anchorlink" href="#GUI.authenticator.saml_private_key" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L582">saml_private_key</a> <a class="anchorlink" href="#GUI.authenticator.saml_private_key" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">GUI > authenticator > saml_private_key</div>
@@ -2572,7 +2592,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="GUI.authenticator.saml_idp_metadata_url" data-key="GUI.authenticator.saml_idp_metadata_url" data-depth="3">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L577">saml_idp_metadata_url</a> <a class="anchorlink" href="#GUI.authenticator.saml_idp_metadata_url" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L585">saml_idp_metadata_url</a> <a class="anchorlink" href="#GUI.authenticator.saml_idp_metadata_url" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">GUI > authenticator > saml_idp_metadata_url</div>
@@ -2589,7 +2609,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="GUI.authenticator.saml_root_url" data-key="GUI.authenticator.saml_root_url" data-depth="3">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L578">saml_root_url</a> <a class="anchorlink" href="#GUI.authenticator.saml_root_url" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L586">saml_root_url</a> <a class="anchorlink" href="#GUI.authenticator.saml_root_url" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">GUI > authenticator > saml_root_url</div>
@@ -2606,7 +2626,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="GUI.authenticator.saml_user_attribute" data-key="GUI.authenticator.saml_user_attribute" data-depth="3">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L579">saml_user_attribute</a> <a class="anchorlink" href="#GUI.authenticator.saml_user_attribute" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L587">saml_user_attribute</a> <a class="anchorlink" href="#GUI.authenticator.saml_user_attribute" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">GUI > authenticator > saml_user_attribute</div>
@@ -2623,7 +2643,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="GUI.authenticator.saml_allow_idp_initiated" data-key="GUI.authenticator.saml_allow_idp_initiated" data-depth="3">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L582">saml_allow_idp_initiated</a> <a class="anchorlink" href="#GUI.authenticator.saml_allow_idp_initiated" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L590">saml_allow_idp_initiated</a> <a class="anchorlink" href="#GUI.authenticator.saml_allow_idp_initiated" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">GUI > authenticator > saml_allow_idp_initiated</div>
@@ -2641,7 +2661,7 @@ Generated by the config wizard!!!
  <details>
 <summary class="ref-summary"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" width="1em" height="1em" fill="currentColor" class="category-icon" aria-hidden="true"><path d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z"/></svg>
     <div class="reference-key">
-      <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L598">saml_user_roles</a> <a class="anchorlink" href="#GUI.authenticator.saml_user_roles" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+      <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L606">saml_user_roles</a> <a class="anchorlink" href="#GUI.authenticator.saml_user_roles" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
     </div>
 <div class="item-comment">
 
@@ -2701,7 +2721,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="GUI.authenticator.oidc_issuer" data-key="GUI.authenticator.oidc_issuer" data-depth="3">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L603">oidc_issuer</a> <a class="anchorlink" href="#GUI.authenticator.oidc_issuer" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L611">oidc_issuer</a> <a class="anchorlink" href="#GUI.authenticator.oidc_issuer" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">GUI > authenticator > oidc_issuer</div>
@@ -2719,7 +2739,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="GUI.authenticator.oidc_name" data-key="GUI.authenticator.oidc_name" data-depth="3">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L609">oidc_name</a> <a class="anchorlink" href="#GUI.authenticator.oidc_name" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L617">oidc_name</a> <a class="anchorlink" href="#GUI.authenticator.oidc_name" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">GUI > authenticator > oidc_name</div>
@@ -2740,7 +2760,7 @@ Generated by the config wizard!!!
  <details>
 <summary class="ref-summary"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" width="1em" height="1em" fill="currentColor" class="category-icon" aria-hidden="true"><path d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z"/></svg>
     <div class="reference-key">
-      <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L614">oidc_auth_url_params</a> <a class="anchorlink" href="#GUI.authenticator.oidc_auth_url_params" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+      <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L622">oidc_auth_url_params</a> <a class="anchorlink" href="#GUI.authenticator.oidc_auth_url_params" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
     </div>
 <div class="item-comment">
 
@@ -2756,7 +2776,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="GUI.authenticator.oidc_auth_url_params.Key" data-key="GUI.authenticator.oidc_auth_url_params.Key" data-depth="4">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L614">Key</a> <a class="anchorlink" href="#GUI.authenticator.oidc_auth_url_params.Key" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L622">Key</a> <a class="anchorlink" href="#GUI.authenticator.oidc_auth_url_params.Key" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">GUI > authenticator > oidc_auth_url_params > Key</div>
@@ -2778,7 +2798,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="GUI.authenticator.avatar" data-key="GUI.authenticator.avatar" data-depth="3">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L616">avatar</a> <a class="anchorlink" href="#GUI.authenticator.avatar" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L624">avatar</a> <a class="anchorlink" href="#GUI.authenticator.avatar" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">GUI > authenticator > avatar</div>
@@ -2795,7 +2815,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="GUI.authenticator.oauth_client_id" data-key="GUI.authenticator.oauth_client_id" data-depth="3">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L619">oauth_client_id</a> <a class="anchorlink" href="#GUI.authenticator.oauth_client_id" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L627">oauth_client_id</a> <a class="anchorlink" href="#GUI.authenticator.oauth_client_id" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">GUI > authenticator > oauth_client_id</div>
@@ -2812,7 +2832,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="GUI.authenticator.oauth_client_secret" data-key="GUI.authenticator.oauth_client_secret" data-depth="3">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L620">oauth_client_secret</a> <a class="anchorlink" href="#GUI.authenticator.oauth_client_secret" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L628">oauth_client_secret</a> <a class="anchorlink" href="#GUI.authenticator.oauth_client_secret" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">GUI > authenticator > oauth_client_secret</div>
@@ -2829,7 +2849,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="GUI.authenticator.oidc_debug" data-key="GUI.authenticator.oidc_debug" data-depth="3">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L625">oidc_debug</a> <a class="anchorlink" href="#GUI.authenticator.oidc_debug" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L633">oidc_debug</a> <a class="anchorlink" href="#GUI.authenticator.oidc_debug" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">GUI > authenticator > oidc_debug</div>
@@ -2845,11 +2865,38 @@ Generated by the config wizard!!!
 </div>
 
 <div class="ref-block">
+<li class="ref-item ref-leaf" id="GUI.authenticator.disable_email_to_sub_pin" data-key="GUI.authenticator.disable_email_to_sub_pin" data-depth="3">
+ <span class="item-name"><i class="bullet-placeholder"></i>
+   <div class="reference-key">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L647">disable_email_to_sub_pin</a> <a class="anchorlink" href="#GUI.authenticator.disable_email_to_sub_pin" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+   </div>
+  </span>
+  <div class="item-breadcrumb">GUI > authenticator > disable_email_to_sub_pin</div>
+  <div class="reference-value-mapping">false</div>
+</li>
+<div class="item-comment">
+
+ In many IdP the email address can be changed and is not
+ verified. By default Velociraptor OIDC authenticator pins the
+ email address to the immutable sub GUID reported by the OIDC
+ server. This stops email addresss hijacking in some situation
+ but prevents the same email from being used by different IdP
+ servers. Set this parameter to disable this pinning and allow
+ the same email address on different OIDC sub IDs. Be careful
+ that users are not able to set any email address for their
+ account in the IdP as this allows them to take over other user's
+ accounts. This setting is required for the MultiAuthenticator to
+ work properly.
+
+</div>
+</div>
+
+<div class="ref-block">
 <li class="ref-item ref-container" id="GUI.authenticator.claims" data-key="GUI.authenticator.claims" data-depth="3">
  <details>
 <summary class="ref-summary"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" width="1em" height="1em" fill="currentColor" class="category-icon" aria-hidden="true"><path d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z"/></svg>
     <div class="reference-key">
-      <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L635">claims</a> <a class="anchorlink" href="#GUI.authenticator.claims" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+      <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L658">claims</a> <a class="anchorlink" href="#GUI.authenticator.claims" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
     </div>
 <div class="item-comment">
 
@@ -2865,7 +2912,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="GUI.authenticator.claims.username" data-key="GUI.authenticator.claims.username" data-depth="4">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L635">username</a> <a class="anchorlink" href="#GUI.authenticator.claims.username" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L658">username</a> <a class="anchorlink" href="#GUI.authenticator.claims.username" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">GUI > authenticator > claims > username</div>
@@ -2886,7 +2933,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="GUI.authenticator.claims.roles" data-key="GUI.authenticator.claims.roles" data-depth="4">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L645">roles</a> <a class="anchorlink" href="#GUI.authenticator.claims.roles" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L668">roles</a> <a class="anchorlink" href="#GUI.authenticator.claims.roles" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">GUI > authenticator > claims > roles</div>
@@ -2911,7 +2958,7 @@ Generated by the config wizard!!!
  <details>
 <summary class="ref-summary"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" width="1em" height="1em" fill="currentColor" class="category-icon" aria-hidden="true"><path d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z"/></svg>
     <div class="reference-key">
-      <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L650">role_map</a> <a class="anchorlink" href="#GUI.authenticator.claims.role_map" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+      <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L673">role_map</a> <a class="anchorlink" href="#GUI.authenticator.claims.role_map" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
     </div>
 <div class="item-comment">
 
@@ -2928,7 +2975,7 @@ Generated by the config wizard!!!
  <details>
 <summary class="ref-summary"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" width="1em" height="1em" fill="currentColor" class="category-icon" aria-hidden="true"><path d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z"/></svg>
     <div class="reference-key">
-      <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L651">Velociraptor.Reader</a> <a class="anchorlink" href="#GUI.authenticator.claims.role_map.Velociraptor.Reader" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+      <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L674">Velociraptor.Reader</a> <a class="anchorlink" href="#GUI.authenticator.claims.role_map.Velociraptor.Reader" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
     </div>
 <div class="item-comment">
 
@@ -2944,7 +2991,7 @@ Generated by the config wizard!!!
  <details>
 <summary class="ref-summary"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" width="1em" height="1em" fill="currentColor" class="category-icon" aria-hidden="true"><path d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z"/></svg>
     <div class="reference-key">
-      <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L652">roles</a> <a class="anchorlink" href="#GUI.authenticator.claims.role_map.Velociraptor.Reader.roles" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+      <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L675">roles</a> <a class="anchorlink" href="#GUI.authenticator.claims.role_map.Velociraptor.Reader.roles" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
     </div>
 <div class="item-comment">
 
@@ -2988,7 +3035,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="GUI.authenticator.claims.allow_unverified_email" data-key="GUI.authenticator.claims.allow_unverified_email" data-depth="4">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L658">allow_unverified_email</a> <a class="anchorlink" href="#GUI.authenticator.claims.allow_unverified_email" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L681">allow_unverified_email</a> <a class="anchorlink" href="#GUI.authenticator.claims.allow_unverified_email" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">GUI > authenticator > claims > allow_unverified_email</div>
@@ -3008,7 +3055,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="GUI.authenticator.claims.override_acls" data-key="GUI.authenticator.claims.override_acls" data-depth="4">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L664">override_acls</a> <a class="anchorlink" href="#GUI.authenticator.claims.override_acls" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L687">override_acls</a> <a class="anchorlink" href="#GUI.authenticator.claims.override_acls" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">GUI > authenticator > claims > override_acls</div>
@@ -3033,7 +3080,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="GUI.authenticator.tenant" data-key="GUI.authenticator.tenant" data-depth="3">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L667">tenant</a> <a class="anchorlink" href="#GUI.authenticator.tenant" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L690">tenant</a> <a class="anchorlink" href="#GUI.authenticator.tenant" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">GUI > authenticator > tenant</div>
@@ -3050,7 +3097,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="GUI.authenticator.auth_redirect_template" data-key="GUI.authenticator.auth_redirect_template" data-depth="3">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L671">auth_redirect_template</a> <a class="anchorlink" href="#GUI.authenticator.auth_redirect_template" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L694">auth_redirect_template</a> <a class="anchorlink" href="#GUI.authenticator.auth_redirect_template" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">GUI > authenticator > auth_redirect_template</div>
@@ -3069,7 +3116,7 @@ Generated by the config wizard!!!
  <details>
 <summary class="ref-summary"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" width="1em" height="1em" fill="currentColor" class="category-icon" aria-hidden="true"><path d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z"/></svg>
     <div class="reference-key">
-      <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L679">default_roles_for_unknown_user</a> <a class="anchorlink" href="#GUI.authenticator.default_roles_for_unknown_user" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+      <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L702">default_roles_for_unknown_user</a> <a class="anchorlink" href="#GUI.authenticator.default_roles_for_unknown_user" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
     </div>
 <div class="item-comment">
 
@@ -3107,7 +3154,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="GUI.authenticator.default_session_expiry_min" data-key="GUI.authenticator.default_session_expiry_min" data-depth="3">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L682">default_session_expiry_min</a> <a class="anchorlink" href="#GUI.authenticator.default_session_expiry_min" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L705">default_session_expiry_min</a> <a class="anchorlink" href="#GUI.authenticator.default_session_expiry_min" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">GUI > authenticator > default_session_expiry_min</div>
@@ -3125,7 +3172,7 @@ Generated by the config wizard!!!
  <details>
 <summary class="ref-summary"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" width="1em" height="1em" fill="currentColor" class="category-icon" aria-hidden="true"><path d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z"/></svg>
     <div class="reference-key">
-      <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L688">sub_authenticators</a> <a class="anchorlink" href="#GUI.authenticator.sub_authenticators" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+      <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L711">sub_authenticators</a> <a class="anchorlink" href="#GUI.authenticator.sub_authenticators" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
     </div>
 <div class="item-comment">
 
@@ -3158,7 +3205,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="GUI.authenticator.sub_authenticators.[0].type" data-key="GUI.authenticator.sub_authenticators.[0].type" data-depth="5">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L688">type</a> <a class="anchorlink" href="#GUI.authenticator.sub_authenticators.[0].type" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L711">type</a> <a class="anchorlink" href="#GUI.authenticator.sub_authenticators.[0].type" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">GUI > authenticator > sub_authenticators > [0] > type</div>
@@ -3196,7 +3243,7 @@ Generated by the config wizard!!!
  <details>
 <summary class="ref-summary"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" width="1em" height="1em" fill="currentColor" class="category-icon" aria-hidden="true"><path d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z"/></svg>
     <div class="reference-key">
-      <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L696">CA</a> <a class="anchorlink" href="#CA" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+      <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L719">CA</a> <a class="anchorlink" href="#CA" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
     </div>
 <div class="item-comment">
 
@@ -3213,7 +3260,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="CA.private_key" data-key="CA.private_key" data-depth="2">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L696">private_key</a> <a class="anchorlink" href="#CA.private_key" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L719">private_key</a> <a class="anchorlink" href="#CA.private_key" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">CA > private_key</div>
@@ -3240,7 +3287,7 @@ Generated by the config wizard!!!
  <details>
 <summary class="ref-summary"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" width="1em" height="1em" fill="currentColor" class="category-icon" aria-hidden="true"><path d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z"/></svg>
     <div class="reference-key">
-      <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L704">Frontend</a> <a class="anchorlink" href="#Frontend" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+      <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L727">Frontend</a> <a class="anchorlink" href="#Frontend" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
     </div>
 <div class="item-comment">
 
@@ -3256,7 +3303,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="Frontend.base_path" data-key="Frontend.base_path" data-depth="2">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L704">base_path</a> <a class="anchorlink" href="#Frontend.base_path" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L727">base_path</a> <a class="anchorlink" href="#Frontend.base_path" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">Frontend > base_path</div>
@@ -3273,7 +3320,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="Frontend.use_plain_http" data-key="Frontend.use_plain_http" data-depth="2">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L710">use_plain_http</a> <a class="anchorlink" href="#Frontend.use_plain_http" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L733">use_plain_http</a> <a class="anchorlink" href="#Frontend.use_plain_http" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">Frontend > use_plain_http</div>
@@ -3293,7 +3340,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="Frontend.require_client_certificates" data-key="Frontend.require_client_certificates" data-depth="2">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L725">require_client_certificates</a> <a class="anchorlink" href="#Frontend.require_client_certificates" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L748">require_client_certificates</a> <a class="anchorlink" href="#Frontend.require_client_certificates" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">Frontend > require_client_certificates</div>
@@ -3322,7 +3369,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="Frontend.proxy" data-key="Frontend.proxy" data-depth="2">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L739">proxy</a> <a class="anchorlink" href="#Frontend.proxy" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L762">proxy</a> <a class="anchorlink" href="#Frontend.proxy" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">Frontend > proxy</div>
@@ -3351,7 +3398,7 @@ Generated by the config wizard!!!
  <details>
 <summary class="ref-summary"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" width="1em" height="1em" fill="currentColor" class="category-icon" aria-hidden="true"><path d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z"/></svg>
     <div class="reference-key">
-      <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L744">proxy_config</a> <a class="anchorlink" href="#Frontend.proxy_config" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+      <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L767">proxy_config</a> <a class="anchorlink" href="#Frontend.proxy_config" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
     </div>
 <div class="item-comment">
 
@@ -3367,7 +3414,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="Frontend.proxy_config.http" data-key="Frontend.proxy_config.http" data-depth="3">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L744">http</a> <a class="anchorlink" href="#Frontend.proxy_config.http" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L767">http</a> <a class="anchorlink" href="#Frontend.proxy_config.http" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">Frontend > proxy_config > http</div>
@@ -3384,7 +3431,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="Frontend.proxy_config.https" data-key="Frontend.proxy_config.https" data-depth="3">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L745">https</a> <a class="anchorlink" href="#Frontend.proxy_config.https" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L768">https</a> <a class="anchorlink" href="#Frontend.proxy_config.https" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">Frontend > proxy_config > https</div>
@@ -3402,7 +3449,7 @@ Generated by the config wizard!!!
  <details>
 <summary class="ref-summary"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" width="1em" height="1em" fill="currentColor" class="category-icon" aria-hidden="true"><path d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z"/></svg>
     <div class="reference-key">
-      <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L747">proxy_url_regexp</a> <a class="anchorlink" href="#Frontend.proxy_config.proxy_url_regexp" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+      <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L770">proxy_url_regexp</a> <a class="anchorlink" href="#Frontend.proxy_config.proxy_url_regexp" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
     </div>
 <div class="item-comment">
 
@@ -3417,7 +3464,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="Frontend.proxy_config.proxy_url_regexp.^https://localhost/" data-key="Frontend.proxy_config.proxy_url_regexp.^https://localhost/" data-depth="4">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L747">^https://localhost/</a> <a class="anchorlink" href="#Frontend.proxy_config.proxy_url_regexp.^https://localhost/" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L770">^https://localhost/</a> <a class="anchorlink" href="#Frontend.proxy_config.proxy_url_regexp.^https://localhost/" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">Frontend > proxy_config > proxy_url_regexp > ^https://localhost/</div>
@@ -3439,7 +3486,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="Frontend.proxy_config.pac" data-key="Frontend.proxy_config.pac" data-depth="3">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L748">pac</a> <a class="anchorlink" href="#Frontend.proxy_config.pac" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L771">pac</a> <a class="anchorlink" href="#Frontend.proxy_config.pac" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">Frontend > proxy_config > pac</div>
@@ -3456,7 +3503,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="Frontend.proxy_config.ignore_environment" data-key="Frontend.proxy_config.ignore_environment" data-depth="3">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L749">ignore_environment</a> <a class="anchorlink" href="#Frontend.proxy_config.ignore_environment" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L772">ignore_environment</a> <a class="anchorlink" href="#Frontend.proxy_config.ignore_environment" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">Frontend > proxy_config > ignore_environment</div>
@@ -3478,7 +3525,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="Frontend.do_not_compress_artifacts" data-key="Frontend.do_not_compress_artifacts" data-depth="2">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L754">do_not_compress_artifacts</a> <a class="anchorlink" href="#Frontend.do_not_compress_artifacts" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L777">do_not_compress_artifacts</a> <a class="anchorlink" href="#Frontend.do_not_compress_artifacts" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">Frontend > do_not_compress_artifacts</div>
@@ -3497,7 +3544,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="Frontend.hostname" data-key="Frontend.hostname" data-depth="2">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L757">hostname</a> <a class="anchorlink" href="#Frontend.hostname" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L780">hostname</a> <a class="anchorlink" href="#Frontend.hostname" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">Frontend > hostname</div>
@@ -3514,7 +3561,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="Frontend.bind_address" data-key="Frontend.bind_address" data-depth="2">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L761">bind_address</a> <a class="anchorlink" href="#Frontend.bind_address" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L784">bind_address</a> <a class="anchorlink" href="#Frontend.bind_address" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">Frontend > bind_address</div>
@@ -3532,7 +3579,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="Frontend.bind_port" data-key="Frontend.bind_port" data-depth="2">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L762">bind_port</a> <a class="anchorlink" href="#Frontend.bind_port" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L785">bind_port</a> <a class="anchorlink" href="#Frontend.bind_port" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">Frontend > bind_port</div>
@@ -3549,7 +3596,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="Frontend.certificate" data-key="Frontend.certificate" data-depth="2">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L770">certificate</a> <a class="anchorlink" href="#Frontend.certificate" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L793">certificate</a> <a class="anchorlink" href="#Frontend.certificate" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">Frontend > certificate</div>
@@ -3574,7 +3621,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="Frontend.private_key" data-key="Frontend.private_key" data-depth="2">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L773">private_key</a> <a class="anchorlink" href="#Frontend.private_key" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L796">private_key</a> <a class="anchorlink" href="#Frontend.private_key" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">Frontend > private_key</div>
@@ -3594,7 +3641,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="Frontend.tls_certificate_filename" data-key="Frontend.tls_certificate_filename" data-depth="2">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L785">tls_certificate_filename</a> <a class="anchorlink" href="#Frontend.tls_certificate_filename" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L808">tls_certificate_filename</a> <a class="anchorlink" href="#Frontend.tls_certificate_filename" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">Frontend > tls_certificate_filename</div>
@@ -3618,7 +3665,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="Frontend.tls_private_key_filename" data-key="Frontend.tls_private_key_filename" data-depth="2">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L786">tls_private_key_filename</a> <a class="anchorlink" href="#Frontend.tls_private_key_filename" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L809">tls_private_key_filename</a> <a class="anchorlink" href="#Frontend.tls_private_key_filename" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">Frontend > tls_private_key_filename</div>
@@ -3636,7 +3683,7 @@ Generated by the config wizard!!!
  <details>
 <summary class="ref-summary"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" width="1em" height="1em" fill="currentColor" class="category-icon" aria-hidden="true"><path d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z"/></svg>
     <div class="reference-key">
-      <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L793">dyn_dns</a> <a class="anchorlink" href="#Frontend.dyn_dns" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+      <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L816">dyn_dns</a> <a class="anchorlink" href="#Frontend.dyn_dns" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
     </div>
 <div class="item-comment">
 
@@ -3653,7 +3700,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="Frontend.dyn_dns.type" data-key="Frontend.dyn_dns.type" data-depth="3">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L793">type</a> <a class="anchorlink" href="#Frontend.dyn_dns.type" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L816">type</a> <a class="anchorlink" href="#Frontend.dyn_dns.type" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">Frontend > dyn_dns > type</div>
@@ -3670,7 +3717,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="Frontend.dyn_dns.hostname" data-key="Frontend.dyn_dns.hostname" data-depth="3">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L796">hostname</a> <a class="anchorlink" href="#Frontend.dyn_dns.hostname" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L819">hostname</a> <a class="anchorlink" href="#Frontend.dyn_dns.hostname" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">Frontend > dyn_dns > hostname</div>
@@ -3687,7 +3734,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="Frontend.dyn_dns.ddns_username" data-key="Frontend.dyn_dns.ddns_username" data-depth="3">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L797">ddns_username</a> <a class="anchorlink" href="#Frontend.dyn_dns.ddns_username" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L820">ddns_username</a> <a class="anchorlink" href="#Frontend.dyn_dns.ddns_username" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">Frontend > dyn_dns > ddns_username</div>
@@ -3704,7 +3751,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="Frontend.dyn_dns.ddns_password" data-key="Frontend.dyn_dns.ddns_password" data-depth="3">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L798">ddns_password</a> <a class="anchorlink" href="#Frontend.dyn_dns.ddns_password" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L821">ddns_password</a> <a class="anchorlink" href="#Frontend.dyn_dns.ddns_password" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">Frontend > dyn_dns > ddns_password</div>
@@ -3721,7 +3768,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="Frontend.dyn_dns.ddns_hostname" data-key="Frontend.dyn_dns.ddns_hostname" data-depth="3">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L801">ddns_hostname</a> <a class="anchorlink" href="#Frontend.dyn_dns.ddns_hostname" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L824">ddns_hostname</a> <a class="anchorlink" href="#Frontend.dyn_dns.ddns_hostname" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">Frontend > dyn_dns > ddns_hostname</div>
@@ -3738,7 +3785,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="Frontend.dyn_dns.update_url" data-key="Frontend.dyn_dns.update_url" data-depth="3">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L804">update_url</a> <a class="anchorlink" href="#Frontend.dyn_dns.update_url" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L827">update_url</a> <a class="anchorlink" href="#Frontend.dyn_dns.update_url" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">Frontend > dyn_dns > update_url</div>
@@ -3755,7 +3802,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="Frontend.dyn_dns.frequency" data-key="Frontend.dyn_dns.frequency" data-depth="3">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L807">frequency</a> <a class="anchorlink" href="#Frontend.dyn_dns.frequency" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L830">frequency</a> <a class="anchorlink" href="#Frontend.dyn_dns.frequency" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">Frontend > dyn_dns > frequency</div>
@@ -3772,7 +3819,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="Frontend.dyn_dns.checkip_url" data-key="Frontend.dyn_dns.checkip_url" data-depth="3">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L811">checkip_url</a> <a class="anchorlink" href="#Frontend.dyn_dns.checkip_url" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L834">checkip_url</a> <a class="anchorlink" href="#Frontend.dyn_dns.checkip_url" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">Frontend > dyn_dns > checkip_url</div>
@@ -3790,7 +3837,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="Frontend.dyn_dns.dns_server" data-key="Frontend.dyn_dns.dns_server" data-depth="3">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L815">dns_server</a> <a class="anchorlink" href="#Frontend.dyn_dns.dns_server" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L838">dns_server</a> <a class="anchorlink" href="#Frontend.dyn_dns.dns_server" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">Frontend > dyn_dns > dns_server</div>
@@ -3808,7 +3855,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="Frontend.dyn_dns.api_token" data-key="Frontend.dyn_dns.api_token" data-depth="3">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L818">api_token</a> <a class="anchorlink" href="#Frontend.dyn_dns.api_token" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L841">api_token</a> <a class="anchorlink" href="#Frontend.dyn_dns.api_token" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">Frontend > dyn_dns > api_token</div>
@@ -3825,7 +3872,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="Frontend.dyn_dns.zone_name" data-key="Frontend.dyn_dns.zone_name" data-depth="3">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L821">zone_name</a> <a class="anchorlink" href="#Frontend.dyn_dns.zone_name" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L844">zone_name</a> <a class="anchorlink" href="#Frontend.dyn_dns.zone_name" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">Frontend > dyn_dns > zone_name</div>
@@ -3847,7 +3894,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="Frontend.proxy_header" data-key="Frontend.proxy_header" data-depth="2">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L827">proxy_header</a> <a class="anchorlink" href="#Frontend.proxy_header" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L850">proxy_header</a> <a class="anchorlink" href="#Frontend.proxy_header" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">Frontend > proxy_header</div>
@@ -3868,7 +3915,7 @@ Generated by the config wizard!!!
  <details>
 <summary class="ref-summary"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" width="1em" height="1em" fill="currentColor" class="category-icon" aria-hidden="true"><path d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z"/></svg>
     <div class="reference-key">
-      <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L832">default_server_monitoring_artifacts</a> <a class="anchorlink" href="#Frontend.default_server_monitoring_artifacts" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+      <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L855">default_server_monitoring_artifacts</a> <a class="anchorlink" href="#Frontend.default_server_monitoring_artifacts" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
     </div>
 <div class="item-comment">
 
@@ -3904,7 +3951,7 @@ Generated by the config wizard!!!
  <details>
 <summary class="ref-summary"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" width="1em" height="1em" fill="currentColor" class="category-icon" aria-hidden="true"><path d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z"/></svg>
     <div class="reference-key">
-      <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L837">default_client_monitoring_artifacts</a> <a class="anchorlink" href="#Frontend.default_client_monitoring_artifacts" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+      <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L860">default_client_monitoring_artifacts</a> <a class="anchorlink" href="#Frontend.default_client_monitoring_artifacts" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
     </div>
 <div class="item-comment">
 
@@ -3939,7 +3986,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="Frontend.run_as_user" data-key="Frontend.run_as_user" data-depth="2">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L846">run_as_user</a> <a class="anchorlink" href="#Frontend.run_as_user" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L869">run_as_user</a> <a class="anchorlink" href="#Frontend.run_as_user" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">Frontend > run_as_user</div>
@@ -3963,7 +4010,7 @@ Generated by the config wizard!!!
  <details>
 <summary class="ref-summary"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" width="1em" height="1em" fill="currentColor" class="category-icon" aria-hidden="true"><path d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z"/></svg>
     <div class="reference-key">
-      <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L852">initial_server_artifacts</a> <a class="anchorlink" href="#Frontend.initial_server_artifacts" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+      <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L875">initial_server_artifacts</a> <a class="anchorlink" href="#Frontend.initial_server_artifacts" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
     </div>
 <div class="item-comment">
 
@@ -3999,7 +4046,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="Frontend.GRPC_pool_max_size" data-key="Frontend.GRPC_pool_max_size" data-depth="2">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L856">GRPC_pool_max_size</a> <a class="anchorlink" href="#Frontend.GRPC_pool_max_size" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L879">GRPC_pool_max_size</a> <a class="anchorlink" href="#Frontend.GRPC_pool_max_size" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">Frontend > GRPC_pool_max_size</div>
@@ -4017,7 +4064,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="Frontend.GRPC_pool_max_wait" data-key="Frontend.GRPC_pool_max_wait" data-depth="2">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L857">GRPC_pool_max_wait</a> <a class="anchorlink" href="#Frontend.GRPC_pool_max_wait" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L880">GRPC_pool_max_wait</a> <a class="anchorlink" href="#Frontend.GRPC_pool_max_wait" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">Frontend > GRPC_pool_max_wait</div>
@@ -4034,7 +4081,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="Frontend.artifact_definitions_directory" data-key="Frontend.artifact_definitions_directory" data-depth="2">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L860">artifact_definitions_directory</a> <a class="anchorlink" href="#Frontend.artifact_definitions_directory" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L883">artifact_definitions_directory</a> <a class="anchorlink" href="#Frontend.artifact_definitions_directory" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">Frontend > artifact_definitions_directory</div>
@@ -4051,7 +4098,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="Frontend.collection_error_regex" data-key="Frontend.collection_error_regex" data-depth="2">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L867">collection_error_regex</a> <a class="anchorlink" href="#Frontend.collection_error_regex" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L890">collection_error_regex</a> <a class="anchorlink" href="#Frontend.collection_error_regex" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">Frontend > collection_error_regex</div>
@@ -4073,7 +4120,7 @@ Generated by the config wizard!!!
  <details>
 <summary class="ref-summary"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" width="1em" height="1em" fill="currentColor" class="category-icon" aria-hidden="true"><path d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z"/></svg>
     <div class="reference-key">
-      <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L874">resources</a> <a class="anchorlink" href="#Frontend.resources" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+      <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L897">resources</a> <a class="anchorlink" href="#Frontend.resources" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
     </div>
 <div class="item-comment">
 
@@ -4090,7 +4137,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="Frontend.resources.connections_per_second" data-key="Frontend.resources.connections_per_second" data-depth="3">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L874">connections_per_second</a> <a class="anchorlink" href="#Frontend.resources.connections_per_second" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L897">connections_per_second</a> <a class="anchorlink" href="#Frontend.resources.connections_per_second" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">Frontend > resources > connections_per_second</div>
@@ -4107,7 +4154,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="Frontend.resources.notifications_per_second" data-key="Frontend.resources.notifications_per_second" data-depth="3">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L879">notifications_per_second</a> <a class="anchorlink" href="#Frontend.resources.notifications_per_second" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L902">notifications_per_second</a> <a class="anchorlink" href="#Frontend.resources.notifications_per_second" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">Frontend > resources > notifications_per_second</div>
@@ -4126,7 +4173,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="Frontend.resources.enrollments_per_second" data-key="Frontend.resources.enrollments_per_second" data-depth="3">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L883">enrollments_per_second</a> <a class="anchorlink" href="#Frontend.resources.enrollments_per_second" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L906">enrollments_per_second</a> <a class="anchorlink" href="#Frontend.resources.enrollments_per_second" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">Frontend > resources > enrollments_per_second</div>
@@ -4144,7 +4191,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="Frontend.resources.concurrency" data-key="Frontend.resources.concurrency" data-depth="3">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L892">concurrency</a> <a class="anchorlink" href="#Frontend.resources.concurrency" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L915">concurrency</a> <a class="anchorlink" href="#Frontend.resources.concurrency" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">Frontend > resources > concurrency</div>
@@ -4167,7 +4214,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="Frontend.resources.concurrency_timeout" data-key="Frontend.resources.concurrency_timeout" data-depth="3">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L897">concurrency_timeout</a> <a class="anchorlink" href="#Frontend.resources.concurrency_timeout" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L920">concurrency_timeout</a> <a class="anchorlink" href="#Frontend.resources.concurrency_timeout" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">Frontend > resources > concurrency_timeout</div>
@@ -4186,7 +4233,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="Frontend.resources.max_upload_size" data-key="Frontend.resources.max_upload_size" data-depth="3">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L902">max_upload_size</a> <a class="anchorlink" href="#Frontend.resources.max_upload_size" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L925">max_upload_size</a> <a class="anchorlink" href="#Frontend.resources.max_upload_size" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">Frontend > resources > max_upload_size</div>
@@ -4205,7 +4252,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="Frontend.resources.expected_clients" data-key="Frontend.resources.expected_clients" data-depth="3">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L908">expected_clients</a> <a class="anchorlink" href="#Frontend.resources.expected_clients" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L931">expected_clients</a> <a class="anchorlink" href="#Frontend.resources.expected_clients" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">Frontend > resources > expected_clients</div>
@@ -4225,7 +4272,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="Frontend.resources.per_client_upload_rate" data-key="Frontend.resources.per_client_upload_rate" data-depth="3">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L916">per_client_upload_rate</a> <a class="anchorlink" href="#Frontend.resources.per_client_upload_rate" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L939">per_client_upload_rate</a> <a class="anchorlink" href="#Frontend.resources.per_client_upload_rate" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">Frontend > resources > per_client_upload_rate</div>
@@ -4246,7 +4293,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="Frontend.resources.global_upload_rate" data-key="Frontend.resources.global_upload_rate" data-depth="3">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L917">global_upload_rate</a> <a class="anchorlink" href="#Frontend.resources.global_upload_rate" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L940">global_upload_rate</a> <a class="anchorlink" href="#Frontend.resources.global_upload_rate" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">Frontend > resources > global_upload_rate</div>
@@ -4263,7 +4310,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="Frontend.resources.client_event_max_wait" data-key="Frontend.resources.client_event_max_wait" data-depth="3">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L922">client_event_max_wait</a> <a class="anchorlink" href="#Frontend.resources.client_event_max_wait" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L945">client_event_max_wait</a> <a class="anchorlink" href="#Frontend.resources.client_event_max_wait" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">Frontend > resources > client_event_max_wait</div>
@@ -4282,7 +4329,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="Frontend.resources.minion_batch_wait_time_ms" data-key="Frontend.resources.minion_batch_wait_time_ms" data-depth="3">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L927">minion_batch_wait_time_ms</a> <a class="anchorlink" href="#Frontend.resources.minion_batch_wait_time_ms" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L950">minion_batch_wait_time_ms</a> <a class="anchorlink" href="#Frontend.resources.minion_batch_wait_time_ms" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">Frontend > resources > minion_batch_wait_time_ms</div>
@@ -4301,7 +4348,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="Frontend.resources.client_info_lru_ttl" data-key="Frontend.resources.client_info_lru_ttl" data-depth="3">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L933">client_info_lru_ttl</a> <a class="anchorlink" href="#Frontend.resources.client_info_lru_ttl" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L956">client_info_lru_ttl</a> <a class="anchorlink" href="#Frontend.resources.client_info_lru_ttl" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">Frontend > resources > client_info_lru_ttl</div>
@@ -4321,7 +4368,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="Frontend.resources.client_info_sync_time" data-key="Frontend.resources.client_info_sync_time" data-depth="3">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L937">client_info_sync_time</a> <a class="anchorlink" href="#Frontend.resources.client_info_sync_time" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L960">client_info_sync_time</a> <a class="anchorlink" href="#Frontend.resources.client_info_sync_time" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">Frontend > resources > client_info_sync_time</div>
@@ -4339,7 +4386,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="Frontend.resources.client_info_write_time" data-key="Frontend.resources.client_info_write_time" data-depth="3">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L938">client_info_write_time</a> <a class="anchorlink" href="#Frontend.resources.client_info_write_time" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L961">client_info_write_time</a> <a class="anchorlink" href="#Frontend.resources.client_info_write_time" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">Frontend > resources > client_info_write_time</div>
@@ -4353,10 +4400,32 @@ Generated by the config wizard!!!
 </div>
 
 <div class="ref-block">
+<li class="ref-item ref-leaf" id="Frontend.resources.client_info_skip_writing_legacy_records" data-key="Frontend.resources.client_info_skip_writing_legacy_records" data-depth="3">
+ <span class="item-name"><i class="bullet-placeholder"></i>
+   <div class="reference-key">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L969">client_info_skip_writing_legacy_records</a> <a class="anchorlink" href="#Frontend.resources.client_info_skip_writing_legacy_records" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+   </div>
+  </span>
+  <div class="item-breadcrumb">Frontend > resources > client_info_skip_writing_legacy_records</div>
+  <div class="reference-value-mapping">false</div>
+</li>
+<div class="item-comment">
+
+ Old versions of Velociraptor would write client records
+ separately. This is no longer used as the records are combined
+ into larger index files. However, it may still be worth writing
+ the legacy records because it allows Velociraptor to rebuild the
+ index if needed. This may prove to add too much to the load so
+ we can turn it off by default in future.
+
+</div>
+</div>
+
+<div class="ref-block">
 <li class="ref-item ref-leaf" id="Frontend.resources.max_journal_buffer_size" data-key="Frontend.resources.max_journal_buffer_size" data-depth="3">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L945">max_journal_buffer_size</a> <a class="anchorlink" href="#Frontend.resources.max_journal_buffer_size" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L977">max_journal_buffer_size</a> <a class="anchorlink" href="#Frontend.resources.max_journal_buffer_size" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">Frontend > resources > max_journal_buffer_size</div>
@@ -4377,7 +4446,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="Frontend.resources.index_snapshot_frequency" data-key="Frontend.resources.index_snapshot_frequency" data-depth="3">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L949">index_snapshot_frequency</a> <a class="anchorlink" href="#Frontend.resources.index_snapshot_frequency" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L981">index_snapshot_frequency</a> <a class="anchorlink" href="#Frontend.resources.index_snapshot_frequency" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">Frontend > resources > index_snapshot_frequency</div>
@@ -4406,7 +4475,7 @@ Generated by the config wizard!!!
  <details>
 <summary class="ref-summary"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" width="1em" height="1em" fill="currentColor" class="category-icon" aria-hidden="true"><path d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z"/></svg>
     <div class="reference-key">
-      <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L957">Datastore</a> <a class="anchorlink" href="#Datastore" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+      <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L989">Datastore</a> <a class="anchorlink" href="#Datastore" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
     </div>
 <div class="item-comment">
 
@@ -4423,7 +4492,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="Datastore.implementation" data-key="Datastore.implementation" data-depth="2">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L957">implementation</a> <a class="anchorlink" href="#Datastore.implementation" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L989">implementation</a> <a class="anchorlink" href="#Datastore.implementation" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">Datastore > implementation</div>
@@ -4441,7 +4510,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="Datastore.location" data-key="Datastore.location" data-depth="2">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L960">location</a> <a class="anchorlink" href="#Datastore.location" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L992">location</a> <a class="anchorlink" href="#Datastore.location" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">Datastore > location</div>
@@ -4458,7 +4527,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="Datastore.filestore_directory" data-key="Datastore.filestore_directory" data-depth="2">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L966">filestore_directory</a> <a class="anchorlink" href="#Datastore.filestore_directory" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L998">filestore_directory</a> <a class="anchorlink" href="#Datastore.filestore_directory" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">Datastore > filestore_directory</div>
@@ -4478,7 +4547,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="Datastore.memcache_write_mutation_max_age" data-key="Datastore.memcache_write_mutation_max_age" data-depth="2">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L969">memcache_write_mutation_max_age</a> <a class="anchorlink" href="#Datastore.memcache_write_mutation_max_age" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1001">memcache_write_mutation_max_age</a> <a class="anchorlink" href="#Datastore.memcache_write_mutation_max_age" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">Datastore > memcache_write_mutation_max_age</div>
@@ -4495,7 +4564,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="Datastore.memcache_write_max_memory" data-key="Datastore.memcache_write_max_memory" data-depth="2">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L973">memcache_write_max_memory</a> <a class="anchorlink" href="#Datastore.memcache_write_max_memory" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1005">memcache_write_max_memory</a> <a class="anchorlink" href="#Datastore.memcache_write_max_memory" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">Datastore > memcache_write_max_memory</div>
@@ -4513,7 +4582,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="Datastore.minion_implementation" data-key="Datastore.minion_implementation" data-depth="2">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L979">minion_implementation</a> <a class="anchorlink" href="#Datastore.minion_implementation" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1011">minion_implementation</a> <a class="anchorlink" href="#Datastore.minion_implementation" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">Datastore > minion_implementation</div>
@@ -4533,7 +4602,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="Datastore.master_implementation" data-key="Datastore.master_implementation" data-depth="2">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L980">master_implementation</a> <a class="anchorlink" href="#Datastore.master_implementation" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1012">master_implementation</a> <a class="anchorlink" href="#Datastore.master_implementation" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">Datastore > master_implementation</div>
@@ -4550,7 +4619,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="Datastore.max_dir_size" data-key="Datastore.max_dir_size" data-depth="2">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L985">max_dir_size</a> <a class="anchorlink" href="#Datastore.max_dir_size" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1017">max_dir_size</a> <a class="anchorlink" href="#Datastore.max_dir_size" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">Datastore > max_dir_size</div>
@@ -4569,7 +4638,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="Datastore.min_allowed_file_space_mb" data-key="Datastore.min_allowed_file_space_mb" data-depth="2">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L991">min_allowed_file_space_mb</a> <a class="anchorlink" href="#Datastore.min_allowed_file_space_mb" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1023">min_allowed_file_space_mb</a> <a class="anchorlink" href="#Datastore.min_allowed_file_space_mb" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">Datastore > min_allowed_file_space_mb</div>
@@ -4589,7 +4658,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="Datastore.disk_check_frequency_sec" data-key="Datastore.disk_check_frequency_sec" data-depth="2">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L994">disk_check_frequency_sec</a> <a class="anchorlink" href="#Datastore.disk_check_frequency_sec" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1026">disk_check_frequency_sec</a> <a class="anchorlink" href="#Datastore.disk_check_frequency_sec" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">Datastore > disk_check_frequency_sec</div>
@@ -4606,7 +4675,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="Datastore.memcache_expiration_sec" data-key="Datastore.memcache_expiration_sec" data-depth="2">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L999">memcache_expiration_sec</a> <a class="anchorlink" href="#Datastore.memcache_expiration_sec" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1031">memcache_expiration_sec</a> <a class="anchorlink" href="#Datastore.memcache_expiration_sec" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">Datastore > memcache_expiration_sec</div>
@@ -4624,7 +4693,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="Datastore.memcache_write_mutation_buffer" data-key="Datastore.memcache_write_mutation_buffer" data-depth="2">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1005">memcache_write_mutation_buffer</a> <a class="anchorlink" href="#Datastore.memcache_write_mutation_buffer" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1037">memcache_write_mutation_buffer</a> <a class="anchorlink" href="#Datastore.memcache_write_mutation_buffer" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">Datastore > memcache_write_mutation_buffer</div>
@@ -4644,7 +4713,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="Datastore.memcache_write_mutation_writers" data-key="Datastore.memcache_write_mutation_writers" data-depth="2">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1011">memcache_write_mutation_writers</a> <a class="anchorlink" href="#Datastore.memcache_write_mutation_writers" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1043">memcache_write_mutation_writers</a> <a class="anchorlink" href="#Datastore.memcache_write_mutation_writers" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">Datastore > memcache_write_mutation_writers</div>
@@ -4664,7 +4733,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="Datastore.memcache_write_mutation_min_age" data-key="Datastore.memcache_write_mutation_min_age" data-depth="2">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1021">memcache_write_mutation_min_age</a> <a class="anchorlink" href="#Datastore.memcache_write_mutation_min_age" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1053">memcache_write_mutation_min_age</a> <a class="anchorlink" href="#Datastore.memcache_write_mutation_min_age" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">Datastore > memcache_write_mutation_min_age</div>
@@ -4688,7 +4757,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="Datastore.int64 memcache_write_mutation_max_age" data-key="Datastore.int64 memcache_write_mutation_max_age" data-depth="2">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1022">int64 memcache_write_mutation_max_age</a> <a class="anchorlink" href="#Datastore.int64 memcache_write_mutation_max_age" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1054">int64 memcache_write_mutation_max_age</a> <a class="anchorlink" href="#Datastore.int64 memcache_write_mutation_max_age" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">Datastore > int64 memcache_write_mutation_max_age</div>
@@ -4705,7 +4774,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="Datastore.memcache_datastore_max_size" data-key="Datastore.memcache_datastore_max_size" data-depth="2">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1027">memcache_datastore_max_size</a> <a class="anchorlink" href="#Datastore.memcache_datastore_max_size" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1059">memcache_datastore_max_size</a> <a class="anchorlink" href="#Datastore.memcache_datastore_max_size" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">Datastore > memcache_datastore_max_size</div>
@@ -4724,7 +4793,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="Datastore.memcache_datastore_max_item_size" data-key="Datastore.memcache_datastore_max_item_size" data-depth="2">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1031">memcache_datastore_max_item_size</a> <a class="anchorlink" href="#Datastore.memcache_datastore_max_item_size" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1063">memcache_datastore_max_item_size</a> <a class="anchorlink" href="#Datastore.memcache_datastore_max_item_size" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">Datastore > memcache_datastore_max_item_size</div>
@@ -4742,7 +4811,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="Datastore.memcache_datastore_max_dir_size" data-key="Datastore.memcache_datastore_max_dir_size" data-depth="2">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1032">memcache_datastore_max_dir_size</a> <a class="anchorlink" href="#Datastore.memcache_datastore_max_dir_size" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1064">memcache_datastore_max_dir_size</a> <a class="anchorlink" href="#Datastore.memcache_datastore_max_dir_size" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">Datastore > memcache_datastore_max_dir_size</div>
@@ -4759,7 +4828,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="Datastore.compression" data-key="Datastore.compression" data-depth="2">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1049">compression</a> <a class="anchorlink" href="#Datastore.compression" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1081">compression</a> <a class="anchorlink" href="#Datastore.compression" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">Datastore > compression</div>
@@ -4789,7 +4858,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="Datastore.max_object_size" data-key="Datastore.max_object_size" data-depth="2">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1058">max_object_size</a> <a class="anchorlink" href="#Datastore.max_object_size" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1090">max_object_size</a> <a class="anchorlink" href="#Datastore.max_object_size" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">Datastore > max_object_size</div>
@@ -4818,7 +4887,7 @@ Generated by the config wizard!!!
  <details>
 <summary class="ref-summary"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" width="1em" height="1em" fill="currentColor" class="category-icon" aria-hidden="true"><path d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z"/></svg>
     <div class="reference-key">
-      <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1063">Logging</a> <a class="anchorlink" href="#Logging" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+      <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1095">Logging</a> <a class="anchorlink" href="#Logging" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
     </div>
 <div class="item-comment">
 
@@ -4833,7 +4902,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="Logging.output_directory" data-key="Logging.output_directory" data-depth="2">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1063">output_directory</a> <a class="anchorlink" href="#Logging.output_directory" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1095">output_directory</a> <a class="anchorlink" href="#Logging.output_directory" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">Logging > output_directory</div>
@@ -4850,7 +4919,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="Logging.separate_logs_per_component" data-key="Logging.separate_logs_per_component" data-depth="2">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1068">separate_logs_per_component</a> <a class="anchorlink" href="#Logging.separate_logs_per_component" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1100">separate_logs_per_component</a> <a class="anchorlink" href="#Logging.separate_logs_per_component" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">Logging > separate_logs_per_component</div>
@@ -4869,7 +4938,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="Logging.remote_syslog_server" data-key="Logging.remote_syslog_server" data-depth="2">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1072">remote_syslog_server</a> <a class="anchorlink" href="#Logging.remote_syslog_server" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1104">remote_syslog_server</a> <a class="anchorlink" href="#Logging.remote_syslog_server" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">Logging > remote_syslog_server</div>
@@ -4887,7 +4956,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="Logging.remote_syslog_protocol" data-key="Logging.remote_syslog_protocol" data-depth="2">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1075">remote_syslog_protocol</a> <a class="anchorlink" href="#Logging.remote_syslog_protocol" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1107">remote_syslog_protocol</a> <a class="anchorlink" href="#Logging.remote_syslog_protocol" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">Logging > remote_syslog_protocol</div>
@@ -4905,7 +4974,7 @@ Generated by the config wizard!!!
  <details>
 <summary class="ref-summary"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" width="1em" height="1em" fill="currentColor" class="category-icon" aria-hidden="true"><path d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z"/></svg>
     <div class="reference-key">
-      <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1080">remote_syslog_components</a> <a class="anchorlink" href="#Logging.remote_syslog_components" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+      <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1112">remote_syslog_components</a> <a class="anchorlink" href="#Logging.remote_syslog_components" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
     </div>
 <div class="item-comment">
 
@@ -4941,7 +5010,7 @@ Generated by the config wizard!!!
  <details>
 <summary class="ref-summary"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" width="1em" height="1em" fill="currentColor" class="category-icon" aria-hidden="true"><path d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z"/></svg>
     <div class="reference-key">
-      <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1086">debug</a> <a class="anchorlink" href="#Logging.debug" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+      <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1118">debug</a> <a class="anchorlink" href="#Logging.debug" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
     </div>
 <div class="item-comment">
 
@@ -4957,7 +5026,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="Logging.debug.rotation_time" data-key="Logging.debug.rotation_time" data-depth="3">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1086">rotation_time</a> <a class="anchorlink" href="#Logging.debug.rotation_time" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1118">rotation_time</a> <a class="anchorlink" href="#Logging.debug.rotation_time" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">Logging > debug > rotation_time</div>
@@ -4974,7 +5043,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="Logging.debug.max_age" data-key="Logging.debug.max_age" data-depth="3">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1089">max_age</a> <a class="anchorlink" href="#Logging.debug.max_age" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1121">max_age</a> <a class="anchorlink" href="#Logging.debug.max_age" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">Logging > debug > max_age</div>
@@ -4991,7 +5060,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="Logging.debug.disabled" data-key="Logging.debug.disabled" data-depth="3">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1092">disabled</a> <a class="anchorlink" href="#Logging.debug.disabled" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1124">disabled</a> <a class="anchorlink" href="#Logging.debug.disabled" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">Logging > debug > disabled</div>
@@ -5014,7 +5083,7 @@ Generated by the config wizard!!!
  <details>
 <summary class="ref-summary"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" width="1em" height="1em" fill="currentColor" class="category-icon" aria-hidden="true"><path d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z"/></svg>
     <div class="reference-key">
-      <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1095">info</a> <a class="anchorlink" href="#Logging.info" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+      <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1127">info</a> <a class="anchorlink" href="#Logging.info" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
     </div>
 <div class="item-comment">
 
@@ -5029,7 +5098,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="Logging.info.rotation_time" data-key="Logging.info.rotation_time" data-depth="3">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1095">rotation_time</a> <a class="anchorlink" href="#Logging.info.rotation_time" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1127">rotation_time</a> <a class="anchorlink" href="#Logging.info.rotation_time" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">Logging > info > rotation_time</div>
@@ -5046,7 +5115,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="Logging.info.max_age" data-key="Logging.info.max_age" data-depth="3">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1096">max_age</a> <a class="anchorlink" href="#Logging.info.max_age" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1128">max_age</a> <a class="anchorlink" href="#Logging.info.max_age" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">Logging > info > max_age</div>
@@ -5063,7 +5132,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="Logging.info.disabled" data-key="Logging.info.disabled" data-depth="3">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1097">disabled</a> <a class="anchorlink" href="#Logging.info.disabled" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1129">disabled</a> <a class="anchorlink" href="#Logging.info.disabled" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">Logging > info > disabled</div>
@@ -5086,7 +5155,7 @@ Generated by the config wizard!!!
  <details>
 <summary class="ref-summary"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" width="1em" height="1em" fill="currentColor" class="category-icon" aria-hidden="true"><path d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z"/></svg>
     <div class="reference-key">
-      <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1100">error</a> <a class="anchorlink" href="#Logging.error" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+      <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1132">error</a> <a class="anchorlink" href="#Logging.error" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
     </div>
 <div class="item-comment">
 
@@ -5101,7 +5170,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="Logging.error.rotation_time" data-key="Logging.error.rotation_time" data-depth="3">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1100">rotation_time</a> <a class="anchorlink" href="#Logging.error.rotation_time" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1132">rotation_time</a> <a class="anchorlink" href="#Logging.error.rotation_time" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">Logging > error > rotation_time</div>
@@ -5118,7 +5187,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="Logging.error.max_age" data-key="Logging.error.max_age" data-depth="3">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1101">max_age</a> <a class="anchorlink" href="#Logging.error.max_age" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1133">max_age</a> <a class="anchorlink" href="#Logging.error.max_age" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">Logging > error > max_age</div>
@@ -5135,7 +5204,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="Logging.error.disabled" data-key="Logging.error.disabled" data-depth="3">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1102">disabled</a> <a class="anchorlink" href="#Logging.error.disabled" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1134">disabled</a> <a class="anchorlink" href="#Logging.error.disabled" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">Logging > error > disabled</div>
@@ -5163,7 +5232,7 @@ Generated by the config wizard!!!
  <details>
 <summary class="ref-summary"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" width="1em" height="1em" fill="currentColor" class="category-icon" aria-hidden="true"><path d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z"/></svg>
     <div class="reference-key">
-      <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1108">Monitoring</a> <a class="anchorlink" href="#Monitoring" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+      <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1140">Monitoring</a> <a class="anchorlink" href="#Monitoring" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
     </div>
 <div class="item-comment">
 
@@ -5180,7 +5249,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="Monitoring.bind_address" data-key="Monitoring.bind_address" data-depth="2">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1108">bind_address</a> <a class="anchorlink" href="#Monitoring.bind_address" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1140">bind_address</a> <a class="anchorlink" href="#Monitoring.bind_address" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">Monitoring > bind_address</div>
@@ -5197,7 +5266,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="Monitoring.bind_port" data-key="Monitoring.bind_port" data-depth="2">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1109">bind_port</a> <a class="anchorlink" href="#Monitoring.bind_port" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1141">bind_port</a> <a class="anchorlink" href="#Monitoring.bind_port" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">Monitoring > bind_port</div>
@@ -5214,7 +5283,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="Monitoring.metrics_url" data-key="Monitoring.metrics_url" data-depth="2">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1113">metrics_url</a> <a class="anchorlink" href="#Monitoring.metrics_url" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1145">metrics_url</a> <a class="anchorlink" href="#Monitoring.metrics_url" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">Monitoring > metrics_url</div>
@@ -5238,7 +5307,7 @@ Generated by the config wizard!!!
  <details>
 <summary class="ref-summary"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" width="1em" height="1em" fill="currentColor" class="category-icon" aria-hidden="true"><path d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z"/></svg>
     <div class="reference-key">
-      <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1122">autoexec</a> <a class="anchorlink" href="#autoexec" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+      <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1154">autoexec</a> <a class="anchorlink" href="#autoexec" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
     </div>
 <div class="item-comment">
 
@@ -5254,7 +5323,7 @@ Generated by the config wizard!!!
  <details>
 <summary class="ref-summary"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" width="1em" height="1em" fill="currentColor" class="category-icon" aria-hidden="true"><path d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z"/></svg>
     <div class="reference-key">
-      <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1123">argv</a> <a class="anchorlink" href="#autoexec.argv" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+      <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1155">argv</a> <a class="anchorlink" href="#autoexec.argv" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
     </div>
 <div class="item-comment">
 
@@ -5320,7 +5389,7 @@ Generated by the config wizard!!!
  <details>
 <summary class="ref-summary"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" width="1em" height="1em" fill="currentColor" class="category-icon" aria-hidden="true"><path d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z"/></svg>
     <div class="reference-key">
-      <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1135">artifact_definitions</a> <a class="anchorlink" href="#autoexec.artifact_definitions" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+      <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1167">artifact_definitions</a> <a class="anchorlink" href="#autoexec.artifact_definitions" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
     </div>
 <div class="item-comment">
 
@@ -5357,7 +5426,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="autoexec.artifact_definitions.[0].name" data-key="autoexec.artifact_definitions.[0].name" data-depth="4">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1138">name</a> <a class="anchorlink" href="#autoexec.artifact_definitions.[0].name" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1170">name</a> <a class="anchorlink" href="#autoexec.artifact_definitions.[0].name" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">autoexec > artifact_definitions > [0] > name</div>
@@ -5375,7 +5444,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="autoexec.artifact_definitions.[0].description" data-key="autoexec.artifact_definitions.[0].description" data-depth="4">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1142">description</a> <a class="anchorlink" href="#autoexec.artifact_definitions.[0].description" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1174">description</a> <a class="anchorlink" href="#autoexec.artifact_definitions.[0].description" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">autoexec > artifact_definitions > [0] > description</div>
@@ -5393,7 +5462,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="autoexec.artifact_definitions.[0].author" data-key="autoexec.artifact_definitions.[0].author" data-depth="4">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1145">author</a> <a class="anchorlink" href="#autoexec.artifact_definitions.[0].author" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1177">author</a> <a class="anchorlink" href="#autoexec.artifact_definitions.[0].author" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">autoexec > artifact_definitions > [0] > author</div>
@@ -5410,7 +5479,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="autoexec.artifact_definitions.[0].type" data-key="autoexec.artifact_definitions.[0].type" data-depth="4">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1148">type</a> <a class="anchorlink" href="#autoexec.artifact_definitions.[0].type" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1180">type</a> <a class="anchorlink" href="#autoexec.artifact_definitions.[0].type" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">autoexec > artifact_definitions > [0] > type</div>
@@ -5428,7 +5497,7 @@ Generated by the config wizard!!!
  <details>
 <summary class="ref-summary"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" width="1em" height="1em" fill="currentColor" class="category-icon" aria-hidden="true"><path d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z"/></svg>
     <div class="reference-key">
-      <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1152">reference</a> <a class="anchorlink" href="#autoexec.artifact_definitions.[0].reference" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+      <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1184">reference</a> <a class="anchorlink" href="#autoexec.artifact_definitions.[0].reference" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
     </div>
 <div class="item-comment">
 
@@ -5463,7 +5532,7 @@ Generated by the config wizard!!!
  <details>
 <summary class="ref-summary"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" width="1em" height="1em" fill="currentColor" class="category-icon" aria-hidden="true"><path d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z"/></svg>
     <div class="reference-key">
-      <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1159">tools</a> <a class="anchorlink" href="#autoexec.artifact_definitions.[0].tools" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+      <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1191">tools</a> <a class="anchorlink" href="#autoexec.artifact_definitions.[0].tools" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
     </div>
 <div class="item-comment">
 
@@ -5497,7 +5566,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="autoexec.artifact_definitions.[0].tools.[0].name" data-key="autoexec.artifact_definitions.[0].tools.[0].name" data-depth="6">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1161">name</a> <a class="anchorlink" href="#autoexec.artifact_definitions.[0].tools.[0].name" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1193">name</a> <a class="anchorlink" href="#autoexec.artifact_definitions.[0].tools.[0].name" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">autoexec > artifact_definitions > [0] > tools > [0] > name</div>
@@ -5514,7 +5583,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="autoexec.artifact_definitions.[0].tools.[0].url" data-key="autoexec.artifact_definitions.[0].tools.[0].url" data-depth="6">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1165">url</a> <a class="anchorlink" href="#autoexec.artifact_definitions.[0].tools.[0].url" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1197">url</a> <a class="anchorlink" href="#autoexec.artifact_definitions.[0].tools.[0].url" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">autoexec > artifact_definitions > [0] > tools > [0] > url</div>
@@ -5532,7 +5601,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="autoexec.artifact_definitions.[0].tools.[0].github_project" data-key="autoexec.artifact_definitions.[0].tools.[0].github_project" data-depth="6">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1170">github_project</a> <a class="anchorlink" href="#autoexec.artifact_definitions.[0].tools.[0].github_project" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1202">github_project</a> <a class="anchorlink" href="#autoexec.artifact_definitions.[0].tools.[0].github_project" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">autoexec > artifact_definitions > [0] > tools > [0] > github_project</div>
@@ -5551,7 +5620,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="autoexec.artifact_definitions.[0].tools.[0].github_asset_regex" data-key="autoexec.artifact_definitions.[0].tools.[0].github_asset_regex" data-depth="6">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1171">github_asset_regex</a> <a class="anchorlink" href="#autoexec.artifact_definitions.[0].tools.[0].github_asset_regex" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1203">github_asset_regex</a> <a class="anchorlink" href="#autoexec.artifact_definitions.[0].tools.[0].github_asset_regex" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">autoexec > artifact_definitions > [0] > tools > [0] > github_asset_regex</div>
@@ -5568,7 +5637,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="autoexec.artifact_definitions.[0].tools.[0].serve_locally" data-key="autoexec.artifact_definitions.[0].tools.[0].serve_locally" data-depth="6">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1176">serve_locally</a> <a class="anchorlink" href="#autoexec.artifact_definitions.[0].tools.[0].serve_locally" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1208">serve_locally</a> <a class="anchorlink" href="#autoexec.artifact_definitions.[0].tools.[0].serve_locally" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">autoexec > artifact_definitions > [0] > tools > [0] > serve_locally</div>
@@ -5587,7 +5656,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="autoexec.artifact_definitions.[0].tools.[0].admin_override" data-key="autoexec.artifact_definitions.[0].tools.[0].admin_override" data-depth="6">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1181">admin_override</a> <a class="anchorlink" href="#autoexec.artifact_definitions.[0].tools.[0].admin_override" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1213">admin_override</a> <a class="anchorlink" href="#autoexec.artifact_definitions.[0].tools.[0].admin_override" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">autoexec > artifact_definitions > [0] > tools > [0] > admin_override</div>
@@ -5606,7 +5675,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="autoexec.artifact_definitions.[0].tools.[0].serve_url" data-key="autoexec.artifact_definitions.[0].tools.[0].serve_url" data-depth="6">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1190">serve_url</a> <a class="anchorlink" href="#autoexec.artifact_definitions.[0].tools.[0].serve_url" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1222">serve_url</a> <a class="anchorlink" href="#autoexec.artifact_definitions.[0].tools.[0].serve_url" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">autoexec > artifact_definitions > [0] > tools > [0] > serve_url</div>
@@ -5627,7 +5696,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="autoexec.artifact_definitions.[0].tools.[0].serve_path" data-key="autoexec.artifact_definitions.[0].tools.[0].serve_path" data-depth="6">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1193">serve_path</a> <a class="anchorlink" href="#autoexec.artifact_definitions.[0].tools.[0].serve_path" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1225">serve_path</a> <a class="anchorlink" href="#autoexec.artifact_definitions.[0].tools.[0].serve_path" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">autoexec > artifact_definitions > [0] > tools > [0] > serve_path</div>
@@ -5644,7 +5713,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="autoexec.artifact_definitions.[0].tools.[0].filestore_path" data-key="autoexec.artifact_definitions.[0].tools.[0].filestore_path" data-depth="6">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1197">filestore_path</a> <a class="anchorlink" href="#autoexec.artifact_definitions.[0].tools.[0].filestore_path" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1229">filestore_path</a> <a class="anchorlink" href="#autoexec.artifact_definitions.[0].tools.[0].filestore_path" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">autoexec > artifact_definitions > [0] > tools > [0] > filestore_path</div>
@@ -5662,7 +5731,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="autoexec.artifact_definitions.[0].tools.[0].filename" data-key="autoexec.artifact_definitions.[0].tools.[0].filename" data-depth="6">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1203">filename</a> <a class="anchorlink" href="#autoexec.artifact_definitions.[0].tools.[0].filename" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1235">filename</a> <a class="anchorlink" href="#autoexec.artifact_definitions.[0].tools.[0].filename" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">autoexec > artifact_definitions > [0] > tools > [0] > filename</div>
@@ -5682,7 +5751,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="autoexec.artifact_definitions.[0].tools.[0].expected_hash" data-key="autoexec.artifact_definitions.[0].tools.[0].expected_hash" data-depth="6">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1208">expected_hash</a> <a class="anchorlink" href="#autoexec.artifact_definitions.[0].tools.[0].expected_hash" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1240">expected_hash</a> <a class="anchorlink" href="#autoexec.artifact_definitions.[0].tools.[0].expected_hash" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">autoexec > artifact_definitions > [0] > tools > [0] > expected_hash</div>
@@ -5701,7 +5770,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="autoexec.artifact_definitions.[0].tools.[0].materialize" data-key="autoexec.artifact_definitions.[0].tools.[0].materialize" data-depth="6">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1211">materialize</a> <a class="anchorlink" href="#autoexec.artifact_definitions.[0].tools.[0].materialize" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1243">materialize</a> <a class="anchorlink" href="#autoexec.artifact_definitions.[0].tools.[0].materialize" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">autoexec > artifact_definitions > [0] > tools > [0] > materialize</div>
@@ -5729,7 +5798,7 @@ Generated by the config wizard!!!
  <details>
 <summary class="ref-summary"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" width="1em" height="1em" fill="currentColor" class="category-icon" aria-hidden="true"><path d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z"/></svg>
     <div class="reference-key">
-      <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1216">required_permissions</a> <a class="anchorlink" href="#autoexec.artifact_definitions.[0].required_permissions" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+      <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1248">required_permissions</a> <a class="anchorlink" href="#autoexec.artifact_definitions.[0].required_permissions" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
     </div>
 <div class="item-comment">
 
@@ -5765,7 +5834,7 @@ Generated by the config wizard!!!
  <details>
 <summary class="ref-summary"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" width="1em" height="1em" fill="currentColor" class="category-icon" aria-hidden="true"><path d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z"/></svg>
     <div class="reference-key">
-      <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1220">resources</a> <a class="anchorlink" href="#autoexec.artifact_definitions.[0].resources" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+      <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1252">resources</a> <a class="anchorlink" href="#autoexec.artifact_definitions.[0].resources" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
     </div>
 <div class="item-comment">
 
@@ -5780,7 +5849,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="autoexec.artifact_definitions.[0].resources.timeout" data-key="autoexec.artifact_definitions.[0].resources.timeout" data-depth="5">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1220">timeout</a> <a class="anchorlink" href="#autoexec.artifact_definitions.[0].resources.timeout" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1252">timeout</a> <a class="anchorlink" href="#autoexec.artifact_definitions.[0].resources.timeout" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">autoexec > artifact_definitions > [0] > resources > timeout</div>
@@ -5797,7 +5866,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="autoexec.artifact_definitions.[0].resources.ops_per_second" data-key="autoexec.artifact_definitions.[0].resources.ops_per_second" data-depth="5">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1221">ops_per_second</a> <a class="anchorlink" href="#autoexec.artifact_definitions.[0].resources.ops_per_second" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1253">ops_per_second</a> <a class="anchorlink" href="#autoexec.artifact_definitions.[0].resources.ops_per_second" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">autoexec > artifact_definitions > [0] > resources > ops_per_second</div>
@@ -5814,7 +5883,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="autoexec.artifact_definitions.[0].resources.cpu_limit" data-key="autoexec.artifact_definitions.[0].resources.cpu_limit" data-depth="5">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1222">cpu_limit</a> <a class="anchorlink" href="#autoexec.artifact_definitions.[0].resources.cpu_limit" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1254">cpu_limit</a> <a class="anchorlink" href="#autoexec.artifact_definitions.[0].resources.cpu_limit" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">autoexec > artifact_definitions > [0] > resources > cpu_limit</div>
@@ -5831,7 +5900,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="autoexec.artifact_definitions.[0].resources.iops_limit" data-key="autoexec.artifact_definitions.[0].resources.iops_limit" data-depth="5">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1223">iops_limit</a> <a class="anchorlink" href="#autoexec.artifact_definitions.[0].resources.iops_limit" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1255">iops_limit</a> <a class="anchorlink" href="#autoexec.artifact_definitions.[0].resources.iops_limit" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">autoexec > artifact_definitions > [0] > resources > iops_limit</div>
@@ -5848,7 +5917,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="autoexec.artifact_definitions.[0].resources.max_rows" data-key="autoexec.artifact_definitions.[0].resources.max_rows" data-depth="5">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1226">max_rows</a> <a class="anchorlink" href="#autoexec.artifact_definitions.[0].resources.max_rows" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1258">max_rows</a> <a class="anchorlink" href="#autoexec.artifact_definitions.[0].resources.max_rows" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">autoexec > artifact_definitions > [0] > resources > max_rows</div>
@@ -5865,7 +5934,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="autoexec.artifact_definitions.[0].resources.max_upload_bytes" data-key="autoexec.artifact_definitions.[0].resources.max_upload_bytes" data-depth="5">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1227">max_upload_bytes</a> <a class="anchorlink" href="#autoexec.artifact_definitions.[0].resources.max_upload_bytes" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1259">max_upload_bytes</a> <a class="anchorlink" href="#autoexec.artifact_definitions.[0].resources.max_upload_bytes" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">autoexec > artifact_definitions > [0] > resources > max_upload_bytes</div>
@@ -5887,7 +5956,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="autoexec.artifact_definitions.[0].precondition" data-key="autoexec.artifact_definitions.[0].precondition" data-depth="4">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1235">precondition</a> <a class="anchorlink" href="#autoexec.artifact_definitions.[0].precondition" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1267">precondition</a> <a class="anchorlink" href="#autoexec.artifact_definitions.[0].precondition" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">autoexec > artifact_definitions > [0] > precondition</div>
@@ -5910,7 +5979,7 @@ Generated by the config wizard!!!
  <details>
 <summary class="ref-summary"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" width="1em" height="1em" fill="currentColor" class="category-icon" aria-hidden="true"><path d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z"/></svg>
     <div class="reference-key">
-      <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1240">parameters</a> <a class="anchorlink" href="#autoexec.artifact_definitions.[0].parameters" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+      <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1272">parameters</a> <a class="anchorlink" href="#autoexec.artifact_definitions.[0].parameters" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
     </div>
 <div class="item-comment">
 
@@ -5942,7 +6011,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="autoexec.artifact_definitions.[0].parameters.[0].name" data-key="autoexec.artifact_definitions.[0].parameters.[0].name" data-depth="6">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1243">name</a> <a class="anchorlink" href="#autoexec.artifact_definitions.[0].parameters.[0].name" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1275">name</a> <a class="anchorlink" href="#autoexec.artifact_definitions.[0].parameters.[0].name" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">autoexec > artifact_definitions > [0] > parameters > [0] > name</div>
@@ -5960,7 +6029,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="autoexec.artifact_definitions.[0].parameters.[0].friendly_name" data-key="autoexec.artifact_definitions.[0].parameters.[0].friendly_name" data-depth="6">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1247">friendly_name</a> <a class="anchorlink" href="#autoexec.artifact_definitions.[0].parameters.[0].friendly_name" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1279">friendly_name</a> <a class="anchorlink" href="#autoexec.artifact_definitions.[0].parameters.[0].friendly_name" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">autoexec > artifact_definitions > [0] > parameters > [0] > friendly_name</div>
@@ -5978,7 +6047,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="autoexec.artifact_definitions.[0].parameters.[0].default" data-key="autoexec.artifact_definitions.[0].parameters.[0].default" data-depth="6">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1252">default</a> <a class="anchorlink" href="#autoexec.artifact_definitions.[0].parameters.[0].default" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1284">default</a> <a class="anchorlink" href="#autoexec.artifact_definitions.[0].parameters.[0].default" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">autoexec > artifact_definitions > [0] > parameters > [0] > default</div>
@@ -5997,7 +6066,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="autoexec.artifact_definitions.[0].parameters.[0].description" data-key="autoexec.artifact_definitions.[0].parameters.[0].description" data-depth="6">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1255">description</a> <a class="anchorlink" href="#autoexec.artifact_definitions.[0].parameters.[0].description" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1287">description</a> <a class="anchorlink" href="#autoexec.artifact_definitions.[0].parameters.[0].description" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">autoexec > artifact_definitions > [0] > parameters > [0] > description</div>
@@ -6014,7 +6083,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="autoexec.artifact_definitions.[0].parameters.[0].type" data-key="autoexec.artifact_definitions.[0].parameters.[0].type" data-depth="6">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1260">type</a> <a class="anchorlink" href="#autoexec.artifact_definitions.[0].parameters.[0].type" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1292">type</a> <a class="anchorlink" href="#autoexec.artifact_definitions.[0].parameters.[0].type" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">autoexec > artifact_definitions > [0] > parameters > [0] > type</div>
@@ -6034,7 +6103,7 @@ Generated by the config wizard!!!
  <details>
 <summary class="ref-summary"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" width="1em" height="1em" fill="currentColor" class="category-icon" aria-hidden="true"><path d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z"/></svg>
     <div class="reference-key">
-      <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1265">choices</a> <a class="anchorlink" href="#autoexec.artifact_definitions.[0].parameters.[0].choices" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+      <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1297">choices</a> <a class="anchorlink" href="#autoexec.artifact_definitions.[0].parameters.[0].choices" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
     </div>
 <div class="item-comment">
 
@@ -6093,7 +6162,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="autoexec.artifact_definitions.[0].export" data-key="autoexec.artifact_definitions.[0].export" data-depth="4">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1269">export</a> <a class="anchorlink" href="#autoexec.artifact_definitions.[0].export" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1301">export</a> <a class="anchorlink" href="#autoexec.artifact_definitions.[0].export" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">autoexec > artifact_definitions > [0] > export</div>
@@ -6111,7 +6180,7 @@ Generated by the config wizard!!!
  <details>
 <summary class="ref-summary"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" width="1em" height="1em" fill="currentColor" class="category-icon" aria-hidden="true"><path d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z"/></svg>
     <div class="reference-key">
-      <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1273">imports</a> <a class="anchorlink" href="#autoexec.artifact_definitions.[0].imports" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+      <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1305">imports</a> <a class="anchorlink" href="#autoexec.artifact_definitions.[0].imports" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
     </div>
 <div class="item-comment">
 
@@ -6146,7 +6215,7 @@ Generated by the config wizard!!!
  <details>
 <summary class="ref-summary"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" width="1em" height="1em" fill="currentColor" class="category-icon" aria-hidden="true"><path d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z"/></svg>
     <div class="reference-key">
-      <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1277">sources</a> <a class="anchorlink" href="#autoexec.artifact_definitions.[0].sources" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+      <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1309">sources</a> <a class="anchorlink" href="#autoexec.artifact_definitions.[0].sources" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
     </div>
 <div class="item-comment">
 
@@ -6177,7 +6246,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="autoexec.artifact_definitions.[0].sources.[0].name" data-key="autoexec.artifact_definitions.[0].sources.[0].name" data-depth="6">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1279">name</a> <a class="anchorlink" href="#autoexec.artifact_definitions.[0].sources.[0].name" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1311">name</a> <a class="anchorlink" href="#autoexec.artifact_definitions.[0].sources.[0].name" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">autoexec > artifact_definitions > [0] > sources > [0] > name</div>
@@ -6194,7 +6263,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="autoexec.artifact_definitions.[0].sources.[0].description" data-key="autoexec.artifact_definitions.[0].sources.[0].description" data-depth="6">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1280">description</a> <a class="anchorlink" href="#autoexec.artifact_definitions.[0].sources.[0].description" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1312">description</a> <a class="anchorlink" href="#autoexec.artifact_definitions.[0].sources.[0].description" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">autoexec > artifact_definitions > [0] > sources > [0] > description</div>
@@ -6211,7 +6280,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="autoexec.artifact_definitions.[0].sources.[0].query" data-key="autoexec.artifact_definitions.[0].sources.[0].query" data-depth="6">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1281">query</a> <a class="anchorlink" href="#autoexec.artifact_definitions.[0].sources.[0].query" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1313">query</a> <a class="anchorlink" href="#autoexec.artifact_definitions.[0].sources.[0].query" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">autoexec > artifact_definitions > [0] > sources > [0] > query</div>
@@ -6229,7 +6298,7 @@ Generated by the config wizard!!!
  <details>
 <summary class="ref-summary"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" width="1em" height="1em" fill="currentColor" class="category-icon" aria-hidden="true"><path d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z"/></svg>
     <div class="reference-key">
-      <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1286">queries</a> <a class="anchorlink" href="#autoexec.artifact_definitions.[0].sources.[0].queries" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+      <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1318">queries</a> <a class="anchorlink" href="#autoexec.artifact_definitions.[0].sources.[0].queries" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
     </div>
 <div class="item-comment">
 
@@ -6264,7 +6333,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="autoexec.artifact_definitions.[0].sources.[0].precondition" data-key="autoexec.artifact_definitions.[0].sources.[0].precondition" data-depth="6">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1289">precondition</a> <a class="anchorlink" href="#autoexec.artifact_definitions.[0].sources.[0].precondition" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1321">precondition</a> <a class="anchorlink" href="#autoexec.artifact_definitions.[0].sources.[0].precondition" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">autoexec > artifact_definitions > [0] > sources > [0] > precondition</div>
@@ -6282,7 +6351,7 @@ Generated by the config wizard!!!
  <details>
 <summary class="ref-summary"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" width="1em" height="1em" fill="currentColor" class="category-icon" aria-hidden="true"><path d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z"/></svg>
     <div class="reference-key">
-      <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1296">notebook</a> <a class="anchorlink" href="#autoexec.artifact_definitions.[0].sources.[0].notebook" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+      <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1328">notebook</a> <a class="anchorlink" href="#autoexec.artifact_definitions.[0].sources.[0].notebook" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
     </div>
 <div class="item-comment">
 
@@ -6315,7 +6384,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="autoexec.artifact_definitions.[0].sources.[0].notebook.[0].type" data-key="autoexec.artifact_definitions.[0].sources.[0].notebook.[0].type" data-depth="8">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1296">type</a> <a class="anchorlink" href="#autoexec.artifact_definitions.[0].sources.[0].notebook.[0].type" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1328">type</a> <a class="anchorlink" href="#autoexec.artifact_definitions.[0].sources.[0].notebook.[0].type" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">autoexec > artifact_definitions > [0] > sources > [0] > notebook > [0] > type</div>
@@ -6333,7 +6402,7 @@ Generated by the config wizard!!!
  <details>
 <summary class="ref-summary"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" width="1em" height="1em" fill="currentColor" class="category-icon" aria-hidden="true"><path d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z"/></svg>
     <div class="reference-key">
-      <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1299">env</a> <a class="anchorlink" href="#autoexec.artifact_definitions.[0].sources.[0].notebook.[0].env" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+      <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1331">env</a> <a class="anchorlink" href="#autoexec.artifact_definitions.[0].sources.[0].notebook.[0].env" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
     </div>
 <div class="item-comment">
 
@@ -6364,7 +6433,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="autoexec.artifact_definitions.[0].sources.[0].notebook.[0].env.[0].key" data-key="autoexec.artifact_definitions.[0].sources.[0].notebook.[0].env.[0].key" data-depth="10">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1299">key</a> <a class="anchorlink" href="#autoexec.artifact_definitions.[0].sources.[0].notebook.[0].env.[0].key" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1331">key</a> <a class="anchorlink" href="#autoexec.artifact_definitions.[0].sources.[0].notebook.[0].env.[0].key" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">autoexec > artifact_definitions > [0] > sources > [0] > notebook > [0] > env > [0] > key</div>
@@ -6381,7 +6450,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="autoexec.artifact_definitions.[0].sources.[0].notebook.[0].env.[0].value" data-key="autoexec.artifact_definitions.[0].sources.[0].notebook.[0].env.[0].value" data-depth="10">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1300">value</a> <a class="anchorlink" href="#autoexec.artifact_definitions.[0].sources.[0].notebook.[0].env.[0].value" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1332">value</a> <a class="anchorlink" href="#autoexec.artifact_definitions.[0].sources.[0].notebook.[0].env.[0].value" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">autoexec > artifact_definitions > [0] > sources > [0] > notebook > [0] > env > [0] > value</div>
@@ -6408,7 +6477,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="autoexec.artifact_definitions.[0].sources.[0].notebook.[0].template" data-key="autoexec.artifact_definitions.[0].sources.[0].notebook.[0].template" data-depth="8">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1301">template</a> <a class="anchorlink" href="#autoexec.artifact_definitions.[0].sources.[0].notebook.[0].template" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1333">template</a> <a class="anchorlink" href="#autoexec.artifact_definitions.[0].sources.[0].notebook.[0].template" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">autoexec > artifact_definitions > [0] > sources > [0] > notebook > [0] > template</div>
@@ -6460,7 +6529,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="server_type" data-key="server_type" data-depth="1">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1304">server_type</a> <a class="anchorlink" href="#server_type" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1336">server_type</a> <a class="anchorlink" href="#server_type" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">server_type</div>
@@ -6477,7 +6546,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="obfuscation_nonce" data-key="obfuscation_nonce" data-depth="1">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1315">obfuscation_nonce</a> <a class="anchorlink" href="#obfuscation_nonce" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1347">obfuscation_nonce</a> <a class="anchorlink" href="#obfuscation_nonce" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">obfuscation_nonce</div>
@@ -6502,7 +6571,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="autocert_cert_cache" data-key="autocert_cert_cache" data-depth="1">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1318">autocert_cert_cache</a> <a class="anchorlink" href="#autocert_cert_cache" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1350">autocert_cert_cache</a> <a class="anchorlink" href="#autocert_cert_cache" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">autocert_cert_cache</div>
@@ -6520,7 +6589,7 @@ Generated by the config wizard!!!
  <details>
 <summary class="ref-summary"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" width="1em" height="1em" fill="currentColor" class="category-icon" aria-hidden="true"><path d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z"/></svg>
     <div class="reference-key">
-      <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1326">defaults</a> <a class="anchorlink" href="#defaults" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+      <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1358">defaults</a> <a class="anchorlink" href="#defaults" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
     </div>
 <div class="item-comment">
 
@@ -6535,7 +6604,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="defaults.notebook_cell_timeout_min" data-key="defaults.notebook_cell_timeout_min" data-depth="2">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1326">notebook_cell_timeout_min</a> <a class="anchorlink" href="#defaults.notebook_cell_timeout_min" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1358">notebook_cell_timeout_min</a> <a class="anchorlink" href="#defaults.notebook_cell_timeout_min" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">defaults > notebook_cell_timeout_min</div>
@@ -6555,7 +6624,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="defaults.notebook_default_new_cell_rows" data-key="defaults.notebook_default_new_cell_rows" data-depth="2">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1333">notebook_default_new_cell_rows</a> <a class="anchorlink" href="#defaults.notebook_default_new_cell_rows" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1365">notebook_default_new_cell_rows</a> <a class="anchorlink" href="#defaults.notebook_default_new_cell_rows" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">defaults > notebook_default_new_cell_rows</div>
@@ -6576,7 +6645,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="defaults.notebook_memory_low_water_mark" data-key="defaults.notebook_memory_low_water_mark" data-depth="2">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1343">notebook_memory_low_water_mark</a> <a class="anchorlink" href="#defaults.notebook_memory_low_water_mark" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1375">notebook_memory_low_water_mark</a> <a class="anchorlink" href="#defaults.notebook_memory_low_water_mark" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">defaults > notebook_memory_low_water_mark</div>
@@ -6599,7 +6668,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="defaults.notebook_memory_high_water_mark" data-key="defaults.notebook_memory_high_water_mark" data-depth="2">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1348">notebook_memory_high_water_mark</a> <a class="anchorlink" href="#defaults.notebook_memory_high_water_mark" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1380">notebook_memory_high_water_mark</a> <a class="anchorlink" href="#defaults.notebook_memory_high_water_mark" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">defaults > notebook_memory_high_water_mark</div>
@@ -6618,7 +6687,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="defaults.notebook_number_of_local_workers" data-key="defaults.notebook_number_of_local_workers" data-depth="2">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1358">notebook_number_of_local_workers</a> <a class="anchorlink" href="#defaults.notebook_number_of_local_workers" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1390">notebook_number_of_local_workers</a> <a class="anchorlink" href="#defaults.notebook_number_of_local_workers" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">defaults > notebook_number_of_local_workers</div>
@@ -6642,7 +6711,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="defaults.notebook_wait_time_for_worker_ms" data-key="defaults.notebook_wait_time_for_worker_ms" data-depth="2">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1362">notebook_wait_time_for_worker_ms</a> <a class="anchorlink" href="#defaults.notebook_wait_time_for_worker_ms" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1394">notebook_wait_time_for_worker_ms</a> <a class="anchorlink" href="#defaults.notebook_wait_time_for_worker_ms" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">defaults > notebook_wait_time_for_worker_ms</div>
@@ -6660,7 +6729,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="defaults.notebook_worker_priority" data-key="defaults.notebook_worker_priority" data-depth="2">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1366">notebook_worker_priority</a> <a class="anchorlink" href="#defaults.notebook_worker_priority" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1398">notebook_worker_priority</a> <a class="anchorlink" href="#defaults.notebook_worker_priority" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">defaults > notebook_worker_priority</div>
@@ -6678,7 +6747,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="defaults.csv_delimiter" data-key="defaults.csv_delimiter" data-depth="2">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1371">csv_delimiter</a> <a class="anchorlink" href="#defaults.csv_delimiter" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1403">csv_delimiter</a> <a class="anchorlink" href="#defaults.csv_delimiter" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">defaults > csv_delimiter</div>
@@ -6697,7 +6766,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="defaults.hunt_expiry_hours" data-key="defaults.hunt_expiry_hours" data-depth="2">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1375">hunt_expiry_hours</a> <a class="anchorlink" href="#defaults.hunt_expiry_hours" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1407">hunt_expiry_hours</a> <a class="anchorlink" href="#defaults.hunt_expiry_hours" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">defaults > hunt_expiry_hours</div>
@@ -6715,7 +6784,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="defaults.event_max_wait" data-key="defaults.event_max_wait" data-depth="2">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1379">event_max_wait</a> <a class="anchorlink" href="#defaults.event_max_wait" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1411">event_max_wait</a> <a class="anchorlink" href="#defaults.event_max_wait" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">defaults > event_max_wait</div>
@@ -6733,7 +6802,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="defaults.event_max_wait_jitter" data-key="defaults.event_max_wait_jitter" data-depth="2">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1380">event_max_wait_jitter</a> <a class="anchorlink" href="#defaults.event_max_wait_jitter" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1412">event_max_wait_jitter</a> <a class="anchorlink" href="#defaults.event_max_wait_jitter" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">defaults > event_max_wait_jitter</div>
@@ -6750,7 +6819,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="defaults.event_change_notify_all_clients" data-key="defaults.event_change_notify_all_clients" data-depth="2">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1388">event_change_notify_all_clients</a> <a class="anchorlink" href="#defaults.event_change_notify_all_clients" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1420">event_change_notify_all_clients</a> <a class="anchorlink" href="#defaults.event_change_notify_all_clients" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">defaults > event_change_notify_all_clients</div>
@@ -6773,7 +6842,7 @@ Generated by the config wizard!!!
  <details>
 <summary class="ref-summary"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" width="1em" height="1em" fill="currentColor" class="category-icon" aria-hidden="true"><path d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z"/></svg>
     <div class="reference-key">
-      <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1392">artifact_definitions_directories</a> <a class="anchorlink" href="#defaults.artifact_definitions_directories" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+      <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1424">artifact_definitions_directories</a> <a class="anchorlink" href="#defaults.artifact_definitions_directories" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
     </div>
 <div class="item-comment">
 
@@ -6807,7 +6876,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="defaults.max_in_memory_group_by" data-key="defaults.max_in_memory_group_by" data-depth="2">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1397">max_in_memory_group_by</a> <a class="anchorlink" href="#defaults.max_in_memory_group_by" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1429">max_in_memory_group_by</a> <a class="anchorlink" href="#defaults.max_in_memory_group_by" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">defaults > max_in_memory_group_by</div>
@@ -6826,7 +6895,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="defaults.acl_lru_timeout_sec" data-key="defaults.acl_lru_timeout_sec" data-depth="2">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1400">acl_lru_timeout_sec</a> <a class="anchorlink" href="#defaults.acl_lru_timeout_sec" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1432">acl_lru_timeout_sec</a> <a class="anchorlink" href="#defaults.acl_lru_timeout_sec" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">defaults > acl_lru_timeout_sec</div>
@@ -6843,7 +6912,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="defaults.unauthenticated_lru_timeout_sec" data-key="defaults.unauthenticated_lru_timeout_sec" data-depth="2">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1404">unauthenticated_lru_timeout_sec</a> <a class="anchorlink" href="#defaults.unauthenticated_lru_timeout_sec" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1436">unauthenticated_lru_timeout_sec</a> <a class="anchorlink" href="#defaults.unauthenticated_lru_timeout_sec" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">defaults > unauthenticated_lru_timeout_sec</div>
@@ -6852,7 +6921,7 @@ Generated by the config wizard!!!
 <div class="item-comment">
 
  Ignore messages from unauthenticated clients for this long - gives
- them a chance to enrol first (default 10 sec).
+ them a chance to enroll first (default 10 sec).
 
 </div>
 </div>
@@ -6861,7 +6930,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="defaults.export_concurrency" data-key="defaults.export_concurrency" data-depth="2">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1411">export_concurrency</a> <a class="anchorlink" href="#defaults.export_concurrency" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1443">export_concurrency</a> <a class="anchorlink" href="#defaults.export_concurrency" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">defaults > export_concurrency</div>
@@ -6882,7 +6951,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="defaults.export_max_timeout_sec" data-key="defaults.export_max_timeout_sec" data-depth="2">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1412">export_max_timeout_sec</a> <a class="anchorlink" href="#defaults.export_max_timeout_sec" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1444">export_max_timeout_sec</a> <a class="anchorlink" href="#defaults.export_max_timeout_sec" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">defaults > export_max_timeout_sec</div>
@@ -6899,7 +6968,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="defaults.hunt_dispatcher_refresh_sec" data-key="defaults.hunt_dispatcher_refresh_sec" data-depth="2">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1418">hunt_dispatcher_refresh_sec</a> <a class="anchorlink" href="#defaults.hunt_dispatcher_refresh_sec" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1450">hunt_dispatcher_refresh_sec</a> <a class="anchorlink" href="#defaults.hunt_dispatcher_refresh_sec" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">defaults > hunt_dispatcher_refresh_sec</div>
@@ -6919,7 +6988,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="defaults.hunt_dispatcher_refresh_rate" data-key="defaults.hunt_dispatcher_refresh_rate" data-depth="2">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1423">hunt_dispatcher_refresh_rate</a> <a class="anchorlink" href="#defaults.hunt_dispatcher_refresh_rate" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1455">hunt_dispatcher_refresh_rate</a> <a class="anchorlink" href="#defaults.hunt_dispatcher_refresh_rate" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">defaults > hunt_dispatcher_refresh_rate</div>
@@ -6938,7 +7007,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="defaults.notebook_versions" data-key="defaults.notebook_versions" data-depth="2">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1426">notebook_versions</a> <a class="anchorlink" href="#defaults.notebook_versions" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1458">notebook_versions</a> <a class="anchorlink" href="#defaults.notebook_versions" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">defaults > notebook_versions</div>
@@ -6955,7 +7024,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="defaults.watch_plugin_frequency" data-key="defaults.watch_plugin_frequency" data-depth="2">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1430">watch_plugin_frequency</a> <a class="anchorlink" href="#defaults.watch_plugin_frequency" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1462">watch_plugin_frequency</a> <a class="anchorlink" href="#defaults.watch_plugin_frequency" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">defaults > watch_plugin_frequency</div>
@@ -6973,7 +7042,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="defaults.watch_plugin_buffer_size" data-key="defaults.watch_plugin_buffer_size" data-depth="2">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1433">watch_plugin_buffer_size</a> <a class="anchorlink" href="#defaults.watch_plugin_buffer_size" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1465">watch_plugin_buffer_size</a> <a class="anchorlink" href="#defaults.watch_plugin_buffer_size" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">defaults > watch_plugin_buffer_size</div>
@@ -6990,7 +7059,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="defaults.backup_period_seconds" data-key="defaults.backup_period_seconds" data-depth="2">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1439">backup_period_seconds</a> <a class="anchorlink" href="#defaults.backup_period_seconds" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1471">backup_period_seconds</a> <a class="anchorlink" href="#defaults.backup_period_seconds" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">defaults > backup_period_seconds</div>
@@ -7010,7 +7079,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="defaults.client_info_housekeeping_period" data-key="defaults.client_info_housekeeping_period" data-depth="2">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1445">client_info_housekeeping_period</a> <a class="anchorlink" href="#defaults.client_info_housekeeping_period" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1477">client_info_housekeeping_period</a> <a class="anchorlink" href="#defaults.client_info_housekeeping_period" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">defaults > client_info_housekeeping_period</div>
@@ -7030,7 +7099,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="defaults.disable_unicode_usernames" data-key="defaults.disable_unicode_usernames" data-depth="2">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1452">disable_unicode_usernames</a> <a class="anchorlink" href="#defaults.disable_unicode_usernames" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1484">disable_unicode_usernames</a> <a class="anchorlink" href="#defaults.disable_unicode_usernames" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">defaults > disable_unicode_usernames</div>
@@ -7051,7 +7120,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="defaults.reindex_period_seconds" data-key="defaults.reindex_period_seconds" data-depth="2">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1456">reindex_period_seconds</a> <a class="anchorlink" href="#defaults.reindex_period_seconds" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1488">reindex_period_seconds</a> <a class="anchorlink" href="#defaults.reindex_period_seconds" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">defaults > reindex_period_seconds</div>
@@ -7070,7 +7139,7 @@ Generated by the config wizard!!!
  <details>
 <summary class="ref-summary"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" width="1em" height="1em" fill="currentColor" class="category-icon" aria-hidden="true"><path d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z"/></svg>
     <div class="reference-key">
-      <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1479">indexed_client_metadata</a> <a class="anchorlink" href="#defaults.indexed_client_metadata" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+      <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1511">indexed_client_metadata</a> <a class="anchorlink" href="#defaults.indexed_client_metadata" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
     </div>
 <div class="item-comment">
 
@@ -7121,7 +7190,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="defaults.disable_active_inflight_checks" data-key="defaults.disable_active_inflight_checks" data-depth="2">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1484">disable_active_inflight_checks</a> <a class="anchorlink" href="#defaults.disable_active_inflight_checks" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1516">disable_active_inflight_checks</a> <a class="anchorlink" href="#defaults.disable_active_inflight_checks" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">defaults > disable_active_inflight_checks</div>
@@ -7140,7 +7209,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="defaults.write_internal_events" data-key="defaults.write_internal_events" data-depth="2">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1490">write_internal_events</a> <a class="anchorlink" href="#defaults.write_internal_events" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1522">write_internal_events</a> <a class="anchorlink" href="#defaults.write_internal_events" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">defaults > write_internal_events</div>
@@ -7160,7 +7229,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="defaults.max_rows" data-key="defaults.max_rows" data-depth="2">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1495">max_rows</a> <a class="anchorlink" href="#defaults.max_rows" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1527">max_rows</a> <a class="anchorlink" href="#defaults.max_rows" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">defaults > max_rows</div>
@@ -7179,7 +7248,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="defaults.max_row_buffer_size" data-key="defaults.max_row_buffer_size" data-depth="2">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1496">max_row_buffer_size</a> <a class="anchorlink" href="#defaults.max_row_buffer_size" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1528">max_row_buffer_size</a> <a class="anchorlink" href="#defaults.max_row_buffer_size" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">defaults > max_row_buffer_size</div>
@@ -7196,7 +7265,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="defaults.max_batch_wait" data-key="defaults.max_batch_wait" data-depth="2">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1497">max_batch_wait</a> <a class="anchorlink" href="#defaults.max_batch_wait" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1529">max_batch_wait</a> <a class="anchorlink" href="#defaults.max_batch_wait" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">defaults > max_batch_wait</div>
@@ -7213,7 +7282,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="defaults.max_logs" data-key="defaults.max_logs" data-depth="2">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1502">max_logs</a> <a class="anchorlink" href="#defaults.max_logs" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1534">max_logs</a> <a class="anchorlink" href="#defaults.max_logs" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">defaults > max_logs</div>
@@ -7237,7 +7306,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="lockdown" data-key="lockdown" data-depth="1">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1511">lockdown</a> <a class="anchorlink" href="#lockdown" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1543">lockdown</a> <a class="anchorlink" href="#lockdown" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">lockdown</div>
@@ -7259,7 +7328,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="debug_mode" data-key="debug_mode" data-depth="1">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1514">debug_mode</a> <a class="anchorlink" href="#debug_mode" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1546">debug_mode</a> <a class="anchorlink" href="#debug_mode" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">debug_mode</div>
@@ -7277,7 +7346,7 @@ Generated by the config wizard!!!
  <details>
 <summary class="ref-summary"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" width="1em" height="1em" fill="currentColor" class="category-icon" aria-hidden="true"><path d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z"/></svg>
     <div class="reference-key">
-      <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1523">Minion</a> <a class="anchorlink" href="#Minion" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+      <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1555">Minion</a> <a class="anchorlink" href="#Minion" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
     </div>
 <div class="item-comment">
 
@@ -7296,7 +7365,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="Minion.notebook_number_of_local_workers" data-key="Minion.notebook_number_of_local_workers" data-depth="2">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1523">notebook_number_of_local_workers</a> <a class="anchorlink" href="#Minion.notebook_number_of_local_workers" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1555">notebook_number_of_local_workers</a> <a class="anchorlink" href="#Minion.notebook_number_of_local_workers" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">Minion > notebook_number_of_local_workers</div>
@@ -7313,7 +7382,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="Minion.notebook_worker_priority" data-key="Minion.notebook_worker_priority" data-depth="2">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1528">notebook_worker_priority</a> <a class="anchorlink" href="#Minion.notebook_worker_priority" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1560">notebook_worker_priority</a> <a class="anchorlink" href="#Minion.notebook_worker_priority" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">Minion > notebook_worker_priority</div>
@@ -7338,7 +7407,7 @@ Generated by the config wizard!!!
  <details>
 <summary class="ref-summary"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" width="1em" height="1em" fill="currentColor" class="category-icon" aria-hidden="true"><path d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z"/></svg>
     <div class="reference-key">
-      <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1538">security</a> <a class="anchorlink" href="#security" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+      <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1570">security</a> <a class="anchorlink" href="#security" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
     </div>
 <div class="item-comment">
 
@@ -7354,7 +7423,7 @@ Generated by the config wizard!!!
  <details>
 <summary class="ref-summary"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" width="1em" height="1em" fill="currentColor" class="category-icon" aria-hidden="true"><path d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z"/></svg>
     <div class="reference-key">
-      <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1539">allowed_file_accessor_prefix</a> <a class="anchorlink" href="#security.allowed_file_accessor_prefix" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+      <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1571">allowed_file_accessor_prefix</a> <a class="anchorlink" href="#security.allowed_file_accessor_prefix" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
     </div>
 <div class="item-comment">
 
@@ -7395,7 +7464,7 @@ Generated by the config wizard!!!
  <details>
 <summary class="ref-summary"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" width="1em" height="1em" fill="currentColor" class="category-icon" aria-hidden="true"><path d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z"/></svg>
     <div class="reference-key">
-      <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1545">denied_file_accessor_prefix</a> <a class="anchorlink" href="#security.denied_file_accessor_prefix" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+      <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1577">denied_file_accessor_prefix</a> <a class="anchorlink" href="#security.denied_file_accessor_prefix" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
     </div>
 <div class="item-comment">
 
@@ -7432,7 +7501,7 @@ Generated by the config wizard!!!
  <details>
 <summary class="ref-summary"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" width="1em" height="1em" fill="currentColor" class="category-icon" aria-hidden="true"><path d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z"/></svg>
     <div class="reference-key">
-      <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1552">allowed_fs_accessor_prefix</a> <a class="anchorlink" href="#security.allowed_fs_accessor_prefix" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+      <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1584">allowed_fs_accessor_prefix</a> <a class="anchorlink" href="#security.allowed_fs_accessor_prefix" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
     </div>
 <div class="item-comment">
 
@@ -7568,7 +7637,7 @@ Generated by the config wizard!!!
  <details>
 <summary class="ref-summary"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" width="1em" height="1em" fill="currentColor" class="category-icon" aria-hidden="true"><path d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z"/></svg>
     <div class="reference-key">
-      <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1566">denied_fs_accessor_prefix</a> <a class="anchorlink" href="#security.denied_fs_accessor_prefix" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+      <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1598">denied_fs_accessor_prefix</a> <a class="anchorlink" href="#security.denied_fs_accessor_prefix" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
     </div>
 <div class="item-comment">
 
@@ -7606,7 +7675,7 @@ Generated by the config wizard!!!
  <details>
 <summary class="ref-summary"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" width="1em" height="1em" fill="currentColor" class="category-icon" aria-hidden="true"><path d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z"/></svg>
     <div class="reference-key">
-      <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1575">allowed_plugins</a> <a class="anchorlink" href="#security.allowed_plugins" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+      <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1607">allowed_plugins</a> <a class="anchorlink" href="#security.allowed_plugins" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
     </div>
 <div class="item-comment">
 
@@ -7646,7 +7715,7 @@ Generated by the config wizard!!!
  <details>
 <summary class="ref-summary"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" width="1em" height="1em" fill="currentColor" class="category-icon" aria-hidden="true"><path d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z"/></svg>
     <div class="reference-key">
-      <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1577">allowed_functions</a> <a class="anchorlink" href="#security.allowed_functions" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+      <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1609">allowed_functions</a> <a class="anchorlink" href="#security.allowed_functions" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
     </div>
 <div class="item-comment">
 
@@ -7681,7 +7750,7 @@ Generated by the config wizard!!!
  <details>
 <summary class="ref-summary"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" width="1em" height="1em" fill="currentColor" class="category-icon" aria-hidden="true"><path d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z"/></svg>
     <div class="reference-key">
-      <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1579">allowed_accessors</a> <a class="anchorlink" href="#security.allowed_accessors" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+      <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1611">allowed_accessors</a> <a class="anchorlink" href="#security.allowed_accessors" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
     </div>
 <div class="item-comment">
 
@@ -7716,7 +7785,7 @@ Generated by the config wizard!!!
  <details>
 <summary class="ref-summary"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" width="1em" height="1em" fill="currentColor" class="category-icon" aria-hidden="true"><path d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z"/></svg>
     <div class="reference-key">
-      <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1586">denied_plugins</a> <a class="anchorlink" href="#security.denied_plugins" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+      <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1618">denied_plugins</a> <a class="anchorlink" href="#security.denied_plugins" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
     </div>
 <div class="item-comment">
 
@@ -7754,7 +7823,7 @@ Generated by the config wizard!!!
  <details>
 <summary class="ref-summary"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" width="1em" height="1em" fill="currentColor" class="category-icon" aria-hidden="true"><path d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z"/></svg>
     <div class="reference-key">
-      <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1589">denied_functions</a> <a class="anchorlink" href="#security.denied_functions" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+      <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1621">denied_functions</a> <a class="anchorlink" href="#security.denied_functions" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
     </div>
 <div class="item-comment">
 
@@ -7789,7 +7858,7 @@ Generated by the config wizard!!!
  <details>
 <summary class="ref-summary"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" width="1em" height="1em" fill="currentColor" class="category-icon" aria-hidden="true"><path d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z"/></svg>
     <div class="reference-key">
-      <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1592">denied_accessors</a> <a class="anchorlink" href="#security.denied_accessors" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+      <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1624">denied_accessors</a> <a class="anchorlink" href="#security.denied_accessors" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
     </div>
 <div class="item-comment">
 
@@ -7824,7 +7893,7 @@ Generated by the config wizard!!!
  <details>
 <summary class="ref-summary"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" width="1em" height="1em" fill="currentColor" class="category-icon" aria-hidden="true"><path d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z"/></svg>
     <div class="reference-key">
-      <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1599">lockdown_denied_permissions</a> <a class="anchorlink" href="#security.lockdown_denied_permissions" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+      <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1631">lockdown_denied_permissions</a> <a class="anchorlink" href="#security.lockdown_denied_permissions" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
     </div>
 <div class="item-comment">
 
@@ -7945,7 +8014,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="security.certificate_validity_days" data-key="security.certificate_validity_days" data-depth="2">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1609">certificate_validity_days</a> <a class="anchorlink" href="#security.certificate_validity_days" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1641">certificate_validity_days</a> <a class="anchorlink" href="#security.certificate_validity_days" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">security > certificate_validity_days</div>
@@ -7963,7 +8032,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="security.disable_inventory_service_external_access" data-key="security.disable_inventory_service_external_access" data-depth="2">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1613">disable_inventory_service_external_access</a> <a class="anchorlink" href="#security.disable_inventory_service_external_access" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1645">disable_inventory_service_external_access</a> <a class="anchorlink" href="#security.disable_inventory_service_external_access" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">security > disable_inventory_service_external_access</div>
@@ -7981,7 +8050,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="security.secrets_dek" data-key="security.secrets_dek" data-depth="2">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1627">secrets_dek</a> <a class="anchorlink" href="#security.secrets_dek" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1659">secrets_dek</a> <a class="anchorlink" href="#security.secrets_dek" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">security > secrets_dek</div>
@@ -8009,7 +8078,7 @@ Generated by the config wizard!!!
 <li class="ref-item ref-leaf" id="security.vql_must_use_secrets" data-key="security.vql_must_use_secrets" data-depth="2">
  <span class="item-name"><i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1634">vql_must_use_secrets</a> <a class="anchorlink" href="#security.vql_must_use_secrets" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1666">vql_must_use_secrets</a> <a class="anchorlink" href="#security.vql_must_use_secrets" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
    </div>
   </span>
   <div class="item-breadcrumb">security > vql_must_use_secrets</div>
@@ -8031,7 +8100,7 @@ Generated by the config wizard!!!
  <details>
 <summary class="ref-summary"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" width="1em" height="1em" fill="currentColor" class="category-icon" aria-hidden="true"><path d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z"/></svg>
     <div class="reference-key">
-      <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1640">shadowed_env_vars</a> <a class="anchorlink" href="#security.shadowed_env_vars" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+      <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1672">shadowed_env_vars</a> <a class="anchorlink" href="#security.shadowed_env_vars" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
     </div>
 <div class="item-comment">
 
@@ -8061,6 +8130,30 @@ Generated by the config wizard!!!
 </div>
  </details>
 </li>
+</div>
+
+<div class="ref-block">
+<li class="ref-item ref-leaf" id="security.client_self_labels_regex" data-key="security.client_self_labels_regex" data-depth="2">
+ <span class="item-name"><i class="bullet-placeholder"></i>
+   <div class="reference-key">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1683">client_self_labels_regex</a> <a class="anchorlink" href="#security.client_self_labels_regex" title="Copy link to this item" aria-label="Copy link to this item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+   </div>
+  </span>
+  <div class="item-breadcrumb">security > client_self_labels_regex</div>
+  <div class="reference-value-mapping"></div>
+</li>
+<div class="item-comment">
+
+ Clients can include labels baked into their configuration file
+ (See `Client.labels` ).  The below regex controls which labels are
+ accepted. By default a regex is not specified, meaning that
+ clients may not label themselves.
+
+ Be aware that rogue clients can specify any label accepted by the
+ below regex and so can participate in labeled hunts.
+ If you want the clients to auto label set this to `.+`
+
+</div>
 </div>
 </ul>
 </div>

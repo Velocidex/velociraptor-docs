@@ -62,6 +62,7 @@ not yet been categorized.
 |[netcat](netcat)|Plugin|Make a tcp connection and read data from a socket|
 |[notebooks](notebooks)|Plugin|List all notebooks|
 |[parse_pst](parse_pst)|Plugin|Parse a PST file and extract email data|
+|[parse_unified_logs](parse_unified_logs)|Plugin|Parses MACOS unified logs|
 |[patch](patch)|Function|Patch a JSON object with a json patch or merge|
 |[path_join](path_join)|Function|Build a path by joining all components|
 |[pe_dump](pe_dump)|Function|Dump a PE file from process memory|

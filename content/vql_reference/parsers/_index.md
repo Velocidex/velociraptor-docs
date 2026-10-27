@@ -18,6 +18,7 @@ other regex-based parsers for text formats, and `parse_binary` which
 provides completely customizable parsing of binary file formats.
 |Plugin/Function|Type|Description|
 |-|-|-|
+|[carve_evtx](carve_evtx)|Plugin|Carve EVTX chunks from a file or device and parse their event records|
 |[carve_usn](carve_usn)|Plugin|Carve for the USN journal entries from a device|
 |[commandline_split](commandline_split)|Function|Split a commandline into separate components following the windows|
 |[grok](grok)|Function|Parse a string using a Grok expression|
