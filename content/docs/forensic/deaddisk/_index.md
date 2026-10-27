@@ -121,7 +121,7 @@ any changes_.
 For example, this is a remapping rule that provides access to the Windows
 SOFTWARE registry hive inside an EWF-format disk image:
 
-```yaml
+```yaml {filename="remapping.yaml"}
 - type: mount
   description: Map the /Windows/System32/Config/SOFTWARE Registry hive on HKEY_LOCAL_MACHINE\Software
     (Prefixed at /)
@@ -189,7 +189,7 @@ macOS.
 
 Here is an example of an impersonation rule:
 
-```yaml
+```yaml {filename="remapping.yaml"}
 - type: impersonation
   os: windows
   hostname: VirtualHostname

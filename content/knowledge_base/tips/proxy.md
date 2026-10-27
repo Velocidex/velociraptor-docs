@@ -35,7 +35,7 @@ The rules for environment variables are described
 You can also hard code the proxy in the configuration file's Client
 section:
 
-```yaml
+```yaml {filename="client.config.yaml"}
 Client:
   proxy: http://proxy.example.com:3128/
   server_urls:
