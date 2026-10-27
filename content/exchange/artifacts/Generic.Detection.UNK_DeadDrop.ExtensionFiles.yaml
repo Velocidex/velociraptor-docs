@@ -1,0 +1,106 @@
+name: Generic.Detection.UNK_DeadDrop.ExtensionFiles
+author: Ilja Krasnjanski
+description: |
+  Scan a configured VS Code extension directory for three experimental
+  UNK_DeadDrop source and manifest signatures. This scans files only. It does
+  not execute files, inspect process memory, or upload matching files.
+  The VSIX manifest signature expects extracted extension contents. It will not
+  decompress a VSIX archive by itself.
+reference:
+  - https://github.com/KrasForge/unk-deaddrop-companion
+  - https://krasforge.github.io/UNK_DeadDrop/articles/02-vsix-editor-execution/
+type: CLIENT
+implied_permissions:
+  - FILESYSTEM_READ
+parameters:
+  - name: PathGlob
+    type: string
+    description: Scoped directory glob. Change this for the target OS; avoid whole-disk scans.
+    default: C:/Users/*/.vscode/extensions/**
+  - name: MaxFileSize
+    type: int64
+    description: Skip files larger than this many bytes.
+    default: 33554432
+  - name: YaraRules
+    type: yara
+    description: Three file-content signatures. The sources remain in the companion repository.
+    default: |
+        rule UNK_DeadDrop_VSIX_Manifest_Experimental
+        {
+            meta:
+                description = "Extracted Google Update Support VSIX manifest and company-wallet configuration"
+                author = "UNK_DeadDrop research contributors"
+                date = "2026-10-26"
+                evidence_cutoff = "2026-07-24"
+                reference = "https://krasforge.github.io/UNK_DeadDrop/articles/02-vsix-editor-execution/"
+                source_note = "docs/detection-notes.md"
+                status = "experimental"
+                scope = "small extracted VSIX manifest members; does not decompress archives"
+            strings:
+                $identity1 = "google-update-support" ascii
+                $identity2 = "google-dev-tools" ascii
+                $identity3 = "onStartupFinished" ascii
+                $config1 = "googleUpdateSupport.companyWalletServerUrl" ascii
+                $config2 = "googleUpdateSupport.companyWalletClientId" ascii
+                $config3 = "googleUpdateSupport.companyWalletAgentToken" ascii
+                $config4 = "googleUpdateSupport.windowsActivationMode" ascii
+            condition:
+                filesize < 4KB and all of ($identity*) and 2 of ($config*)
+        }
+
+        rule UNK_DeadDrop_Electron_Node_Bootstrap_Source_Experimental
+        {
+            meta:
+                description = "Recovered source pairing Electron Node mode with the campaign wallet-client header"
+                author = "UNK_DeadDrop research contributors"
+                date = "2026-10-26"
+                evidence_cutoff = "2026-07-24"
+                reference = "https://krasforge.github.io/UNK_DeadDrop/articles/02-vsix-editor-execution/"
+                source_note = "incident-predicttogether-2026-07-22/samples-DO-NOT-RUN/gus-node-bootstrap.js"
+                status = "experimental"
+                scope = "static JavaScript source identification; does not establish task execution"
+            strings:
+                $electron = "ELECTRON_RUN_AS_NODE" ascii
+                $client = "X-Company-Wallet-Client-Id" ascii
+            condition:
+                filesize > 32KB and filesize < 512KB and all of them
+        }
+
+        rule UNK_DeadDrop_Windows_Node_Collector_Source_Experimental
+        {
+            meta:
+                description = "Windows JavaScript collector with the recovered phase-one and elevated phase-two modes"
+                author = "UNK_DeadDrop research contributors"
+                date = "2026-10-26"
+                evidence_cutoff = "2026-07-24"
+                reference = "https://krasforge.github.io/UNK_DeadDrop/articles/02-vsix-editor-execution/"
+                source_note = "docs/detection-notes.md"
+                status = "experimental"
+                revision = "2026-10-26 implementation-context noise revision"
+                scope = "plaintext or decoded JavaScript source; does not establish collection"
+            strings:
+                $phase1 = "--company-wallet-phase1-local" ascii
+                $phase2 = "--company-wallet-job" ascii
+                $login_data = "Login Data" ascii
+                $local_extension_data = "Local Extension Settings" ascii
+                $phase1_archive = "_phase1.zip" ascii
+                $phase2_archive = "_pass.zip" ascii
+                // Retained implementation syntax, not just markers quoted in research.
+                $impl_phase1 = /function buildPhase1Zip\(sourceHome\) *\{/ ascii
+                $impl_phase2 = /function buildPhase2PassZip\(epFilePath, *agentLogPath\) *\{/ ascii
+            condition:
+                all of ($impl_*) and
+                filesize < 1MB and $phase1 and $phase2 and
+                1 of ($login_data, $local_extension_data) and
+                1 of ($phase1_archive, $phase2_archive)
+        }
+sources:
+  - query: |
+      LET candidate_files = SELECT OSPath, Size
+        FROM glob(globs=PathGlob, nosymlink='True')
+        WHERE NOT IsDir AND NOT IsLink AND Size <= MaxFileSize
+
+      SELECT * FROM foreach(row=candidate_files, query={
+        SELECT FileName, Rule, Tags, Meta, String.Name AS YaraString
+        FROM yara(files=OSPath, rules=YaraRules)
+      })
