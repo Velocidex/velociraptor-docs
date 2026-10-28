@@ -11,7 +11,7 @@ description: |
   The engines, bundled rule revisions, and filtering defaults differ; equivalent
   detection coverage is not implied. This artifact does not require Takajo.
 
-  The hash-pinned Hayabusa 4.2.0 bundle includes its rules and configuration.
+  The hash-pinned Hayabusa 4.3.0 bundle includes its rules and configuration.
   It produces unsorted verbose JSONL using the package's default rule selection
   with a minimum severity of medium. Select informational to include all levels.
   Deprecated, unsupported, and noisy rules are not explicitly enabled.
@@ -43,7 +43,7 @@ description: |
   automatic analysis of future collections.
 
 reference:
-  - https://github.com/Yamato-Security/hayabusa/releases/tag/v4.2.0
+  - https://github.com/Yamato-Security/hayabusa/releases/tag/v4.3.0
 
 required_permissions:
   - SERVER_ADMIN
@@ -54,9 +54,9 @@ required_permissions:
   - NETWORK
 
 tools:
-  - name: Hayabusa-4.2.0-Linux-amd64
-    url: https://github.com/Yamato-Security/hayabusa/releases/download/v4.2.0/hayabusa-4.2.0-lin-x64-musl.zip
-    expected_hash: 8060dac9c6b61da5566a638bfc11b0db4c0c51b0600113901fd2a84b3360b4c6
+  - name: Hayabusa-4.3.0-Linux-amd64
+    url: https://github.com/Yamato-Security/hayabusa/releases/download/v4.3.0/hayabusa-4.3.0-lin-x64-musl.zip
+    expected_hash: 8a1f81fa94ab0b3d3b1e5eb17aa8276912d0db71a1f02b451a27f8e76dd4fae0
 
 parameters:
   - name: ClientId
@@ -170,7 +170,7 @@ sources:
                 then={
           SELECT *
           FROM Artifact.Generic.Utils.FetchBinary(
-            ToolName="Hayabusa-4.2.0-Linux-amd64",
+            ToolName="Hayabusa-4.3.0-Linux-amd64",
             IsExecutable=FALSE)
         })
 
@@ -182,12 +182,12 @@ sources:
           SELECT *
           FROM unzip(filename=HBArchive.OSPath, output_directory=HayabusaDir)
         })
-        WHERE OriginalPath = "hayabusa-4.2.0-lin-x64-musl"
+        WHERE OriginalPath = "hayabusa-4.3.0-lin-x64-musl"
 
       LET HBExe <= if(
           condition=HBExtract,
           then=copy(filename=path_join(
-                    components=[HayabusaDir, "hayabusa-4.2.0-lin-x64-musl"]),
+                    components=[HayabusaDir, "hayabusa-4.3.0-lin-x64-musl"]),
                     dest=path_join(components=[HayabusaDir, "hayabusa"]),
                     permissions="x"))
 
