@@ -30,7 +30,11 @@ description: |
   no generated diagnostic logs, and successful output uploads. Hayabusa may return
   zero despite unreadable files or partial parsing; generated error logs are
   preserved as Kind=Diagnostic uploads and require review. Partial detections and
-  timelines remain available when diagnostics exist. Success does not establish
+  timelines remain available after a zero exit with diagnostics. If the engine
+  exits nonzero, any existing raw timeline is uploaded for review, but is not
+  parsed into Detection rows and EngineSuccess remains false. A failed process
+  may leave truncated or invalid JSONL. Cancellation or exhausted collection
+  limits can prevent output retention. Success does not establish
   complete forensic coverage or absence of malicious activity. A missing final
   Status row means the collection did not finish delivering its results; inspect
   collection state and logs for limits, cancellation, and other errors.
@@ -91,8 +95,9 @@ precondition: SELECT * FROM info() WHERE OS = 'linux' AND Architecture = 'amd64'
 sources:
   - name: Results
     query: |
-      -- Keep work inside a named SELECT so server collection timeouts also
-      -- cover materialized LET statements on Velociraptor 0.77.2.
+      -- On tested Velociraptor 0.77.2/0.77.3, top-level materialized LETs
+      -- are drained outside the server timeout select loop. Run this work
+      -- inside the Results SELECT so that loop can cancel it at the deadline.
       SELECT * FROM query(inherit=TRUE, query='''
       LET S = scope()
       LET InputClientId <= ClientId
@@ -139,8 +144,8 @@ sources:
                                     args=[count()])])) AS LocalPath
         FROM Inputs
 
-      -- Aggregate by iterating the stored query, including when it spills to
-      -- disk for large collections. len() does not count spilled query rows.
+      -- On tested Velociraptor 0.77.2/0.77.3, len() returns 0 after a
+      -- materialized query spills to disk. Count staged rows by iteration.
       LET StageStats <= SELECT
           count() AS Total,
           sum(item=if(condition=LocalPath, then=1, else=0)) AS Successful
@@ -216,14 +221,15 @@ sources:
                    message="Hayabusa failed; see command output in collection logs."))
 
       LET TimelineFiles <= SELECT Size
-        FROM if(condition=HBSuccess, then={ SELECT * FROM stat(filename=Timeline) })
+        FROM if(condition=HBTerminal, then={ SELECT * FROM stat(filename=Timeline) })
       LET EngineSuccess <= HBSuccess AND TimelineFiles
       LET _ <= if(condition=HBSuccess AND NOT TimelineFiles,
           then=log(level="ERROR", message="Hayabusa exited successfully but its timeline is missing."))
 
-      -- Preserve the full timeline, including successful scans with no detections.
+      -- Retain any existing timeline even after a nonzero exit. Upload raw
+      -- bytes: partial output may be invalid JSONL and must not imply success.
       LET HBUploads <= SELECT *
-        FROM if(condition=EngineSuccess,
+        FROM if(condition=TimelineFiles,
                 then={
           SELECT "Timeline" AS Kind, InputClientId AS ClientId, InputFlowId AS FlowId,
                  upload(file=Timeline, name="hayabusa_results.jsonl") AS Uploads
