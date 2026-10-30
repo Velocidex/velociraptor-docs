@@ -48,18 +48,24 @@ Args:
 debian server [<flags>]
     Create a server package from a server config file.
 
-    --output="."     Directory to store deb files in. (Default current
-                     directory)
-    --binary=BINARY  The binary to package
+    --release=RELEASE  Specify the debian release number
+    --output="."       Directory to store deb files in. (Default current
+                       directory)
+    --binary=BINARY    The binary to package
+    --server_user="velociraptor"
+                       The service user to run the packaged service as.
+    --server_group="velociraptor"
+                       The service group to run the packaged service as.
 ```
 
 ```text
 debian client [<flags>]
     Create a client package from a client config file.
 
-    --output="."     Directory to store deb package in. (Default current
-                     directory)
-    --binary=BINARY  The binary to package
+    --release=RELEASE  Specify the debian release number
+    --output="."       Directory to store deb package in. (Default current
+                       directory)
+    --binary=BINARY    The binary to package
 ```
 
 ----
@@ -226,6 +232,7 @@ velociraptor hunts reconstruct --config /path/to/server.config.yaml
 rpm client [<flags>]
     Create a client package from a server config file.
 
+    --release="A"    Rpm package release version
     --output="."     Directory to store rpms in. (Default current directory)
     --binary=BINARY  The binary to package
 ```
@@ -234,8 +241,15 @@ rpm client [<flags>]
 rpm server [<flags>]
     Create a server package from a server config file.
 
-    --output="."     Directory to store rpms in. (Default current directory)
-    --binary=BINARY  The binary to package
+    --release="A"              Rpm package release version
+    --output="."               Directory to store rpms in. (Default current
+                               directory)
+    --binary=BINARY            The binary to package
+    --server_user=SERVER_USER  The (existing) server user to run the packaged
+                               service as.
+    --server_group=SERVER_GROUP
+                               The (existing) server group to run the packaged
+                               service as.
 ```
 
 ----
