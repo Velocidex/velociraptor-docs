@@ -32,12 +32,12 @@ running the same query over and over again on that host.
 pool_client [<flags>]
     Run a pool client for load testing.
 
-    --number=NUMBER    Total number of clients to run.
-    --writeback_dir=.  The directory to store all writebacks.
-    --no_writeback     Use in-memory writebacks so client identities
-                       are ephemeral.
-    --concurrency=10   How many real queries to run.
-    --start_rate=20    How many clients per second to start.
+    --number=NUMBER      Total number of clients to run.
+    --writeback_dir=.    The directory to store all writebacks.
+    --[no-]no_writeback  Use in-memory writebacks so client identities are
+                         ephemeral.
+    --concurrency=10     How many real queries to run.
+    --start_rate=20      How many clients per second to start.
 ```
 
 #### How the pool client handles collections
