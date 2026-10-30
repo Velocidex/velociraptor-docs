@@ -17,20 +17,17 @@ We can automate the addition and updating of client metadata by running a
 [Server Event Artifact](/docs/server_automation/server_monitoring/)
 which sets metadata based on results of queries run on the client.
 
-{{% notice note "Metadata or Labels?" %}}
-
-Metadata is a set of fields associated with each client. Labels can also be
-regarded as information associated with a client, but in Velociraptor labels are
-a more transient kind of information and are designed to be added and removed
-relatively frequently. Labels provide a way to group clients whereas Metadata
-provides a way to store information *about* each client.
-
-It's important that you choose the appropriate one for your use case. This
-article is about automating Metadata but if you want to do similar automation of
-Labels then you may find this article more useful:
-[How can I automatically apply labels to clients?](/knowledge_base/tips/automating_labels/)
-
-{{% /notice %}}
+> [!NOTE] Metadata or Labels?
+> Metadata is a set of fields associated with each client. Labels can also be
+> regarded as information associated with a client, but in Velociraptor labels are
+> a more transient kind of information and are designed to be added and removed
+> relatively frequently. Labels provide a way to group clients whereas Metadata
+> provides a way to store information *about* each client.
+>
+> It's important that you choose the appropriate one for your use case. This
+> article is about automating Metadata but if you want to do similar automation of
+> Labels then you may find this article more useful:
+> [How can I automatically apply labels to clients?](/knowledge_base/tips/automating_labels/)
 
 ## Adding/updating metadata during client interrogation
 
@@ -280,17 +277,15 @@ step is to create a server event artifact and add it to server monitoring. This
 will monitor for incoming results and then populate the metadata fields with
 data from these results.
 
-{{% notice info %}}
-You do not have to create your own monitoring artifacts. There are two
-artifacts in the [exchange](/exchange/) that will likely cover most of
-your needs:
-
-- [`Server.Monitor.StoreClientHWInfo`](/exchange/artifacts/pages/server.monitor.storeclienthwinfo/):
-  Store hardware information, with special logic to pick a suitable computer serial
-- [`Server.Monitor.StoreClientInfo`](/exchange/artifacts/pages/server.monitor.storeclientinfo/):
-  Store any kind of interrogation data as client metadata.
-
-{{% /notice %}}
+> [!NOTE]
+> You do not have to create your own monitoring artifacts. There are two
+> artifacts in the [exchange](/exchange/) that will likely cover most of
+> your needs:
+>
+> - [`Server.Monitor.StoreClientHWInfo`](/exchange/artifacts/pages/server.monitor.storeclienthwinfo/):
+>   Store hardware information, with special logic to pick a suitable computer serial
+> - [`Server.Monitor.StoreClientInfo`](/exchange/artifacts/pages/server.monitor.storeclientinfo/):
+>   Store any kind of interrogation data as client metadata.
 
 #### Add a Server Event Monitoring artifact
 

@@ -1,12 +1,13 @@
 ---
 title: Windows.Timeline.Prefetch
+description: "Extracts execution timestamps from prefetch files and outputs them\nin timeline format."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
-description: |
-  Extracts execution timestamps from prefetch files and outputs them
-  in timeline format.
+build:
+  list: never
 ---
 
 Extracts execution timestamps from prefetch files and outputs them
@@ -27,7 +28,9 @@ artifact. There are several parameters available.
 - hashRegex enables to filter on prefetch hash.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.Timeline.Prefetch
 author: Matt Green - @mgreen27
 description: |
@@ -71,7 +74,7 @@ precondition: SELECT OS From info() where OS = 'windows'
 
 sources:
   - query: |
-      LET hostname &lt;= SELECT Fqdn FROM info()
+      LET hostname <= SELECT Fqdn FROM info()
 
       SELECT  LastRunTimes as event_time,
               hostname.Fqdn[0] as hostname,
@@ -141,6 +144,6 @@ sources:
         GROUP BY LastRunTimes
       })
       ORDER BY event_time
+````
 
-</code></pre>
 

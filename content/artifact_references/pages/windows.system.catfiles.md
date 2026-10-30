@@ -1,12 +1,13 @@
 ---
 title: Windows.System.CatFiles
+description: "Parses Windows `.cat` catalog files and extracts certificate trust\nlist hashes with signer information."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
-description: |
-  Parses Windows `.cat` catalog files and extracts certificate trust
-  list hashes with signer information.
+build:
+  list: never
 ---
 
 Parses Windows `.cat` catalog files and extracts certificate trust
@@ -21,7 +22,9 @@ This artifact extracts all the trusted hashes from a system by
 parsing all the cat files.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.System.CatFiles
 description: |
   Parses Windows `.cat` catalog files and extracts certificate trust
@@ -68,6 +71,6 @@ sources:
                 SELECT Name, Signer, _value AS Hash FROM scope()
             })
         })
+````
 
-</code></pre>
 

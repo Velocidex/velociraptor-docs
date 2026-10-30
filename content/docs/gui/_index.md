@@ -1,5 +1,7 @@
 ---
+icon: view-boards
 title: "The Admin GUI"
+date: 2021-06-10
 last_reviewed: 2025-09-29
 weight: 15
 description: |
@@ -19,11 +21,10 @@ within the application.
 
 ![The Velociraptor Welcome Screen](welcome.png)
 
-{{% notice tip %}}
-You can
-[customize the Welcome screen](/docs/gui/customizing/)
-by editing the `Server.Internal.Welcome` artifact.
-{{% /notice %}}
+> [!TIP]
+> You can
+> [customize the Welcome screen](/docs/gui/customizing/)
+> by editing the `Server.Internal.Welcome` artifact.
 
 ### Server Metadata
 
@@ -85,14 +86,11 @@ drag inside the graph to zoom in on a specific time range.
 Below the graphs are tables showing other aspects of the server deployment, for
 example disk space and users.
 
-{{% notice tip %}}
-
-All data shown on the dashboard is driven by VQL queries.
-The dashboard layout and underlying queries can be
-[customized](/docs/gui/customizing/)
-by editing the `Server.Monitor.Health` artifact.
-
-{{% /notice %}}
+> [!TIP]
+> All data shown on the dashboard is driven by VQL queries.
+> The dashboard layout and underlying queries can be
+> [customized](/docs/gui/customizing/)
+> by editing the `Server.Monitor.Health` artifact.
 
 ### Working with tables
 

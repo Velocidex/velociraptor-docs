@@ -8,7 +8,7 @@ To run a query in another org, you can switch org contexts using the [query()](/
 
 So for example to see all hunts in all orgs:
 
-```sql
+```vql
 SELECT * FROM foreach(
   row={
     SELECT OrgId FROM orgs()
@@ -23,7 +23,7 @@ SELECT * FROM foreach(
 This query iterates over all the orgs, then runs the `SELECT * FROM hunts()` query within the org context.
 
 You can simplify the query using LET stored queries:
-```sql
+```vql
 LET MyQuery = SELECT * FROM hunts()
 LET AllOrgs = SELECT OrgId FROM orgs()
 

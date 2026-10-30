@@ -1,12 +1,13 @@
 ---
 title: Generic.Detection.Yara.Zip
+description: "Searches for YARA matches inside nested compressed archives up to a\nconfigurable recursion depth."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
-description: |
-  Searches for YARA matches inside nested compressed archives up to a
-  configurable recursion depth.
+build:
+  list: never
 ---
 
 Searches for YARA matches inside nested compressed archives up to a
@@ -36,7 +37,9 @@ YARA is not applied to the containers, only contained contents that
 are not containers.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Generic.Detection.Yara.Zip
 author: "Matt Green - @mgreen27"
 description: |
@@ -111,7 +114,7 @@ sources:
 
       -- recursive search function
       LET Recurse(Container, File, Accessor, RecursionRounds) = SELECT * FROM if(
-        condition=RecursionRounds &lt; MaxRecursions,
+        condition=RecursionRounds < MaxRecursions,
         then={
            SELECT * FROM foreach(
                 row={
@@ -119,7 +122,7 @@ sources:
                     FROM glob(accessor='zip',
                        root=pathspec(DelegatePath=File, DelegateAccessor=Accessor),
                        globs='**')
-                    WHERE NOT IsDir AND Size &gt; 0
+                    WHERE NOT IsDir AND Size > 0
                 },
                 query={
                     SELECT *
@@ -173,6 +176,6 @@ sources:
 column_types:
   - name: HitContext
     type: preview_upload
+````
 
-</code></pre>
 

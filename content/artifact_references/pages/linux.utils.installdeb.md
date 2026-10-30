@@ -1,12 +1,13 @@
 ---
 title: Linux.Utils.InstallDeb
+description: "Installs .deb packages on Debian-based systems with optional debconf\nanswers configuration."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
-description: |
-  Installs .deb packages on Debian-based systems with optional debconf
-  answers configuration.
+build:
+  list: never
 ---
 
 Installs .deb packages on Debian-based systems with optional debconf
@@ -38,7 +39,9 @@ preference if all are set):
     a specific version of `baz` and a specific architecture of `qux`.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Linux.Utils.InstallDeb
 author: Andreas Misje – @misje
 description: |
@@ -166,7 +169,7 @@ sources:
          FROM Artifact.Generic.Utils.FetchBinary(ToolName=DebTool,
                                                  TemporaryOnly=true,
                                                  SleepDuration=ToolSleepDuration)
-       LET Package &lt;= if(
+       LET Package <= if(
            condition=DebTool,
            then=Tool[0].OSPath,
            else=if(
@@ -195,13 +198,13 @@ sources:
            array=(PackageName, Key, Type, Value)) AS Line
          FROM DebConfValues
 
-       LET PreSeedFile &lt;= tempfile(data=join(sep='\n', array=PreSeedLines.Line))
+       LET PreSeedFile <= tempfile(data=join(sep='\n', array=PreSeedLines.Line))
 
        LET AptEnv = dict(
            DEBIAN_FRONTEND='noninteractive',
            DEBCONF_NOWARNINGS='yes')
 
-       LET AptOpts &lt;= ('-f', '-y', '-o', 'Debug::pkgProblemResolver=yes',
+       LET AptOpts <= ('-f', '-y', '-o', 'Debug::pkgProblemResolver=yes',
                        '--no-install-recommends') +
            if(condition=ForceConfNew,
               then=('-o', 'Dpkg::Options::=--force-confnew'), else=[]) +
@@ -222,7 +225,7 @@ sources:
        /* Install regardless of whether package is installed or not, handing all
           the (arch-specific) version comparison logic to apt:
         */
-       LET Install &lt;= SELECT * FROM chain(
+       LET Install <= SELECT * FROM chain(
            a_update={
              SELECT 'Updating index' AS Step, *
              FROM if(condition=UpdateSources, then={
@@ -269,6 +272,6 @@ sources:
                                        args=(Step, Stderr)))
              })
          })
+````
 
-</code></pre>
 

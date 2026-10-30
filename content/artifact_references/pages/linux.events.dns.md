@@ -1,12 +1,13 @@
 ---
 title: Linux.Events.DNS
+description: "Monitors DNS requests in real time using eBPF, with filtering by\nprocess and destination."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true
 tags: [Client Event Artifact]
-description: |
-  Monitors DNS requests in real time using eBPF, with filtering by
-  process and destination.
+build:
+  list: never
 ---
 
 Monitors DNS requests in real time using eBPF, with filtering by
@@ -16,7 +17,9 @@ NOTE: This event is generated from network traffic - it is unable to
 view DoH traffic.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Linux.Events.DNS
 description: |
   Monitors DNS requests in real time using eBPF, with filtering by
@@ -72,6 +75,6 @@ sources:
       WHERE NOT dest_ip =~ ExcludeDestIP
         AND if(condition=Records, then=EventData.proto_dns =~ Records, else=TRUE)
         AND ProcessName =~ ProcessNameFilter
+````
 
-</code></pre>
 

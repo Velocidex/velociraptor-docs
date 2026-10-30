@@ -1,12 +1,13 @@
 ---
 title: Server.Alerts.ProcessCreation
+description: "Forwards process creation detections to Slack, Teams, or Discord via\nwebhook."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true
 tags: [Server Event Artifact]
-description: |
-  Forwards process creation detections to Slack, Teams, or Discord via
-  webhook.
+build:
+  list: never
 ---
 
 Forwards process creation detections to Slack, Teams, or Discord via
@@ -17,7 +18,9 @@ This artifact alerts when a process was detected with the artifact
 artifact that needs to be enabled first).
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Server.Alerts.ProcessCreation
 description: |
   Forwards process creation detections to Slack, Teams, or Discord via
@@ -55,6 +58,6 @@ sources:
             method="POST",
             url=token_url)
         })
+````
 
-</code></pre>
 

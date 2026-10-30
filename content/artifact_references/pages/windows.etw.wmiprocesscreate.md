@@ -1,12 +1,13 @@
 ---
 title: Windows.ETW.WMIProcessCreate
+description: "Monitors process creation events triggered via WMI using the\nMicrosoft-Windows-WMI-Activity ETW provider."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true
 tags: [Client Event Artifact]
-description: |
-  Monitors process creation events triggered via WMI using the
-  Microsoft-Windows-WMI-Activity ETW provider.
+build:
+  list: never
 ---
 
 Monitors process creation events triggered via WMI using the
@@ -23,7 +24,9 @@ This artifact uses the EWT provider:
 `Microsoft-Windows-WMI-Activity           {1418EF04-B0B4-4623-BF7E-D74AB47BBDAA}`
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.ETW.WMIProcessCreate
 description: |
   Monitors process creation events triggered via WMI using the
@@ -64,6 +67,6 @@ sources:
              EventData.Commandline AS Commandline,
              EventData.User AS User
       FROM hits
+````
 
-</code></pre>
 

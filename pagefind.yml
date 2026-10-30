@@ -1,0 +1,16 @@
+# Pagefind indexing configuration.
+#
+# The page navbar, sidebar, table of contents and footer are shared chrome,
+# repeated verbatim on every page.  Indexing them pollutes results with
+# matches that come from the page's menus rather than its article body
+# (e.g. searching "rss" matched every page because the sidebar has an RSS
+# link).  These selectors are the same as putting data-pagefind-ignore on
+# the element: the element and its children are skipped, while page-level
+# filters and metadata (data-pagefind-filter / data-pagefind-meta on the
+# <body>) keep working, and all other pages still get indexed.
+exclude_selectors:
+  - .hextra-nav-container
+  - .hextra-sidebar-container
+  - .hextra-toc
+  - .hextra-footer
+  - .hextra-banner

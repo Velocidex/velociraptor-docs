@@ -1,19 +1,22 @@
 ---
 title: Reporting.Hunts.Details
+description: "Reports hunt execution details including client participation,\nduration, and completion status.\n"
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true
 tags: [Server Artifact]
-description: |
-  Reports hunt execution details including client participation,
-  duration, and completion status.
+build:
+  list: never
 ---
 
 Reports hunt execution details including client participation,
 duration, and completion status.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Reporting.Hunts.Details
 description: |
   Reports hunt execution details including client participation,
@@ -56,6 +59,6 @@ sources:
         ORDER BY create_time DESC
 
       SELECT * FROM foreach(row=Hunts, query=Flows)
+````
 
-</code></pre>
 

@@ -1,12 +1,13 @@
 ---
 title: Server.Information.Users
+description: "Lists user names and SIDs from collected `Windows.Sys.Users` results\nacross all clients."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true
 tags: [Server Artifact]
-description: |
-  Lists user names and SIDs from collected `Windows.Sys.Users` results
-  across all clients.
+build:
+  list: never
 ---
 
 Lists user names and SIDs from collected `Windows.Sys.Users` results
@@ -17,7 +18,9 @@ This artifact uses the previously collected data from
 then this artifact will not produce any results.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Server.Information.Users
 description: |
   Lists user names and SIDs from collected `Windows.Sys.Users` results
@@ -62,6 +65,6 @@ sources:
             })
 
         SELECT * FROM foreach(row=Clients, query=Users)
+````
 
-</code></pre>
 

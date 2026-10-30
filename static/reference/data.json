@@ -29,6 +29,7 @@
         ],
         "category": "server",
         "metadata": {
+            "execution": "master",
             "permissions": "COLLECT_CLIENT"
         },
         "platforms": [
@@ -58,6 +59,7 @@
         ],
         "category": "server",
         "metadata": {
+            "execution": "master",
             "permissions": "COLLECT_SERVER"
         },
         "platforms": [
@@ -291,6 +293,7 @@
         ],
         "category": "server",
         "metadata": {
+            "execution": "master",
             "permissions": "READ_RESULTS"
         },
         "platforms": [
@@ -314,6 +317,7 @@
         ],
         "category": "server",
         "metadata": {
+            "execution": "master",
             "permissions": "ARTIFACT_WRITER,SERVER_ARTIFACT_WRITER"
         },
         "platforms": [
@@ -354,6 +358,7 @@
         ],
         "category": "server",
         "metadata": {
+            "execution": "master",
             "permissions": "ARTIFACT_WRITER,SERVER_ARTIFACT_WRITER"
         },
         "platforms": [
@@ -519,6 +524,125 @@
         "category": "accessors"
     },
     {
+        "name": "azure_monitor_upload",
+        "description": "Upload rows to Azure Monitor / Log Analytics via the Logs Ingestion API (Data Collection Rule).",
+        "type": "Plugin",
+        "version": 1,
+        "args": [
+            {
+                "name": "query",
+                "type": "StoredQuery",
+                "description": "Source for rows to upload.",
+                "required": true
+            },
+            {
+                "name": "threads",
+                "type": "int64",
+                "description": "How many threads to use."
+            },
+            {
+                "name": "logs_ingestion_endpoint",
+                "type": "string",
+                "description": "The Logs Ingestion endpoint URI of the Data Collection Rule (or a Data Collection Endpoint)."
+            },
+            {
+                "name": "dcr_immutable_id",
+                "type": "string",
+                "description": "The immutable ID of the Data Collection Rule (e.g. dcr-xxxxxxxx)."
+            },
+            {
+                "name": "stream_name",
+                "type": "string",
+                "description": "The DCR input stream name (e.g. Custom-RawVelociraptorEvents_CL). If empty it is derived from table as 'Custom-<table>'."
+            },
+            {
+                "name": "table",
+                "type": "string",
+                "description": "Used to derive stream_name as 'Custom-<table>' when stream_name is not set. Unused otherwise."
+            },
+            {
+                "name": "tenant_id",
+                "type": "string",
+                "description": "Azure Service Principal Tenant ID."
+            },
+            {
+                "name": "client_id",
+                "type": "string",
+                "description": "Azure Service Principal Client ID."
+            },
+            {
+                "name": "client_secret",
+                "type": "string",
+                "description": "Azure Service Principal Client Secret."
+            },
+            {
+                "name": "managed_identity",
+                "type": "bool",
+                "description": "Use an Azure managed identity instead of a service principal (requires that the server runs in Azure)."
+            },
+            {
+                "name": "managed_identity_client_id",
+                "type": "string",
+                "description": "Optional client ID of a user-assigned managed identity."
+            },
+            {
+                "name": "default_credential",
+                "type": "bool",
+                "description": "Use the Azure SDK DefaultAzureCredential chain (AZURE_* env vars, workload identity, managed identity, Azure CLI)."
+            },
+            {
+                "name": "chunk_size",
+                "type": "int64",
+                "description": "The number of rows to send at a time."
+            },
+            {
+                "name": "wait_time",
+                "type": "int64",
+                "description": "Batch upload at most this long in seconds (default 5)."
+            },
+            {
+                "name": "max_memory_buffer",
+                "type": "uint64",
+                "description": "Max uncompressed request body in bytes; keep under the ~1MB Azure limit (default 900KB)."
+            },
+            {
+                "name": "skip_verify",
+                "type": "bool",
+                "description": "Skip TLS verification (default: False)."
+            },
+            {
+                "name": "root_ca",
+                "type": "string",
+                "description": "As a better alternative to skip_verify, allows root ca certs to be added here."
+            },
+            {
+                "name": "max_retries",
+                "type": "int64",
+                "description": "Maximum number of retries for failed uploads (default: 3)."
+            },
+            {
+                "name": "retry_wait",
+                "type": "int64",
+                "description": "Base wait time in seconds for exponential backoff between retries (default: 2)."
+            },
+            {
+                "name": "secret",
+                "type": "string",
+                "description": "Alternatively use a secret from the secrets service. Secret must be of type 'Azure Monitor Creds'."
+            }
+        ],
+        "metadata": {
+            "permissions": "NETWORK"
+        },
+        "platforms": [
+            "darwin_amd64_cgo",
+            "darwin_arm64_cgo",
+            "linux_amd64_cgo",
+            "windows_386_cgo",
+            "windows_amd64_cgo"
+        ]
+    },
+    {
         "name": "background",
         "description": "Run a query in the background.",
         "type": "Function",
@@ -549,6 +673,7 @@
         ],
         "category": "server",
         "metadata": {
+            "execution": "master",
             "permissions": "SERVER_ADMIN"
         },
         "platforms": [
@@ -584,6 +709,7 @@
         ],
         "category": "server",
         "metadata": {
+            "execution": "master",
             "permissions": "SERVER_ADMIN"
         },
         "platforms": [
@@ -830,7 +956,58 @@
         ],
         "category": "server",
         "metadata": {
+            "execution": "master",
             "permissions": "COLLECT_SERVER,COLLECT_CLIENT"
+        },
+        "platforms": [
+            "darwin_amd64_cgo",
+            "darwin_arm64_cgo",
+            "linux_amd64_cgo",
+            "windows_386_cgo",
+            "windows_amd64_cgo"
+        ]
+    },
+    {
+        "name": "carve_evtx",
+        "description": "Carve EVTX chunks from a file or device and parse their event records.",
+        "type": "Plugin",
+        "version": 1,
+        "args": [
+            {
+                "name": "filename",
+                "type": "OSPath",
+                "description": "The file or device to carve (e.g. 'C:' with the 'ntfs' accessor, or C:/pagefile.sys with the ntfs accessor).",
+                "required": true
+            },
+            {
+                "name": "accessor",
+                "type": "string",
+                "description": "The accessor to use."
+            },
+            {
+                "name": "messagedb",
+                "type": "string",
+                "description": "A Message database from https://github.com/Velocidex/evtx-data."
+            },
+            {
+                "name": "start_offset",
+                "type": "int64",
+                "description": "Start carving at this offset (default 0)."
+            },
+            {
+                "name": "end_offset",
+                "type": "int64",
+                "description": "Stop carving at this offset (default end of file)."
+            },
+            {
+                "name": "output",
+                "type": "string",
+                "description": "If set, also write the recovered chunks to a new EVTX file at this path so they can be opened with Event Viewer. Each chunk is written once."
+            }
+        ],
+        "category": "parsers",
+        "metadata": {
+            "permissions": "FILESYSTEM_READ,FILESYSTEM_WRITE"
         },
         "platforms": [
             "darwin_amd64_cgo",
@@ -1021,6 +1198,7 @@
         ],
         "category": "server",
         "metadata": {
+            "execution": "master",
             "permissions": "SERVER_ADMIN"
         },
         "platforms": [
@@ -1048,6 +1226,7 @@
         ],
         "category": "server",
         "metadata": {
+            "execution": "master",
             "permissions": "DELETE_RESULTS"
         },
         "platforms": [
@@ -1072,6 +1251,7 @@
         ],
         "category": "server",
         "metadata": {
+            "execution": "master",
             "permissions": "READ_RESULTS"
         },
         "platforms": [
@@ -1095,6 +1275,7 @@
         ],
         "category": "server",
         "metadata": {
+            "execution": "master",
             "permissions": "READ_RESULTS,SERVER_ADMIN"
         },
         "platforms": [
@@ -1129,6 +1310,7 @@
         ],
         "category": "server",
         "metadata": {
+            "execution": "master",
             "permissions": "COLLECT_CLIENT,SERVER_ADMIN"
         },
         "platforms": [
@@ -1157,6 +1339,7 @@
         ],
         "category": "server",
         "metadata": {
+            "execution": "master",
             "permissions": "READ_RESULTS"
         },
         "platforms": [
@@ -1189,6 +1372,9 @@
             }
         ],
         "category": "event",
+        "metadata": {
+            "event": "true"
+        },
         "platforms": [
             "darwin_amd64_cgo",
             "darwin_arm64_cgo",
@@ -1311,7 +1497,7 @@
             {
                 "name": "client_id",
                 "type": "string",
-                "description": "The client id to schedule a collection on",
+                "description": "The client id to schedule a collection on. The use 'server' to schedule a server artifact collection.",
                 "required": true
             },
             {
@@ -1379,6 +1565,7 @@
         ],
         "category": "server",
         "metadata": {
+            "execution": "master",
             "permissions": "COLLECT_CLIENT,COLLECT_SERVER,COLLECT_BASIC"
         },
         "platforms": [
@@ -1743,6 +1930,7 @@
         ],
         "category": "server",
         "metadata": {
+            "execution": "master",
             "permissions": "PREPARE_RESULTS"
         },
         "platforms": [
@@ -1796,6 +1984,7 @@
         "name": "deb_create",
         "description": "Create a deployable Debian package for client or server.",
         "type": "Plugin",
+        "version": 2,
         "args": [
             {
                 "name": "target",
@@ -1831,6 +2020,16 @@
                 "name": "config",
                 "type": "string",
                 "description": "The config to be repacked in the form of a json or yaml string. If not provided we use the current config./"
+            },
+            {
+                "name": "service_user",
+                "type": "string",
+                "description": "The user to run the service as"
+            },
+            {
+                "name": "service_group",
+                "type": "string",
+                "description": "The group to run the service as"
             },
             {
                 "name": "show_spec",
@@ -2000,6 +2199,7 @@
         ],
         "category": "server",
         "metadata": {
+            "execution": "master",
             "permissions": "DELETE_RESULTS"
         },
         "platforms": [
@@ -2073,6 +2273,9 @@
             }
         ],
         "category": "event",
+        "metadata": {
+            "event": "true"
+        },
         "platforms": [
             "darwin_amd64_cgo",
             "darwin_arm64_cgo",
@@ -2347,6 +2550,7 @@
         ],
         "category": "server",
         "metadata": {
+            "execution": "master",
             "permissions": "READ_RESULTS"
         },
         "platforms": [
@@ -2655,6 +2859,9 @@
             }
         ],
         "category": "event",
+        "metadata": {
+            "event": "true"
+        },
         "platforms": [
             "darwin_amd64_cgo",
             "darwin_arm64_cgo",
@@ -2908,6 +3115,7 @@
         ],
         "category": "server",
         "metadata": {
+            "execution": "master",
             "permissions": "READ_RESULTS"
         },
         "platforms": [
@@ -3231,6 +3439,7 @@
         ],
         "category": "server",
         "metadata": {
+            "execution": "master",
             "permissions": "COLLECT_CLIENT,COLLECT_SERVER"
         },
         "platforms": [
@@ -3372,6 +3581,9 @@
             }
         ],
         "category": "server",
+        "metadata": {
+            "execution": "master"
+        },
         "platforms": [
             "darwin_amd64_cgo",
             "darwin_arm64_cgo",
@@ -4301,6 +4513,7 @@
         "type": "Plugin",
         "category": "popular",
         "metadata": {
+            "execution": "master",
             "permissions": "MACHINE_STATE"
         },
         "platforms": [
@@ -4916,6 +5129,7 @@
         ],
         "category": "server",
         "metadata": {
+            "event": "true",
             "permissions": "SERVER_ADMIN"
         },
         "platforms": [
@@ -5772,6 +5986,7 @@
         ],
         "category": "server",
         "metadata": {
+            "execution": "master",
             "permissions": "COLLECT_SERVER"
         },
         "platforms": [
@@ -5799,6 +6014,7 @@
         ],
         "category": "server",
         "metadata": {
+            "execution": "master",
             "permissions": "SERVER_ADMIN"
         },
         "platforms": [
@@ -5833,6 +6049,7 @@
         ],
         "category": "server",
         "metadata": {
+            "execution": "master",
             "permissions": "PREPARE_RESULTS"
         },
         "platforms": [
@@ -5863,6 +6080,7 @@
         ],
         "category": "server",
         "metadata": {
+            "execution": "master",
             "permissions": "READ_RESULTS"
         },
         "platforms": [
@@ -5913,6 +6131,7 @@
         ],
         "category": "server",
         "metadata": {
+            "execution": "master",
             "permissions": "COLLECT_SERVER"
         },
         "platforms": [
@@ -5962,6 +6181,7 @@
         ],
         "category": "server",
         "metadata": {
+            "execution": "master",
             "permissions": "COLLECT_SERVER"
         },
         "platforms": [
@@ -5984,6 +6204,7 @@
             }
         ],
         "metadata": {
+            "execution": "master",
             "permissions": "SERVER_ADMIN,READ_RESULTS"
         },
         "platforms": [
@@ -6111,6 +6332,7 @@
         ],
         "category": "server",
         "metadata": {
+            "execution": "master",
             "permissions": "ORG_ADMIN"
         },
         "platforms": [
@@ -6141,6 +6363,7 @@
         ],
         "category": "server",
         "metadata": {
+            "execution": "master",
             "permissions": "ORG_ADMIN"
         },
         "platforms": [
@@ -6156,6 +6379,9 @@
         "description": "Retrieve the list of orgs on this server.",
         "type": "Plugin",
         "category": "server",
+        "metadata": {
+            "execution": "master"
+        },
         "platforms": [
             "darwin_amd64_cgo",
             "darwin_arm64_cgo",
@@ -6315,6 +6541,9 @@
             }
         ],
         "category": "parsers",
+        "metadata": {
+            "permissions": "FILESYSTEM_READ"
+        },
         "platforms": [
             "linux_amd64_cgo"
         ]
@@ -7120,6 +7349,36 @@
         ]
     },
     {
+        "name": "parse_unified_logs",
+        "description": "Parses MACOS unified logs.",
+        "type": "Plugin",
+        "version": 1,
+        "args": [
+            {
+                "name": "base",
+                "type": "OSPath",
+                "description": "A base directory containing all the required files (.tracev3, .timesync, uuidtext, dsc).",
+                "required": true
+            },
+            {
+                "name": "accessor",
+                "type": "string",
+                "description": "The accessor to use."
+            },
+            {
+                "name": "threads",
+                "type": "int64",
+                "description": "The number of threads to use (defalut 5)."
+            }
+        ],
+        "metadata": {
+            "permissions": "FILESYSTEM_READ"
+        },
+        "platforms": [
+            "linux_amd64_cgo"
+        ]
+    },
+    {
         "name": "parse_usn",
         "description": "Parse the USN journal from a device, image file or USN file.",
         "type": "Plugin",
@@ -7291,6 +7550,9 @@
             }
         ],
         "category": "server",
+        "metadata": {
+            "execution": "master"
+        },
         "platforms": [
             "darwin_amd64_cgo",
             "darwin_arm64_cgo",
@@ -8212,7 +8474,7 @@
         ],
         "category": "server",
         "metadata": {
-            "permissions": "IMPERSONATION"
+            "permissions": "IMPERSONATION,EXECVE,FILESYSTEM_WRITE,MACHINE_STATE"
         },
         "platforms": [
             "darwin_amd64_cgo",
@@ -8938,6 +9200,7 @@
         "name": "rpm_create",
         "description": "Create a deployable RPM package for client or server.",
         "type": "Plugin",
+        "version": 2,
         "args": [
             {
                 "name": "target",
@@ -8973,6 +9236,16 @@
                 "name": "config",
                 "type": "string",
                 "description": "The config to be repacked in the form of a json or yaml string. If not provided we use the current config./"
+            },
+            {
+                "name": "service_user",
+                "type": "string",
+                "description": "The user to run the service as"
+            },
+            {
+                "name": "service_group",
+                "type": "string",
+                "description": "The group to run the service as"
             },
             {
                 "name": "show_spec",
@@ -9225,6 +9498,7 @@
         ],
         "category": "server",
         "metadata": {
+            "execution": "master",
             "permissions": "SERVER_ADMIN"
         },
         "platforms": [
@@ -9287,6 +9561,7 @@
         ],
         "category": "server",
         "metadata": {
+            "execution": "master",
             "permissions": "SERVER_ADMIN"
         },
         "platforms": [
@@ -9299,6 +9574,9 @@
         "description": "Retrieve the list of secrets on the server.",
         "type": "Plugin",
         "category": "server",
+        "metadata": {
+            "execution": "master"
+        },
         "platforms": [
             "linux_amd64_cgo",
             "windows_amd64_cgo"
@@ -9442,6 +9720,7 @@
         ],
         "category": "server",
         "metadata": {
+            "execution": "master",
             "permissions": "SERVER_ADMIN"
         },
         "platforms": [
@@ -9465,6 +9744,10 @@
             }
         ],
         "category": "server",
+        "metadata": {
+            "execution": "master",
+            "permissions": "SERVER_ADMIN"
+        },
         "platforms": [
             "darwin_amd64_cgo",
             "darwin_arm64_cgo",
@@ -10217,6 +10500,7 @@
         "name": "ssh",
         "description": "Access a remote system's filesystem via `SSH/SFTP`.",
         "type": "Accessor",
+        "version": 1,
         "args": [
             {
                 "name": "secret",
@@ -10242,6 +10526,11 @@
                 "name": "hostname",
                 "type": "string",
                 "description": "The hostname to log into."
+            },
+            {
+                "name": "hostkey",
+                "type": "string",
+                "description": "A base64 encoded host key. If specified we reject connections that do not present this host key."
             }
         ],
         "metadata": {
@@ -10621,6 +10910,7 @@
         ],
         "category": "server",
         "metadata": {
+            "execution": "master",
             "permissions": "READ_RESULTS"
         },
         "platforms": [
@@ -10679,6 +10969,7 @@
         ],
         "category": "server",
         "metadata": {
+            "execution": "master",
             "permissions": "READ_RESULTS"
         },
         "platforms": [
@@ -10714,6 +11005,7 @@
         ],
         "category": "server",
         "metadata": {
+            "execution": "master",
             "permissions": "NOTEBOOK_EDITOR"
         },
         "platforms": [
@@ -10736,6 +11028,7 @@
         ],
         "category": "server",
         "metadata": {
+            "execution": "master",
             "permissions": "READ_RESULTS"
         },
         "platforms": [
@@ -11592,6 +11885,9 @@
             }
         ],
         "category": "server",
+        "metadata": {
+            "execution": "master"
+        },
         "platforms": [
             "darwin_amd64_cgo",
             "darwin_arm64_cgo",
@@ -11637,6 +11933,10 @@
             }
         ],
         "category": "server",
+        "metadata": {
+            "execution": "master",
+            "permissions": "SERVER_ADMIN"
+        },
         "platforms": [
             "darwin_amd64_cgo",
             "darwin_arm64_cgo",
@@ -11670,6 +11970,10 @@
             }
         ],
         "category": "server",
+        "metadata": {
+            "execution": "master",
+            "permissions": "SERVER_ADMIN"
+        },
         "platforms": [
             "darwin_amd64_cgo",
             "darwin_arm64_cgo",
@@ -11709,6 +12013,10 @@
             }
         ],
         "category": "server",
+        "metadata": {
+            "execution": "master",
+            "permissions": "SERVER_ADMIN"
+        },
         "platforms": [
             "darwin_amd64_cgo",
             "darwin_arm64_cgo",
@@ -11735,6 +12043,9 @@
                 "description": "The message to deliver to the user."
             }
         ],
+        "metadata": {
+            "execution": "master"
+        },
         "platforms": [
             "linux_amd64_cgo"
         ],
@@ -11757,6 +12068,9 @@
                 "description": "If set we read another user's messages (must be admin)."
             }
         ],
+        "metadata": {
+            "execution": "master"
+        },
         "platforms": [
             "linux_amd64_cgo"
         ]
@@ -11804,6 +12118,9 @@
             }
         ],
         "category": "server",
+        "metadata": {
+            "execution": "master"
+        },
         "platforms": [
             "darwin_amd64_cgo",
             "linux_amd64_cgo",
@@ -12048,6 +12365,10 @@
             }
         ],
         "category": "event",
+        "metadata": {
+            "event": "true",
+            "permissions": "MACHINE_STATE"
+        },
         "platforms": [
             "linux_amd64_cgo"
         ]
@@ -12093,6 +12414,7 @@
         ],
         "category": "event",
         "metadata": {
+            "event": "true",
             "permissions": "FILESYSTEM_READ"
         },
         "platforms": [
@@ -12133,6 +12455,7 @@
         ],
         "category": "linux",
         "metadata": {
+            "event": "true",
             "permissions": "MACHINE_STATE"
         },
         "platforms": [
@@ -12246,6 +12569,7 @@
         ],
         "category": "event",
         "metadata": {
+            "event": "true",
             "permissions": "FILESYSTEM_READ"
         },
         "platforms": [
@@ -12281,6 +12605,7 @@
         ],
         "category": "event",
         "metadata": {
+            "event": "true",
             "permissions": "FILESYSTEM_READ"
         },
         "platforms": [
@@ -12316,6 +12641,7 @@
         ],
         "category": "event",
         "metadata": {
+            "event": "true",
             "permissions": "FILESYSTEM_READ"
         },
         "platforms": [
@@ -12340,6 +12666,8 @@
         ],
         "category": "event",
         "metadata": {
+            "event": "true",
+            "execution": "master",
             "permissions": "READ_RESULTS"
         },
         "platforms": [
@@ -12380,6 +12708,7 @@
         ],
         "category": "event",
         "metadata": {
+            "event": "true",
             "permissions": "FILESYSTEM_READ"
         },
         "platforms": [
@@ -12403,6 +12732,10 @@
             }
         ],
         "category": "event",
+        "metadata": {
+            "event": "true",
+            "permissions": "FILESYSTEM_READ"
+        },
         "platforms": [
             "darwin_amd64_cgo",
             "darwin_arm64_cgo",

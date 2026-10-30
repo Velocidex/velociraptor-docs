@@ -1,0 +1,33 @@
+{{- /* Override of Hextra's navbar-title partial (theme: layouts/_partials/navbar-title.html).
+       Identical to the theme default, except the wrapper `a` does NOT get
+       `hx:md:hidden`.  On desktop the small raptor mark is hidden by default
+       via custom.css using visibility (not display), so its slot stays
+       reserved and the always-visible navbar buttons never shift; JS
+       (assets/js/navbar-logo.js) flips it to visible once the sidebar logo
+scrolls out of view.  On mobile (single-column) it is the only logo
+        and stays visible.  The title itself is hidden via
+        params.navbar.displayTitle = false (hugo.toml), so this renders the
+        logo alone.
+
+        The theme default `a` carries hx:ltr:mr-auto / hx:rtl:ml-auto,
+        which pushes the navbar buttons far from the logo.  We drop those
+        auto margins so the buttons sit adjacent to the raptor mark (the
+        search wrapper keeps the right edge via margin-left:auto in
+        custom.css).  Because the raptor toggles via visibility rather than
+        display, its slot stays reserved and the buttons never shift. */ -}}
+{{- $logoPath := .Site.Params.navbar.logo.path | default "images/logo.svg" -}}
+{{- $logoLink := .Site.Params.navbar.logo.link | default .Site.Home.RelPermalink -}}
+{{- $logoWidth := .Site.Params.navbar.logo.width | default "20" -}}
+{{- $logoHeight := .Site.Params.navbar.logo.height | default "20" -}}
+{{- $logoDarkPath := .Site.Params.navbar.logo.dark | default $logoPath -}}
+
+<a class="hextra-navbar-logo hx:flex hx:items-center hx:hover:opacity-75" href="{{ $logoLink }}">
+  {{- $displayTitle := (.Site.Params.navbar.displayTitle | default true) }}
+  {{- if (.Site.Params.navbar.displayLogo | default true) }}
+    <img class="hx:mr-2 hx:block hx:dark:hidden" src="{{ $logoPath | relURL }}" alt="{{ cond $displayTitle `Logo` .Site.Title }}" height="{{ $logoHeight }}" width="{{ $logoWidth }}" />
+    <img class="hx:mr-2 hx:hidden hx:dark:block" src="{{ $logoDarkPath | relURL }}" alt="{{ cond $displayTitle `Dark Logo` .Site.Title }}" height="{{ $logoHeight }}" width="{{ $logoWidth }}" />
+  {{- end }}
+  {{- if $displayTitle }}
+    <span class="hx:mr-2 hx:font-extrabold hx:inline hx:select-none hx:text-lg">{{- .Site.Title -}}</span>
+  {{- end }}
+</a>

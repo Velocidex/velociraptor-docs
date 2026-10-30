@@ -1,12 +1,13 @@
 ---
 title: Windows.NTFS.Recover
+description: "Uploads all data streams from a specified MFT ID on an NTFS volume\nfor deleted file recovery purposes."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
-description: |
-  Uploads all data streams from a specified MFT ID on an NTFS volume
-  for deleted file recovery purposes.
+build:
+  list: never
 ---
 
 Uploads all data streams from a specified MFT ID on an NTFS volume
@@ -23,7 +24,9 @@ interest. This artifact can then be used to attempt recovery of the
 file data.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.NTFS.Recover
 description: |
   Uploads all data streams from a specified MFT ID on an NTFS volume
@@ -51,7 +54,7 @@ precondition:
 sources:
   - name: Upload
     query: |
-       LET Parsed &lt;= parse_ntfs(device=Drive, inode=MFTId)
+       LET Parsed <= parse_ntfs(device=Drive, inode=MFTId)
 
        SELECT *, upload(accessor="mft", file=Drive + Inode,
                         name=Parsed.OSPath + Inode) AS IndexUpload
@@ -66,6 +69,6 @@ sources:
                      _value.Name AS Name
               FROM scope()
             })
+````
 
-</code></pre>
 

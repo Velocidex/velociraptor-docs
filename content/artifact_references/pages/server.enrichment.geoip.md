@@ -1,12 +1,13 @@
 ---
 title: Server.Enrichment.GeoIP
+description: "A utility artifact that enriches an IP address with country, state,\nand city information from a MaxMind GeoIP database."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true
 tags: [Server Artifact]
-description: |
-  A utility artifact that enriches an IP address with country, state,
-  and city information from a MaxMind GeoIP database.
+build:
+  list: never
 ---
 
 A utility artifact that enriches an IP address with country, state,
@@ -28,7 +29,9 @@ artifact to gain access to the utility functions (or just copy them
 into your own artifact).
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Server.Enrichment.GeoIP
 description: |
   A utility artifact that enriches an IP address with country, state,
@@ -67,6 +70,6 @@ sources:
              State(IP=_value) AS State,
              City(IP=_value) AS City
       FROM foreach(row=IP)
+````
 
-</code></pre>
 

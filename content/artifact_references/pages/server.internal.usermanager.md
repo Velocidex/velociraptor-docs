@@ -1,21 +1,25 @@
 ---
 title: Server.Internal.UserManager
+description: "Fires an event when Velociraptor user accounts are created, modified, or deleted.\n"
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true
 tags: [Internal Artifact]
-description: |
-  Fires an event when Velociraptor user accounts are created, modified, or deleted.
+build:
+  list: never
 ---
 
 Fires an event when Velociraptor user accounts are created, modified, or deleted.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Server.Internal.UserManager
 type: INTERNAL
 description: |
   Fires an event when Velociraptor user accounts are created, modified, or deleted.
+````
 
-</code></pre>
 

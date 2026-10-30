@@ -53,25 +53,21 @@ that can be run by clients would be a daunting task. It's much easier
 to create the offline collector in the normal way, and then run it via
 a client as a tool. This is the approach taken in this article.
 
-{{% notice tip "Do you really need to use an offline collector?" %}}
-
-Offline collectors are sometimes used in situations when they aren't
-really needed, or aren't actually the best option.
-
-Before deciding to use an offline collector, you should consider the
-following points.
-
-- You can collect exactly the same artifacts with online clients that
-  you can collect with offline collectors.
-
-- Offline collectors are not the only available option when you can't
-  install clients. If you can't (or don't want to) install clients,
-  you still have the option of using clients without installing them,
-  as explained in the KB article
-  [How to create an “online collector” binary](/knowledge_base/tips/online_collector/).
-
-
-{{% /notice %}}
+> [!TIP] Do you really need to use an offline collector?
+> Offline collectors are sometimes used in situations when they aren't
+> really needed, or aren't actually the best option.
+>
+> Before deciding to use an offline collector, you should consider the
+> following points.
+>
+> - You can collect exactly the same artifacts with online clients that
+>   you can collect with offline collectors.
+>
+> - Offline collectors are not the only available option when you can't
+>   install clients. If you can't (or don't want to) install clients,
+>   you still have the option of using clients without installing them,
+>   as explained in the KB article
+>   [How to create an “online collector” binary](/knowledge_base/tips/online_collector/).
 
 ## Overview
 

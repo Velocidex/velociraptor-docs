@@ -6,7 +6,7 @@ Sometimes we want to have multiple providers so we can allow users from another 
 
 Simply run `velociraptor config generate -i` and select the OAuth provider for the first provider. In the end your config file will have the following section where `oauth_client_id` and `oauth_client_secret` refer to the Google OAuth app you created:
 
-```yaml
+```yaml {filename="server.config.yaml"}
 GUI:
   ... more settings ...
   authenticator:
@@ -16,7 +16,7 @@ GUI:
 ```
 
 To provide multiple authenticators, you will need to manually change to the `multi` authenticator type:
-```yaml
+```yaml {filename="server.config.yaml"}
 GUI:
   ... more settings ...
   authenticator:
@@ -49,17 +49,14 @@ velociraptor user add --role administrator mike@gmail.comm
 ```
 
 Or via a notebook cell:
-```sql
+```vql
 SELECT user_create(user="mike@gmail.com", role="administrator")
 FROM scope()
 ```
 
-{{% notice warning "Trusting multiple providers" %}}
-
-Be aware that trusting multiple identity providers can result in account hijack if a user can get an account of the same name on another provider. Velociraptor just uses the account name provided by the OAuth provider to grant access and does not keep track of which provider actually identified the user.
-
-In simple terms, if a user has username "mike" on `OIDC` provider 1 and another user can get say a GitHub account for the user "mike", then the second user can impersonate the first user by logging in with the second provider.
-
-{{% /notice %}}
+> [!WARNING] Trusting multiple providers
+> Be aware that trusting multiple identity providers can result in account hijack if a user can get an account of the same name on another provider. Velociraptor just uses the account name provided by the OAuth provider to grant access and does not keep track of which provider actually identified the user.
+>
+> In simple terms, if a user has username "mike" on `OIDC` provider 1 and another user can get say a GitHub account for the user "mike", then the second user can impersonate the first user by logging in with the second provider.
 
 Tags: #configuration #sso #deployment

@@ -1,12 +1,13 @@
 ---
 title: Windows.Sys.Users
+description: "Lists user accounts that have logged on locally by inspecting\nregistry profile list keys for locally-created profiles."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
-description: |
-  Lists user accounts that have logged on locally by inspecting
-  registry profile list keys for locally-created profiles.
+build:
+  list: never
 ---
 
 Lists user accounts that have logged on locally by inspecting
@@ -21,7 +22,9 @@ This will not include domain users or the output from `NetUserEnum`
 possible users on the system.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.Sys.Users
 description: |
   Lists user accounts that have logged on locally by inspecting
@@ -72,6 +75,6 @@ sources:
                    High=S.LocalProfileUnloadTimeHigh, Low=S.LocalProfileUnloadTimeLow)
            ) AS Data
         FROM read_reg_key(globs=remoteRegKey, accessor="registry")
+````
 
-</code></pre>
 

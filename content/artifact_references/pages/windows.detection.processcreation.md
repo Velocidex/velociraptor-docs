@@ -1,19 +1,22 @@
 ---
 title: Windows.Detection.ProcessCreation
+description: "Deploys Sysmon and watches the Sysmon ETW provider for specific\nprocess creation events, which are then forwarded to the server.\n"
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true
 tags: [Client Event Artifact]
-description: |
-  Deploys Sysmon and watches the Sysmon ETW provider for specific
-  process creation events, which are then forwarded to the server.
+build:
+  list: never
 ---
 
 Deploys Sysmon and watches the Sysmon ETW provider for specific
 process creation events, which are then forwarded to the server.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.Detection.ProcessCreation
 description: |
   Deploys Sysmon and watches the Sysmon ETW provider for specific
@@ -22,6 +25,9 @@ description: |
 author: Jos Clephas - @DfirJos
 
 type: CLIENT_EVENT
+
+required_permissions:
+  - EXECVE
 
 tools:
   - name: SysmonBinary
@@ -69,7 +75,7 @@ sources:
 
     query: |
       // Ensure that sysmon is installed.
-      LET _ &lt;= SELECT * FROM Artifact.Windows.Sysinternals.SysmonInstall(
+      LET _ <= SELECT * FROM Artifact.Windows.Sysinternals.SysmonInstall(
          SysmonFileLocation=SysmonFileLocation)
 
       SELECT *, { SELECT Hostname FROM info() } as Hostname FROM Artifact.Windows.Sysinternals.SysmonLogForward()
@@ -87,6 +93,6 @@ sources:
         EventData.Company =~ CompanyRegex AND
         EventData.Description =~ DescriptionRegex AND
         EventData.FileVersion =~ FileVersionRegex
+````
 
-</code></pre>
 

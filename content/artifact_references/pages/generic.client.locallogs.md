@@ -1,12 +1,13 @@
 ---
 title: Generic.Client.LocalLogs
+description: "Writes client logs to an encrypted local container file with\nconfigurable row limit (with flush) and size limit."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true
 tags: [Client Event Artifact]
-description: |
-  Writes client logs to an encrypted local container file with
-  configurable row limit (with flush) and size limit.
+build:
+  list: never
 ---
 
 Writes client logs to an encrypted local container file with
@@ -16,7 +17,9 @@ To retrieve and decrypt the container, use
 `Generic.Client.LocalLogsRetrieve`
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Generic.Client.LocalLogs
 description: |
   Writes client logs to an encrypted local container file with
@@ -26,6 +29,12 @@ description: |
   `Generic.Client.LocalLogsRetrieve`
 
 type: CLIENT_EVENT
+
+required_permissions:
+  - FILESYSTEM_WRITE
+
+implied_permissions:
+  - SERVER_ADMIN
 
 parameters:
 - name: LocalFilename
@@ -61,7 +70,7 @@ parameters:
 
 sources:
 - query: |
-     LET _ &lt;= log(message="Writing local log to " + expand(path=LocalFilename))
+     LET _ <= log(message="Writing local log to " + expand(path=LocalFilename))
 
      SELECT * FROM write_crypto_file(
        max_rows=MaxRows, max_wait=MaxWait, max_size=MaxSize,
@@ -71,6 +80,6 @@ sources:
          FROM logging(component=Component)
        })
      WHERE AlsoForward
+````
 
-</code></pre>
 

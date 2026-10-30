@@ -1,0 +1,92 @@
+{{- $authorEmail := "" }}
+{{- with site.Params.author }}
+  {{- if reflect.IsMap . }}
+    {{- with .email }}
+      {{- $authorEmail = . }}
+    {{- end }}
+  {{- end }}
+{{- end }}
+
+{{- $authorName := "" }}
+{{- with site.Params.author }}
+  {{- if reflect.IsMap . }}
+    {{- with .name }}
+      {{- $authorName = . }}
+    {{- end }}
+  {{- else }}
+    {{- $authorName  = . }}
+  {{- end }}
+{{- end }}
+
+{{- $useData := and (or (eq .Section "exchange") (eq .Section "artifact_references")) .Params.rss_data_file (fileExists .Params.rss_data_file) }}
+{{- $dataItems := slice }}
+{{- if $useData }}
+  {{- $dataItems = readFile .Params.rss_data_file | transform.Unmarshal }}
+{{- end }}
+
+{{- $pctx := . }}
+{{- $pages := slice }}
+{{- $pages = $pctx.Pages }}
+{{- $limit := .Site.Config.Services.RSS.Limit }}
+{{- if ge $limit 1 }}
+{{- $pages = $pages | first $limit }}
+{{- end }}
+{{- printf "<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"yes\"?>" | safeHTML }}
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>{{ with .Params.rss_title }}{{ . }}{{ else }}{{ if eq .Title .Site.Title }}{{ .Site.Title }}{{ else }}{{ with .Title }}{{ . }} on {{ end }}{{ .Site.Title }}{{ end }}{{ end }}</title>
+    <link>{{ .Permalink }}</link>
+    <description>Recent content {{ if ne .Title .Site.Title }}{{ with .Title }}in {{ . }} {{ end }}{{ end }}on {{ .Site.Title }}</description>
+    <generator>Hugo</generator>
+    <language>{{ site.Language.Locale }}</language>{{ with $authorEmail }}
+    <managingEditor>{{.}}{{ with $authorName }} ({{ . }}){{ end }}</managingEditor>{{ end }}{{ with $authorEmail }}
+    <webMaster>{{ . }}{{ with $authorName }} ({{ . }}){{ end }}</webMaster>{{ end }}{{ with .Site.Copyright }}
+    <copyright>{{ . }}</copyright>{{ end }}
+    {{- if $useData }}
+    {{- $lastDate := "" }}
+    {{- range $dataItems }}
+      {{- with .date }}
+        {{- if or (eq $lastDate "") (gt (time.AsTime .) (time.AsTime $lastDate)) }}
+          {{- $lastDate = . }}
+        {{- end }}
+      {{- end }}
+    {{- end }}
+    {{- with $lastDate }}
+    <lastBuildDate>{{ (time.AsTime .).Format "Mon, 02 Jan 2006 15:04:05 -0700" | safeHTML }}</lastBuildDate>{{ end }}
+    {{- else }}
+    {{- if not .Date.IsZero }}
+    <lastBuildDate>{{ with $pages }}{{ (index .ByLastmod.Reverse 0).Lastmod.Format "Mon, 02 Jan 2006 15:04:05 -0700" | safeHTML }}{{ end }}</lastBuildDate>{{ end }}
+    {{- end }}
+    {{- with .OutputFormats.Get "RSS" }}
+    {{ printf "<atom:link href=%q rel=\"self\" type=%q />" .Permalink .MediaType | safeHTML }}
+    {{- end }}
+    {{- if $useData }}
+    {{- $base := site.BaseURL | strings.TrimSuffix "/" }}
+    {{- range $dataItems }}
+    {{- $pub := "" }}
+    {{- with .date }}{{ $pub = time.AsTime . }}{{ end }}
+    {{- if not ($pub.IsZero) }}
+    <item>
+      <title>{{ .title }}</title>
+      <link>{{ $base }}{{ .link }}</link>
+      <pubDate>{{ $pub.Format "Mon, 02 Jan 2006 15:04:05 -0700" | safeHTML }}</pubDate>
+      {{- with .author }}<author>{{ . }}</author>{{ end }}
+      <guid>{{ $base }}{{ .link }}</guid>
+      <description>{{ .description | transform.XMLEscape | safeHTML }}</description>
+    </item>
+    {{- end }}
+    {{- end }}
+    {{- else }}
+    {{- range $pages }}
+    <item>
+      <title>{{ .Title }}</title>
+      <link>{{ .Permalink }}</link>
+      <pubDate>{{ .PublishDate.Format "Mon, 02 Jan 2006 15:04:05 -0700" | safeHTML }}</pubDate>
+      {{- with $authorEmail }}<author>{{ . }}{{ with $authorName }} ({{ . }}){{ end }}</author>{{ end }}
+      <guid>{{ .Permalink }}</guid>
+      <description>{{ replaceRE "img src=\"(.*?)\"" (printf "%s%s%s" "img src=\"" .Permalink "$1\"") .Content | transform.XMLEscape | safeHTML }}</description>
+    </item>
+    {{- end }}
+    {{- end }}
+  </channel>
+</rss>

@@ -1,11 +1,13 @@
 ---
 title: Admin.Client.Upgrade.RedHat
+description: "Upgrades Velociraptor clients on Red Hat hosts by installing a new RPM package"
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
-description: |
-  Upgrades Velociraptor clients on Red Hat hosts by installing a new RPM package
+build:
+  list: never
 ---
 
 Upgrades Velociraptor clients on Red Hat hosts by installing a new RPM package
@@ -15,7 +17,9 @@ package by using the tools interface. Click on the tool button in
 the GUI and upload a package.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Admin.Client.Upgrade.RedHat
 description: |
   Upgrades Velociraptor clients on Red Hat hosts by installing a new RPM package
@@ -51,7 +55,7 @@ sources:
 
     query:  |
       // FetchBinary downloads to /tmp on linux
-      LET bin &lt;= SELECT OSPath AS Dest
+      LET bin <= SELECT OSPath AS Dest
       FROM Artifact.Generic.Utils.FetchBinary(
          ToolName="VelociraptorRedHat", IsExecutable=FALSE,
          SleepDuration=SleepDuration)
@@ -68,6 +72,6 @@ sources:
           c={SELECT * FROM execve(argv=["systemctl", "restart", ServiceName])}
         )
       })
+````
 
-</code></pre>
 

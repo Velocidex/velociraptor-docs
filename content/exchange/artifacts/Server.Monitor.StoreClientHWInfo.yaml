@@ -14,7 +14,8 @@ description: |
 
   This artifact reads from a source named `HWIdentification` (override
   via `HWIdentificationSource`) inside the interrogation artifact named
-  by `InterrogationArtifact` (default `Custom.Generic.Client.Info`).
+  by `InterrogationArtifact` (default: your `Custom.` override of
+  `Generic.Client.Info`).
   You need to add a source by that name to your
   [`Generic.Client.Info`](/artifact_references/pages/generic.client.info/)
   override that calls

@@ -30,12 +30,11 @@ for root, dirs, files in os.walk(blog_root_directory):
       if data.get("index_page") or data.get("noindex") or data.get("draft"):
         continue
 
-      link = yaml_filename.lstrip("contents").replace("\\", "/")
-      if link.endswith("_index.md"):
-        link = link.rstrip("_index.md")
+      link = yaml_filename[len("content"):].replace("\\", "/")
+      link = re.sub(r"/(_index|index)\.md$", "/", link)
 
       if link.endswith(".md"):
-        link = link.rstrip(".md") + "/"
+        link = link[:-len(".md")] + "/"
 
       date = data.get("date", "")
       if not date:

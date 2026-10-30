@@ -1,19 +1,22 @@
 ---
 title: Server.Utils.BackupDirectory
+description: "Automatically exports and backs up completed flow results to a\nspecified directory on the server.\n"
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true
 tags: [Server Event Artifact]
-description: |
-  Automatically exports and backs up completed flow results to a
-  specified directory on the server.
+build:
+  list: never
 ---
 
 Automatically exports and backs up completed flow results to a
 specified directory on the server.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Server.Utils.BackupDirectory
 description: |
   Automatically exports and backs up completed flow results to a
@@ -39,7 +42,7 @@ required_permissions:
 
 sources:
   - query: |
-      LET completions = SELECT *,
+      LET completions = SELECT ClientId, FlowId,
          client_info(client_id=ClientId).os_info.fqdn AS Fqdn,
          create_flow_download(client_id=ClientId,
              flow_id=FlowId, wait=TRUE) AS FlowDownload
@@ -56,6 +59,6 @@ sources:
       WHERE Upload OR
         if(condition=RemoveDownloads,
            then=rm(filename=file_store(path=FlowDownload)))
+````
 
-</code></pre>
 

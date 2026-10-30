@@ -1,19 +1,22 @@
 ---
 title: Notebooks.Demo
+description: "Demonstrates notebook functionality with sample VQL and tool\nreferences.\n"
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true
 tags: [notebook]
-description: |
-  Demonstrates notebook functionality with sample VQL and tool
-  references.
+build:
+  list: never
 ---
 
 Demonstrates notebook functionality with sample VQL and tool
 references.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 
 name: Notebooks.Demo
 description: |
@@ -42,6 +45,6 @@ sources:
       template: |
         SELECT StartDate, AnInteger, Tool_Autorun_amd64_URL
         FROM scope()
+````
 
-</code></pre>
 

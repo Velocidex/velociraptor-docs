@@ -1,12 +1,13 @@
 ---
 title: Server.Enrichment.HybridAnalysis
+description: "Submits a file hash to the Hybrid Analysis threat intelligence\nservice for a verdict."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true
 tags: [Server Artifact]
-description: |
-  Submits a file hash to the Hybrid Analysis threat intelligence
-  service for a verdict.
+build:
+  list: never
 ---
 
 Submits a file hash to the Hybrid Analysis threat intelligence
@@ -24,7 +25,9 @@ requests/hour at the time of writing.
 `SELECT * from Artifact.Server.Enrichment.HybridAnalysis(Hash=$YOURHASH)`
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Server.Enrichment.HybridAnalysis
 author: Wes Lambert -- @therealwlambert
 description: |
@@ -67,7 +70,7 @@ sources:
            then=HybridAnalysisKey,
            else=server_metadata().HybridAnalysisKey)
 
-        LET URL &lt;= 'https://hybrid-analysis.com/api/v2/search/hash'
+        LET URL <= 'https://hybrid-analysis.com/api/v2/search/hash'
 
         LET Data = SELECT parse_json_array(data=Content) as Content
         FROM http_client(
@@ -85,6 +88,6 @@ sources:
                        Content.verdict[0] as Verdict
                 FROM scope()
             })
+````
 
-</code></pre>
 

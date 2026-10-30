@@ -13,8 +13,8 @@
   Published on {{ printf "%04d-%02d-%02d" .Page.Date.Year .Page.Date.Month .Page.Date.Day }}
 </span>
 <span class="pull-right">
-  <a href="{{ $file }}" download target="_blank" class="redirected">
-    <i class="fa-solid fa-download"></i>
+  <a href="{{ $file }}" download target="_blank">
+    {{ partial "icon.html" "download" }}
   </a>
   <a href="https://vulnogram.org/#editor" target="_blank" >Vulnogram</a>
 </span>
@@ -131,7 +131,7 @@
         <tr><td rowspan="1"><b class="vgi-package">{{ $affected.vendor}} {{ $affected.product }}</b><i> on </i>
             <span class="vgi-stack">{{ delimit $affected.platforms ", " }}</span>
             <br>
-            <a class="vgi-ext" href="{{ $affected.repo }}">
+            <a class="vgi-ext" href="{{ $affected.repo }}" target="_blank" rel="noopener">
               source repo
             </a>
             <br><span class="vgi-impact">Default status is {{ $affected.defaultStatus}} </span>
@@ -149,12 +149,14 @@
     <span class="credits-text"><li>{{.value}}</li></span>
     {{ end }}
   </ul>
+</div>
 {{ end }}
 
 
 <div class="references"><b class="vgi-ext">References</b>
 <ul>
   {{ range $cna.references }}
-  <li><a href="{{.url | safeURL}}">{{ .url }}</a></li>
+  <li><a href="{{.url | safeURL}}" target="_blank" rel="noopener">{{ .url }}</a></li>
   {{ end }}
 </ul>
+</div>

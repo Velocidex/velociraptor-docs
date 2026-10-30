@@ -58,14 +58,11 @@ plus an optional `Severity` column and any additional custom columns:
 Rows are matched top-to-bottom; the first match wins. `ExcludeFilter` works
 the same way and is applied after `IncludeFilter`.
 
-{{% notice info %}}
-
-Many errors from native VQL functions are logged at level `DEFAULT`, not
-`ERROR`. Include `DEFAULT` in your filters to catch these. See the
-[reference list of known VQL DEFAULT-level errors](/knowledge_base/tips/vql_error_catalogue/)
-for a ready-to-paste list.
-
-{{% /notice %}}
+> [!NOTE]
+> Many errors from native VQL functions are logged at level `DEFAULT`, not
+> `ERROR`. Include `DEFAULT` in your filters to catch these. See the
+> [reference list of known VQL DEFAULT-level errors](/knowledge_base/tips/vql_error_catalogue/)
+> for a ready-to-paste list.
 
 ### Custom columns
 

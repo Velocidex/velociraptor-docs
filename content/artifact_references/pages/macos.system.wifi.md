@@ -1,12 +1,13 @@
 ---
 title: MacOS.System.Wifi
+description: "Parses the macOS airport preferences to enumerate previously joined\nWiFi networks."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
-description: |
-  Parses the macOS airport preferences to enumerate previously joined
-  WiFi networks.
+build:
+  list: never
 ---
 
 Parses the macOS airport preferences to enumerate previously joined
@@ -16,7 +17,9 @@ This can be useful in determining where a machine has been, or if a
 user has joined an illegitimate or unauthorized wireless network.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: MacOS.System.Wifi
 description: |
   Parses the macOS airport preferences to enumerate previously joined
@@ -59,6 +62,6 @@ sources:
              Value.LastManualJoinAt AS LastManualJoinAt,
              Value AS _Data
       FROM EachNetwork
+````
 
-</code></pre>
 

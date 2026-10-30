@@ -1,8 +1,7 @@
 ---
 title: Experimental
 weight: 80
-linktitle: Experimental
-index: true
+linkTitle: Experimental
 sitemap:
   disable: true
 no_edit: true
@@ -18,11 +17,11 @@ may not be broadly useful and therefore might not remain in Velociraptor for
 the long-term. This page lists such 'experimental' features.
 
 If you find them useful, please let us know so that we don't remove them!
-|Plugin/Function|<span class='vql_type'>Type</span>|Description|
+|Plugin/Function|Type|Description|
 |-|-|-|
-|[js](js)|<span class='vql_type'>Function</span>|Compile and run javascript code|
-|[js_call](js_call)|<span class='vql_type'>Function</span>|Compile and run javascript code|
-|[js_get](js_get)|<span class='vql_type'>Function</span>|Get a variable's value from the JS VM|
-|[js_set](js_set)|<span class='vql_type'>Function</span>|Set a variables value in the JS VM|
-|[sequence](sequence)|<span class='vql_type'>Plugin</span>|Combines the output of many queries into an in memory fifo|
-|[xattr](xattr)|<span class='vql_type'>Function</span>|Query a file for the specified extended attribute|
+|[js](js)|Function|Compile and run javascript code|
+|[js_call](js_call)|Function|Compile and run javascript code|
+|[js_get](js_get)|Function|Get a variable's value from the JS VM|
+|[js_set](js_set)|Function|Set a variables value in the JS VM|
+|[sequence](sequence)|Plugin|Combines the output of many queries into an in memory fifo|
+|[xattr](xattr)|Function|Query a file for the specified extended attribute|

@@ -60,11 +60,10 @@ SELECT mail(
 FROM scope()
 ```
 
-{{% notice tip %}}
-This encoding is handled automatically by the
-[`Generic.Utils.SendEmail`](/artifact_references/pages/generic.utils.sendemail/)
-artifact described [below](/knowledge_base/tips/sending_email/#the-genericutilssendemail-artifact).
-{{% /notice %}}
+> [!TIP]
+> This encoding is handled automatically by the
+> [`Generic.Utils.SendEmail`](/artifact_references/pages/generic.utils.sendemail/)
+> artifact described [below](/knowledge_base/tips/sending_email/#the-genericutilssendemail-artifact).
 
 ### Sending HTML
 
@@ -129,14 +128,11 @@ server**. If [`mail()`](/vql_reference/other/mail/) is called within `period` se
 previous successful send, the message is silently dropped and an
 error is logged. The default `period` is **60 seconds**.
 
-{{% notice info %}}
-
-When an e-mail is dropped, [`mail()`](/vql_reference/other/mail/) logs `ERROR:mail: Send too fast,
-suppressing.` (logged at level `DEFAULT`, not `ERROR`) and returns an
-`ErrorStatus` field. Check the artifact logs if you suspect messages
-are being silently throttled.
-
-{{% /notice %}}
+> [!NOTE]
+> When an e-mail is dropped, [`mail()`](/vql_reference/other/mail/) logs `ERROR:mail: Send too fast,
+> suppressing.` (logged at level `DEFAULT`, not `ERROR`) and returns an
+> `ErrorStatus` field. Check the artifact logs if you suspect messages
+> are being silently throttled.
 
 When using [`Generic.Utils.SendEmail`](/artifact_references/pages/generic.utils.sendemail/), the `Period` parameter maps to
 this same throttling window.
@@ -263,13 +259,12 @@ SELECT * FROM Artifact.Generic.Utils.SendEmail(
 )
 ```
 
-{{% notice info %}}
-Some e-mail clients (like Evolution) do not follow the RFC 2045
-specification and fail to parse e-mails with boundaries using
-certain characters. Set `UseSimpleBoundary` to "true" in
-[`Generic.Utils.SendEmail`](/artifact_references/pages/generic.utils.sendemail/)
-to support such clients.
-{{% /notice %}}
+> [!NOTE]
+> Some e-mail clients (like Evolution) do not follow the RFC 2045
+> specification and fail to parse e-mails with boundaries using
+> certain characters. Set `UseSimpleBoundary` to "true" in
+> [`Generic.Utils.SendEmail`](/artifact_references/pages/generic.utils.sendemail/)
+> to support such clients.
 
 ## See also
 

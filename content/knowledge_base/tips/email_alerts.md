@@ -103,14 +103,11 @@ total size of all attachments exceeds `AttachmentsMaxMiB` (default 100
 MiB), all attachments for that e-mail are dropped. Keep the source
 selection specific here as well.
 
-{{% notice info %}}
-
-Including results in the e-mail, either inline or as attachments,
-should be used with care. Only include data limited by targeted
-regexes, and consider dropping attachments altogether. The e-mail
-already includes direct download links in the uploads HTML table.
-
-{{% /notice %}}
+> [!NOTE]
+> Including results in the e-mail, either inline or as attachments,
+> should be used with care. Only include data limited by targeted
+> regexes, and consider dropping attachments altogether. The e-mail
+> already includes direct download links in the uploads HTML table.
 
 ## Example use cases
 

@@ -9,6 +9,7 @@ output_data_path = "static/comparisons/data.json"
 
 header_template = '''
 ---
+title: {title}
 menutitle: {title}
 ---
 '''
@@ -63,7 +64,7 @@ def build_markdown(definition_path):
         continue
 
       yaml_filename = os.path.join(root, name)
-      md_filename = os.path.join(root, "_index.md")
+      md_filename = os.path.join(root, "index.md")
       print("Opening file %s" % yaml_filename)
       with open(yaml_filename) as stream:
         content = stream.read()

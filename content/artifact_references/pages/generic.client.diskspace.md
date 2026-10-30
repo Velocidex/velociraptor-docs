@@ -1,12 +1,13 @@
 ---
 title: Generic.Client.DiskSpace
+description: "Reports disk usage and free disk space on Linux, macOS, and Windows\nusing platform-specific commands."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
-description: |
-  Reports disk usage and free disk space on Linux, macOS, and Windows
-  using platform-specific commands.
+build:
+  list: never
 ---
 
 Reports disk usage and free disk space on Linux, macOS, and Windows
@@ -18,7 +19,9 @@ It is designed to work equally on all architectures:
   2. On Windows we use WMI
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Generic.Client.DiskSpace
 description: |
   Reports disk usage and free disk space on Linux, macOS, and Windows
@@ -59,6 +62,6 @@ sources:
     },
     then={ SELECT * FROM Windows},
     else={ SELECT * FROM NonWindows})
+````
 
-</code></pre>
 

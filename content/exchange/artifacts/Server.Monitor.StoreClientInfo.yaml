@@ -4,7 +4,7 @@ description: |
   Save data from client interrogation as client metadata.
 
   This artifact listens for completions of an interrogation artifact —
-  typically `Custom.Generic.Client.Info`, your own override of
+  typically your own `Custom.`-prefixed override of
   [`Generic.Client.Info`](/artifact_references/pages/generic.client.info/)
   — and stores selected fields from the result as client metadata, so
   they can be indexed and searched.
@@ -24,10 +24,9 @@ description: |
   `Field` can refer to a nested field, including arrays. This means
   that field names containing a period (".") are not supported.
 
-  {{% notice info %}}
-  The sources referred to in `InfoMetadata` should only return a
-  single row. If more rows are returned, only the first is used.
-  {{% /notice %}}
+  > [!NOTE]
+  > The sources referred to in `InfoMetadata` should only return a
+  > single row. If more rows are returned, only the first is used.
 
   ## See also
 

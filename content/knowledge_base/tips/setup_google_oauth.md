@@ -163,15 +163,12 @@ can also see the user's Google avatar at the top right.
 <!-- ![Velociraptor Dashboard](dashboard.png) -->
 
 
-{{% notice note %}}
-
-Velociraptor will retain its OAuth token for 24 hours. Each day users
-will need to re-grant OAuth credentials. Therefore revoking a user
-from the Google Admin console may take a full day to take effect. To
-remove access sooner you should simply remove all permissions from the
-user using `velociraptor user grant '{}'`.
-
-{{% /notice %}}
+> [!NOTE]
+> Velociraptor will retain its OAuth token for 24 hours. Each day users
+> will need to re-grant OAuth credentials. Therefore revoking a user
+> from the Google Admin console may take a full day to take effect. To
+> remove access sooner you should simply remove all permissions from the
+> user using `velociraptor user grant '{}'`.
 
 
 

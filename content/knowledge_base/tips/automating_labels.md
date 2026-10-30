@@ -12,20 +12,17 @@ which automatically applies labels based on some criteria that you define.
 
 In this article we demonstrate two use cases: a basic and a more advanced one.
 
-{{% notice note "Labels or Metadata?" %}}
-
-Metadata is a set of fields associated with each client. Labels can also be
-regarded as information associated with a client, but in Velociraptor labels are
-a more transient kind of information and are designed to be added and removed
-relatively frequently. Labels provide a way to group clients whereas Metadata
-provides a way to store information *about* each client.
-
-It's important that you choose the appropriate one for your use case. This
-article is about automating Labels but if you want to do similar automation of
-Metadata then you may find this article more useful:
-[How can I automatically add & update client metadata?](/knowledge_base/tips/automating_metadata/)
-
-{{% /notice %}}
+> [!NOTE] Labels or Metadata?
+> Metadata is a set of fields associated with each client. Labels can also be
+> regarded as information associated with a client, but in Velociraptor labels are
+> a more transient kind of information and are designed to be added and removed
+> relatively frequently. Labels provide a way to group clients whereas Metadata
+> provides a way to store information *about* each client.
+>
+> It's important that you choose the appropriate one for your use case. This
+> article is about automating Labels but if you want to do similar automation of
+> Metadata then you may find this article more useful:
+> [How can I automatically add & update client metadata?](/knowledge_base/tips/automating_metadata/)
 
 ## Basic Use Case: Labeling based on default interrogation data
 
@@ -103,25 +100,22 @@ because targeting a hunt, for example, allows us to exclude specific labels.
 
 ![Label added](server_label.svg)
 
-{{% notice tip "Refreshing labels" %}}
-
-The above artifact will automatically label clients when the
-`Generic.Client.Info` collection is run on the clients. This collection runs
-when the client is first seen but you can run it at any time.
-
-To relabel all clients - even after they were enrolled - you can just start a
-hunt for `Generic.Client.Info` at any time. It is fine to re-apply the label
-many times as duplicate labels cannot occur.
-
-Bulk removal of a specific label is possible by running VQL in a notebook, for
-example:
-
-```vql
-SELECT client_id, label(client_id=client_id, labels=["Server"], op="remove")
-FROM clients()
-```
-
-{{% /notice %}}
+> [!TIP] Refreshing labels
+> The above artifact will automatically label clients when the
+> `Generic.Client.Info` collection is run on the clients. This collection runs
+> when the client is first seen but you can run it at any time.
+>
+> To relabel all clients - even after they were enrolled - you can just start a
+> hunt for `Generic.Client.Info` at any time. It is fine to re-apply the label
+> many times as duplicate labels cannot occur.
+>
+> Bulk removal of a specific label is possible by running VQL in a notebook, for
+> example:
+>
+> ```vql
+> SELECT client_id, label(client_id=client_id, labels=["Server"], op="remove")
+> FROM clients()
+> ```
 
 ## Advanced Use Case: Labeling based on custom interrogation data
 

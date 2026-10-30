@@ -57,12 +57,9 @@ However, it is much more useful to keep all related collections in the
 same hunt. This helps when analyzing the hunt results in the notebook
 or exporting all the related files at once.
 
-{{% notice tip "Hunts are a set of collections" %}}
-
-It is best to think of a `hunt` as just a set of related artifact
-collections. You can add/remove collections from this set at will.
-
-{{% /notice %}}
+> [!TIP] Hunts are a set of collections
+> It is best to think of a `hunt` as just a set of related artifact
+> collections. You can add/remove collections from this set at will.
 
 I am adding the new collection to the hunt manually by clicking the
 `Add to Hunt` button.
@@ -78,16 +75,13 @@ choose which hunt to add it to.
 Now the new successful collection is part of the hunt. I can see it as
 a second entry in the client's list.
 
-{{% notice note "Deleting the old collection" %}}
-
-Velociraptor does not automatically delete the old failed collection
-because it may still have some useful data (some data **was**
-transferred).
-
-If you do not want the old data any more, then just click the `Delete
-Flow` button once a better collection is available.
-
-{{% /notice %}}
+> [!NOTE] Deleting the old collection
+> Velociraptor does not automatically delete the old failed collection
+> because it may still have some useful data (some data **was**
+> transferred).
+>
+> If you do not want the old data any more, then just click the `Delete
+> Flow` button once a better collection is available.
 
 ## Using VQL
 

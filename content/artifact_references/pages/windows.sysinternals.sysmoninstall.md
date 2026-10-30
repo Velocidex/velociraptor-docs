@@ -1,12 +1,13 @@
 ---
 title: Windows.Sysinternals.SysmonInstall
+description: "Deploys Sysmon with a config file and ensures the Sysmon64 service\nis running."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
-description: |
-  Deploys Sysmon with a config file and ensures the Sysmon64 service
-  is running.
+build:
+  list: never
 ---
 
 Deploys Sysmon with a config file and ensures the Sysmon64 service
@@ -21,12 +22,14 @@ we recommend that you review the config file and, if necessary,
 override it in the GUI with one that better suits your needs.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.Sysinternals.SysmonInstall
 description: |
   Deploys Sysmon with a config file and ensures the Sysmon64 service
   is running.
-  
+
   Sysmon is a kernel level system monitor written by Sysinternals.
   While we are not able to distribute Sysmon ourselves, Velociraptor
   can help you manage its deployment and installation.
@@ -56,7 +59,7 @@ parameters:
 
 sources:
 - query: |
-    LET bin &lt;= SELECT * FROM switch(
+    LET bin <= SELECT * FROM switch(
     a={
       SELECT * FROM glob(globs=SysmonFileLocation)
     }, b={
@@ -104,6 +107,6 @@ sources:
         ),
     then={ SELECT * FROM doit },
     else={ SELECT * FROM ensure_service_running })
+````
 
-</code></pre>
 

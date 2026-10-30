@@ -1,12 +1,13 @@
 ---
 title: Server.Utils.Clients
+description: "Provides an interactive notebook for searching and inspecting client\ndetails."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true
 tags: [notebook]
-description: |
-  Provides an interactive notebook for searching and inspecting client
-  details.
+build:
+  list: never
 ---
 
 Provides an interactive notebook for searching and inspecting client
@@ -17,7 +18,9 @@ allows more refined inspection of client information than the GUI
 search page provides.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Server.Utils.Clients
 description: |
   Provides an interactive notebook for searching and inspecting client
@@ -77,6 +80,6 @@ sources:
 column_types:
   - name: client_id
     type: client_id
+````
 
-</code></pre>
 

@@ -1,12 +1,13 @@
 ---
 title: Server.Hunts.CancelAndDelete
+description: "Cancels all in-flight flows in a hunt, deletes the hunt, and\noptionally removes collected data."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true
 tags: [Server Artifact]
-description: |
-  Cancels all in-flight flows in a hunt, deletes the hunt, and
-  optionally removes collected data.
+build:
+  list: never
 ---
 
 Cancels all in-flight flows in a hunt, deletes the hunt, and
@@ -30,7 +31,9 @@ This artifact is implicitly collected by the GUI when pressing the
 "Delete Hunt" Button.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Server.Hunts.CancelAndDelete
 description: |
   Cancels all in-flight flows in a hunt, deletes the hunt, and
@@ -79,7 +82,7 @@ sources:
              cancel_flow(client_id=client_id, flow_id=flow_id) AS Cancellation
       FROM all_flows(HuntId=HuntId)
 
-      LET AllHunts &lt;= if(condition=HuntId, then=Hunts + HuntId, else=Hunts)
+      LET AllHunts <= if(condition=HuntId, then=Hunts + HuntId, else=Hunts)
 
       SELECT * FROM foreach(row={
         SELECT _value AS HuntId
@@ -91,7 +94,7 @@ sources:
 
   - name: HuntFiles
     query: |
-      LET AllHunts &lt;= if(condition=HuntId, then=Hunts + HuntId, else=Hunts)
+      LET AllHunts <= if(condition=HuntId, then=Hunts + HuntId, else=Hunts)
 
       SELECT * FROM foreach(row={
         SELECT _value as HuntId
@@ -103,6 +106,6 @@ sources:
         SELECT *
         FROM hunt_delete(hunt_id=HuntId, really_do_it=DeleteAllFiles)
       })
+````
 
-</code></pre>
 

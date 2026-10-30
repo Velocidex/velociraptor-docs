@@ -8,7 +8,15 @@ The current release is {{ $r }}. We have ready built binaries available
 for download from GitHub. Less common platforms may not be built at the latest release.
 
 <table>
-<th><tr><td></td><td>Build</td><td>Download</td><td>Hash</td><td>Signature</td></tr></th>
+<thead>
+<tr>
+  <th></th>
+  <th>Build</th>
+  <th>Download</th>
+  <th>Hash</th>
+  <th>Signature</th>
+</tr>
+</thead>
 <tbody>
 {{ range .Page.Params.arches }}
 {{ $rr := $r }}
@@ -21,14 +29,14 @@ for download from GitHub. Less common platforms may not be built at the latest r
     </div>
   </td>
   <td>{{.desc }}</td>
-    <td><a href="https://github.com/Velocidex/velociraptor/releases/download/v{{- $br -}}/velociraptor-v{{- $rr }}-{{- .name -}}">
+    <td><a href="https://github.com/Velocidex/velociraptor/releases/download/v{{- $br -}}/velociraptor-v{{- $rr }}-{{- .name -}}" target="_blank" rel="noopener">
         velociraptor-v{{- $rr }}-{{- .name -}}
         </a>
     </td>
   <td class="hash">{{.hash}}</td>
   <td class="signature">
-    <a href="https://github.com/Velocidex/velociraptor/releases/download/v{{- $br -}}/velociraptor-v{{- $rr }}-{{- .name -}}.sig">
-    <i class="fas fa-file-signature"></i>
+    <a href="https://github.com/Velocidex/velociraptor/releases/download/v{{- $br -}}/velociraptor-v{{- $rr }}-{{- .name -}}.sig" target="_blank" rel="noopener">
+      signature
     </a>
   </td>
 </tr>

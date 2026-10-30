@@ -1,19 +1,22 @@
 ---
 title: MacOS.System.QuarantineEvents
+description: "Parses the QuarantineEventsV2 database, which provides information\non when a file was downloaded from the internet.\n"
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
-description: |
-  Parses the QuarantineEventsV2 database, which provides information
-  on when a file was downloaded from the internet.
+build:
+  list: never
 ---
 
 Parses the QuarantineEventsV2 database, which provides information
 on when a file was downloaded from the internet.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: MacOS.System.QuarantineEvents
 description: |
   Parses the QuarantineEventsV2 database, which provides information
@@ -58,6 +61,6 @@ sources:
           )
 
       SELECT * FROM foreach(row=QList, query=QEventsDetails)
+````
 
-</code></pre>
 

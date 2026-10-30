@@ -11,3 +11,6 @@ Talence
 esentutl
 certutil
 Graylog
+Pagefind
+chroot
+Homebrew

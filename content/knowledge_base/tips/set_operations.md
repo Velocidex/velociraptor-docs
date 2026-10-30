@@ -12,7 +12,7 @@ subtraction.
 
 For example consider the following VQL
 
-```sql
+```vql
 
 // Convert a list into a dict for set operations
 LET SET(LIST) = to_dict(item={

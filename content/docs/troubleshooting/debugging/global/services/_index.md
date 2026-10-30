@@ -1,5 +1,6 @@
 ---
 title: "Services"
+date: 2025-03-28
 weight: 50
 description: "Velociraptor global services"
 aliases:

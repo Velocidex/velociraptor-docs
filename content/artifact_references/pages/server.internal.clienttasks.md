@@ -1,17 +1,21 @@
 ---
 title: Server.Internal.ClientTasks
+description: "Fires an event when the server schedules new tasks for a client.\n"
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true
 tags: [Internal Artifact]
-description: |
-  Fires an event when the server schedules new tasks for a client.
+build:
+  list: never
 ---
 
 Fires an event when the server schedules new tasks for a client.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Server.Internal.ClientTasks
 description: |
   Fires an event when the server schedules new tasks for a client.
@@ -19,6 +23,6 @@ description: |
 type: INTERNAL
 column_types:
   - name: ClientId
+````
 
-</code></pre>
 

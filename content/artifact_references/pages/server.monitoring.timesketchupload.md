@@ -1,19 +1,22 @@
 ---
 title: Server.Monitoring.TimesketchUpload
+description: "Watches for creation of new Velociraptor timelines and\nautomatically uploads matching ones to Timesketch.\n"
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true
 tags: [Server Event Artifact]
-description: |
-  Watches for creation of new Velociraptor timelines and
-  automatically uploads matching ones to Timesketch.
+build:
+  list: never
 ---
 
 Watches for creation of new Velociraptor timelines and
 automatically uploads matching ones to Timesketch.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Server.Monitoring.TimesketchUpload
 description: |
    Watches for creation of new Velociraptor timelines and
@@ -48,6 +51,7 @@ imports:
 
 sources:
   - query: |
+      // linter: symbol_mask_warn:"timelines"
       SELECT * FROM foreach(row={
          SELECT NotebookId, SuperTimelineName, Timeline
          FROM watch_monitoring(artifact="Server.Internal.TimelineAdd")
@@ -61,6 +65,6 @@ sources:
              TimelineName=Timeline,
              SketchName=SuperTimelineName)
       })
+````
 
-</code></pre>
 

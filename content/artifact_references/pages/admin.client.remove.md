@@ -1,11 +1,13 @@
 ---
 title: Admin.Client.Remove
+description: "Purges inactive clients based on a configurable age threshold."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true
 tags: [Server Artifact]
-description: |
-  Purges inactive clients based on a configurable age threshold.
+build:
+  list: never
 ---
 
 Purges inactive clients based on a configurable age threshold.
@@ -16,7 +18,9 @@ for a while. All data for these clients will be removed.
 The artifact enumerates all the files that are removed.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Admin.Client.Remove
 description: |
   Purges inactive clients based on a configurable age threshold.
@@ -39,16 +43,16 @@ parameters:
 
 sources:
   - query: |
-      LET Threshold &lt;= timestamp(epoch=now() - Age * 3600 * 24 )
+      LET Threshold <= timestamp(epoch=now() - Age * 3600 * 24 )
       LET old_clients = SELECT os_info.fqdn AS Fqdn, client_id,
              timestamp(epoch=last_seen_at) AS LastSeen FROM clients()
-      WHERE LastSeen &lt; Threshold
+      WHERE LastSeen < Threshold
 
       SELECT * FROM foreach(row=old_clients,
       query={
          SELECT *, Fqdn, LastSeen FROM client_delete(
              client_id=client_id, really_do_it=ReallyDoIt)
       })
+````
 
-</code></pre>
 

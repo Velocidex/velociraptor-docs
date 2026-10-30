@@ -1,11 +1,13 @@
 ---
 title: Windows.Detection.Yara.PhysicalMemory
+description: "Scans physical memory for YARA matches using the WinPmem driver."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
-description: |
-  Scans physical memory for YARA matches using the WinPmem driver.
+build:
+  list: never
 ---
 
 Scans physical memory for YARA matches using the WinPmem driver.
@@ -41,7 +43,9 @@ $sequence_5 = { 250000ff00 33d0 8b4db0 c1e9 ( 08 | 08 ) }
 ```
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.Detection.Yara.PhysicalMemory
 description: |
   Scans physical memory for YARA matches using the WinPmem driver.
@@ -136,13 +140,13 @@ sources:
       SELECT OS From info() where OS = 'windows'
 
     query: |
-      LET YARA_LOG_LEVEL &lt;= 10
+      LET YARA_LOG_LEVEL <= 10
 
       -- check which Yara to use
-      LET yara_rules &lt;= YaraUrl || YaraRule
+      LET yara_rules <= YaraUrl || YaraRule
 
       -- Load the WinPmem binary
-      LET _ &lt;= winpmem(service=ServiceName, driver_path=DriverPath)
+      LET _ <= winpmem(service=ServiceName, driver_path=DriverPath)
 
       SELECT
          Rule,
@@ -152,6 +156,6 @@ sources:
          String.HexData as HitHexData
       FROM yara(files="pmem", accessor='winpmem',
                 rules=yara_rules, context=ContextBytes, number=NumberOfHits)
+````
 
-</code></pre>
 

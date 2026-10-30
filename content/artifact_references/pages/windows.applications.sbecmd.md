@@ -1,12 +1,13 @@
 ---
 title: Windows.Applications.SBECmd
+description: "Executes Eric Zimmerman's SBECmd tool to parse Shellbags and capture\nthe results."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
-description: |
-  Executes Eric Zimmerman's SBECmd tool to parse Shellbags and capture
-  the results.
+build:
+  list: never
 ---
 
 Executes Eric Zimmerman's SBECmd tool to parse Shellbags and capture
@@ -29,7 +30,9 @@ since Velociraptor can now parse Shellbags natively with the
 `Windows.Forensics.Shellbags` artifact.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.Applications.SBECmd
 description: |
   Executes Eric Zimmerman's SBECmd tool to parse Shellbags and capture
@@ -55,7 +58,7 @@ author: Eduardo Mattos - @eduardfir
 
 reference:
   - https://github.com/EricZimmerman
-  - "MITRE ATT&amp;CK ID: TA0009 - Collection"
+  - "MITRE ATT&CK ID: TA0009 - Collection"
 
 type: CLIENT
 
@@ -86,11 +89,11 @@ parameters:
 sources:
   - query: |
       -- get context on target binary
-      LET payload &lt;= SELECT * FROM Artifact.Generic.Utils.FetchBinary(
+      LET payload <= SELECT * FROM Artifact.Generic.Utils.FetchBinary(
                     ToolName="SBECmd", IsExecutable=TRUE)
 
       -- build tempfolder for output
-      LET tempfolder &lt;= tempdir(remove_last=TRUE)
+      LET tempfolder <= tempdir(remove_last=TRUE)
 
       -- get users with profiles
       LET UserProfiles = SELECT
@@ -100,7 +103,7 @@ sources:
       WHERE Name =~ userRegex and HomeDirectory =~ "Users"
 
       -- execute payload
-      LET deploy &lt;= SELECT * FROM foreach(row=UserProfiles,
+      LET deploy <= SELECT * FROM foreach(row=UserProfiles,
                     query={
                         SELECT *, Name
                         FROM execve(argv=[
@@ -138,6 +141,6 @@ sources:
            })
       })
       WHERE Stdout =~ "SBECmd"
+````
 
-</code></pre>
 

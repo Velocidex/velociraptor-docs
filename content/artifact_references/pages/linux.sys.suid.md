@@ -1,12 +1,13 @@
 ---
 title: Linux.Sys.SUID
+description: "Searches for applications that have the `setuid` or `setgid` bits\nset."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
-description: |
-  Searches for applications that have the `setuid` or `setgid` bits
-  set.
+build:
+  list: never
 ---
 
 Searches for applications that have the `setuid` or `setgid` bits
@@ -35,7 +36,9 @@ malware to ensure that they're able to execute in elevated contexts
 in the future.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Linux.Sys.SUID
 aliases:
   - MacOS.Sys.SUID
@@ -66,7 +69,7 @@ description: |
   in the future.
 
 reference:
-  - https://attack.mitre.org/techniques/T1166/
+  - https://attack.mitre.org/techniques/T1548.001/
 
 parameters:
   - name: GlobExpression
@@ -80,6 +83,6 @@ sources:
                Sys.Uid AS OwnerID,
                Sys.Gid AS GroupID
       FROM glob(globs=GlobExpression) WHERE Mode =~ '^g|u'
+````
 
-</code></pre>
 

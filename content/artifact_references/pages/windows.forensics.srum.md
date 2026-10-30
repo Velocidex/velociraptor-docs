@@ -1,12 +1,13 @@
 ---
 title: Windows.Forensics.SRUM
+description: "Parses the Windows SRUM database (srudb.dat) to extract execution\nstats, resource usage, and network activity."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
-description: |
-  Parses the Windows SRUM database (srudb.dat) to extract execution
-  stats, resource usage, and network activity.
+build:
+  list: never
 ---
 
 Parses the Windows SRUM database (srudb.dat) to extract execution
@@ -18,7 +19,9 @@ We have found this table useful searching for binary name strings.
 Added filters for ExecutableRegex, UserRegex and TimeStamp.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.Forensics.SRUM
 description: |
   Parses the Windows SRUM database (srudb.dat) to extract execution
@@ -131,8 +134,8 @@ sources:
                           accessor=accessor, table=ExecutionGUID)
            WHERE App =~ ExecutableRegex
             AND ( UserSid =~ UserRegex OR User =~ UserRegex ) 
-            AND TimeStamp &gt; TimeAfter
-            AND TimeStamp &lt; TimeBefore
+            AND TimeStamp > TimeAfter
+            AND TimeStamp < TimeBefore
       })
 
   - name: Application Resource Usage
@@ -167,8 +170,8 @@ sources:
                        accessor=accessor, table=ApplicationResourceUsageGUID)
           WHERE App =~ ExecutableRegex
             AND ( UserSid =~ UserRegex OR User =~ UserRegex ) 
-            AND TimeStamp &gt; TimeAfter
-            AND TimeStamp &lt; TimeBefore
+            AND TimeStamp > TimeAfter
+            AND TimeStamp < TimeBefore
       })
 
   - name: Network Connections
@@ -192,8 +195,8 @@ sources:
                        accessor=accessor, table=NetworkConnectionsGUID)
         WHERE App =~ ExecutableRegex
           AND ( UserSid =~ UserRegex OR User =~ UserRegex ) 
-          AND TimeStamp &gt; TimeAfter
-          AND TimeStamp &lt; TimeBefore
+          AND TimeStamp > TimeAfter
+          AND TimeStamp < TimeBefore
       })
 
   - name: Network Usage
@@ -219,8 +222,8 @@ sources:
         FROM parse_ese(file=OSPath, accessor=accessor, table=NetworkUsageGUID)
         WHERE App =~ ExecutableRegex
           AND ( UserSid =~ UserRegex OR User =~ UserRegex ) 
-          AND TimeStamp &gt; TimeAfter
-          AND TimeStamp &lt; TimeBefore
+          AND TimeStamp > TimeAfter
+          AND TimeStamp < TimeBefore
       })
     notebook:
         - type: vql_suggestion
@@ -254,7 +257,7 @@ sources:
           parse_string_with_regex(
               string=ResolveESEId(
                   OSPath=OSPath, Accessor=accessor, Id=IdIndex),
-              regex="^(?&lt;PackageName&gt;[^!]*)\\!(?&lt;PackageId&gt;[^!]*)\\!(?&lt;Path&gt;[^!]*)\\!((?&lt;Timestamp&gt;[^!]*)\\!)?((?&lt;InstanceID&gt;[^!]*)\\!)?((?&lt;Args&gt;[^!]*))?$") AS Parsed
+              regex="^(?<PackageName>[^!]*)\\!(?<PackageId>[^!]*)\\!(?<Path>[^!]*)\\!((?<Timestamp>[^!]*)\\!)?((?<InstanceID>[^!]*)\\!)?((?<Args>[^!]*))?$") AS Parsed
         FROM parse_ese(
             file=OSPath, accessor=accessor, table="SruDbIdMapTable")
           
@@ -275,8 +278,8 @@ sources:
       })
       WHERE __RawValue AND IdType = 0 AND Path =~ ExecutableRegex
         AND ( UserSid =~ UserRegex OR User =~ UserRegex ) 
-        AND TimeStamp &gt; TimeAfter
-        AND TimeStamp &lt; TimeBefore
+        AND TimeStamp > TimeAfter
+        AND TimeStamp < TimeBefore
+````
 
-</code></pre>
 

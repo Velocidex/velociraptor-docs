@@ -1,12 +1,13 @@
 ---
 title: Windows.Applications.IISLogs
+description: "Provides grep-like search of IIS log files in specified directories\nwith optional whitelist filtering."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
-description: |
-  Provides grep-like search of IIS log files in specified directories
-  with optional whitelist filtering.
+build:
+  list: never
 ---
 
 Provides grep-like search of IIS log files in specified directories
@@ -30,7 +31,9 @@ MoreRecentThan as timestamp.
   recover lines with ISO times between the 21st and 25th July 2025.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.Applications.IISLogs
 description: |
   Provides grep-like search of IIS log files in specified directories
@@ -80,7 +83,7 @@ sources:
         condition=MoreRecentThan,
         then={
           SELECT * FROM files
-          WHERE MTime &gt; MoreRecentThan
+          WHERE MTime > MoreRecentThan
         }, else=files)
 
       SELECT * FROM foreach(row=more_recent,
@@ -115,6 +118,6 @@ sources:
 
             SELECT * FROM foreach(row=parsed,
                   query={ SELECT *, Fqdn, _Raw FROM GrokParsed })
+````
 
-</code></pre>
 

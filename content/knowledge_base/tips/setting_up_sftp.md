@@ -15,16 +15,13 @@ uploads instead of using a cloud storage service.
 This article explains how to set up a SFTP server with appropriate security for
 automated remote file uploads.
 
-{{% notice warning %}}
-
-Setting up SSH and SFTP can be tricky for novice Linux users. It is easy to
-misconfigure things in ways that can leave a server open to exploitation.
-
-Unless you have a strong reason to prefer using SFTP we recommend that you
-consider more self-contained alternative options such as the one described in
-[How to set up a self-hosted S3-compatible dropbox server](/knowledge_base/tips/dropbox_server/).
-
-{{% /notice %}}
+> [!WARNING]
+> Setting up SSH and SFTP can be tricky for novice Linux users. It is easy to
+> misconfigure things in ways that can leave a server open to exploitation.
+>
+> Unless you have a strong reason to prefer using SFTP we recommend that you
+> consider more self-contained alternative options such as the one described in
+> [How to set up a self-hosted S3-compatible dropbox server](/knowledge_base/tips/dropbox_server/).
 
 ---
 

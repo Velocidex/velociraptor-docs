@@ -1,12 +1,13 @@
 ---
 title: Server.Enrichment.GreyNoise
+description: "Enriches an IP address with GreyNoise threat intelligence including\nclassification and noise status."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true
 tags: [Server Artifact]
-description: |
-  Enriches an IP address with GreyNoise threat intelligence including
-  classification and noise status.
+build:
+  list: never
 ---
 
 Enriches an IP address with GreyNoise threat intelligence including
@@ -21,7 +22,9 @@ data made available by that artifact.
 `SELECT * from Artifact.Server.Enrichment.GreyNoise(IP=$YOURIP)`
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Server.Enrichment.GreyNoise
 author: Wes Lambert -- @therealwlambert
 description: |
@@ -68,7 +71,7 @@ parameters:
 
 sources:
   - query: |
-        LET URL &lt;= if(condition= AccountType='community', then=CommunityURL, else=EnterpriseURL)
+        LET URL <= if(condition= AccountType='community', then=CommunityURL, else=EnterpriseURL)
 
         LET Data = if(condition= ApiKey!='', 
         then={
@@ -89,6 +92,6 @@ sources:
             GreyNoiseLookup.link AS Link,
             GreyNoiseLookup AS _GreyNoiseLookup
         FROM Data
+````
 
-</code></pre>
 

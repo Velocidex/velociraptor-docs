@@ -9,13 +9,10 @@ title: Velocidex Query Language (VQL)
 categories: ["Blog"]
 ---
 
-{{% notice warning %}}
-
-This page is written about a very old version of VQL and is retained
-for historical purposes. Current VQL works differently - consult the
-current documentation.
-
-{{% /notice %}}
+> [!WARNING]
+> This page is written about a very old version of VQL and is retained
+> for historical purposes. Current VQL works differently - consult the
+> current documentation.
 
 
 VQL Overview
@@ -55,13 +52,10 @@ the user\'s home directory so it can flexibly be applied to different
 situations. The ability to provide arguments to plugins encourages
 writing more generic plugins which can be reused in multiple situations.
 
-{{% notice note %}}
-
-VQL plugins currently only accept keyword arguments. It is a syntax
-error to pass args without naming them - `glob("/bin/*")` is not valid
-syntax, it should be `glob(globs="/bin/*")`
-
-{{% /notice %}}
+> [!NOTE]
+> VQL plugins currently only accept keyword arguments. It is a syntax
+> error to pass args without naming them - `glob("/bin/*")` is not valid
+> syntax, it should be `glob(globs="/bin/*")`
 
 It is important to appreciate that Plugins generate data dynamically.
 The data is not stored in a database table first! Plugins may begin
@@ -129,35 +123,33 @@ since epoch time:
 SELECT FullPath, timestamp(epoch=Sys.Mtim.Sec) as mtimefrom glob(globs="/bin/*")
 ```
 
-{{% notice note %}}
-
-Some VQL functions have side effects, or are more expensive to run. It
-is important to understand that VQL transforms the columns emitted from
-a plugin BEFORE it applies filtering conditions. This is needed in order
-to allow for column transformations to participate in the filter
-condition (via the alias).
-
-Due to this order of operations the following query will upload all
-files, ignoring the WHERE condition because the upload() function will
-be evaluated on each row, even if the WHERE clause causes the row to be
-ignored:
-
-```vql
-SELECT FullPath, upload(path=FullPath)
- from glob(globs="/bin/*")
-      WHERE Name =~ "bash"
-```
-
-To upload only the files matching the expression, the query must be
-split into two - the first query applies the filtering condition and the
-second query does the upload:
-
-```vql
-LET files = SELECT FullPath from glob(globs="/bin/*")
-    WHERE Name =~ "bash"
-SELECT FullPath, upload(path=FullPath) from files
-```
-{{% /notice %}}
+> [!NOTE]
+> Some VQL functions have side effects, or are more expensive to run. It
+> is important to understand that VQL transforms the columns emitted from
+> a plugin BEFORE it applies filtering conditions. This is needed in order
+> to allow for column transformations to participate in the filter
+> condition (via the alias).
+>
+> Due to this order of operations the following query will upload all
+> files, ignoring the WHERE condition because the upload() function will
+> be evaluated on each row, even if the WHERE clause causes the row to be
+> ignored:
+>
+> ```vql
+> SELECT FullPath, upload(path=FullPath)
+>  from glob(globs="/bin/*")
+>       WHERE Name =~ "bash"
+> ```
+>
+> To upload only the files matching the expression, the query must be
+> split into two - the first query applies the filtering condition and the
+> second query does the upload:
+>
+> ```vql
+> LET files = SELECT FullPath from glob(globs="/bin/*")
+>     WHERE Name =~ "bash"
+> SELECT FullPath, upload(path=FullPath) from files
+> ```
 
 VQL Subselects
 --------------

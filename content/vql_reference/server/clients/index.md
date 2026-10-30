@@ -1,0 +1,59 @@
+---
+title: clients
+sitemap:
+  disable: true
+no_edit: true
+no_children: true
+description: |
+  Returns client info for one or more clients from the datastore.
+
+  This plugin is typically used when needing to iterate of the list of
+  clients.
+
+  The `search` argument allows search expressions analogous to those in the
+  GUI's client search bar.
+
+  The information returned for each client is the same as is returned by the
+  `client_info()` function. If you are retrieving information for a specific
+  client then you may want to consider using that instead.
+
+  ### See also
+
+  - [client_info]({{< ref "/vql_reference/server/client_info/" >}}): Returns
+    client info for a specific client from the datastore.
+
+build:
+  list: never
+---
+
+
+
+{{< badge >}}Plugin{{< /badge >}}
+
+Arg | Description | Type
+----|-------------|-----
+search|Client search string. Can have the following prefixes: 'label:', 'host:'|string
+client_id||string
+
+**Required permissions:** `READ_RESULTS`
+
+### Description
+
+Returns client info for one or more clients from the datastore.
+
+This plugin is typically used when needing to iterate of the list of
+clients.
+
+The `search` argument allows search expressions analogous to those in the
+GUI's client search bar.
+
+The information returned for each client is the same as is returned by the
+`client_info()` function. If you are retrieving information for a specific
+client then you may want to consider using that instead.
+
+### See also
+
+- [client_info]({{< ref "/vql_reference/server/client_info/" >}}): Returns
+  client info for a specific client from the datastore.
+
+

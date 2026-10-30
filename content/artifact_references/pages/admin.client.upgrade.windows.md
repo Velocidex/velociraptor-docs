@@ -1,12 +1,13 @@
 ---
 title: Admin.Client.Upgrade.Windows
+description: "Upgrades Velociraptor clients on Windows hosts by running msiexec\nwith the provided MSI."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
-description: |
-  Upgrades Velociraptor clients on Windows hosts by running msiexec
-  with the provided MSI.
+build:
+  list: never
 ---
 
 Upgrades Velociraptor clients on Windows hosts by running msiexec
@@ -21,7 +22,9 @@ client, you can actually install any other MSI by customizing this
 artifact or uploading a different MSI file.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Admin.Client.Upgrade.Windows
 description: |
   Upgrades Velociraptor clients on Windows hosts by running msiexec
@@ -58,7 +61,7 @@ sources:
     query:  |
       // Force the file to be copied to the real temp directory since
       // we are just about to remove the Tools directory.
-      LET bin &lt;= SELECT copy(filename=OSPath,
+      LET bin <= SELECT copy(filename=OSPath,
           dest=expand(path="%SYSTEMROOT%\\Temp\\") + basename(path=OSPath)) AS Dest
       FROM Artifact.Generic.Utils.FetchBinary(
          ToolName="WindowsMSI", IsExecutable=FALSE,
@@ -88,6 +91,6 @@ sources:
 
        })
       })
+````
 
-</code></pre>
 

@@ -1,12 +1,13 @@
 ---
 title: Linux.Sys.LogHunter
+description: "Provides grep-like search capabilities for Linux, MacOS and Windows\nlogs."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
-description: |
-  Provides grep-like search capabilities for Linux, MacOS and Windows
-  logs.
+build:
+  list: never
 ---
 
 Provides grep-like search capabilities for Linux, MacOS and Windows
@@ -23,7 +24,9 @@ NOTE: The `nosymlink` feature of glob is set so unexpected results
 may occur if your targets includes symlink files.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Linux.Sys.LogHunter
 author: "Matt Green - @mgreen27"
 description: |
@@ -62,9 +65,9 @@ parameters:
 
 sources:
   - query: |
-      LET RecursionCB &lt;= if(condition= ExcludeDirectoryRegex,
-         then="x =&gt; NOT x.OSPath =~ ExcludeDirectoryRegex",
-         else="x =&gt; NOT x.OSPath =~ '^/proc' ")
+      LET RecursionCB <= if(condition= ExcludeDirectoryRegex,
+         then="x => NOT x.OSPath =~ ExcludeDirectoryRegex",
+         else="x => NOT x.OSPath =~ '^/proc' ")
 
       LET files = SELECT OSPath
         FROM glob(globs=TargetFiles,
@@ -87,6 +90,6 @@ sources:
         else={
            SELECT * FROM hits
         })
+````
 
-</code></pre>
 

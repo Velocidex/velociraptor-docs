@@ -1,12 +1,13 @@
 ---
 title: MacOS.Applications.Chrome.History
+description: "Enumerates visited URLs, titles, and visit timestamps from Chrome\nhistory databases on macOS."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
-description: |
-  Enumerates visited URLs, titles, and visit timestamps from Chrome
-  history databases on macOS.
+build:
+  list: never
 ---
 
 Enumerates visited URLs, titles, and visit timestamps from Chrome
@@ -18,7 +19,9 @@ This artifact is deprecated in favor of
 Generic.Forensic.SQLiteHunter and will be removed in future
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: MacOS.Applications.Chrome.History
 description: |
   Enumerates visited URLs, titles, and visit timestamps from Chrome
@@ -45,7 +48,7 @@ precondition: SELECT OS From info() where OS = 'darwin'
 sources:
   - query: |
       LET history_files = SELECT
-         parse_string_with_regex(regex="/Users/(?P&lt;User&gt;[^/]+)", string=OSPath).User AS User,
+         parse_string_with_regex(regex="/Users/(?P<User>[^/]+)", string=OSPath).User AS User,
          OSPath, Mtime
       FROM glob(globs=historyGlobs)
 
@@ -60,6 +63,6 @@ sources:
              file=OSPath,
              query=urlSQLQuery)
           })
+````
 
-</code></pre>
 

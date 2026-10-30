@@ -1,12 +1,13 @@
 ---
 title: Linux.Sys.BashHistory
+description: "Provides grep-like searching of Bash and alternate shell history log\nfiles."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
-description: |
-  Provides grep-like searching of Bash and alternate shell history log
-  files.
+build:
+  list: never
 ---
 
 Provides grep-like searching of Bash and alternate shell history log
@@ -23,7 +24,9 @@ directories such as:
 Tags: .bash_history .bash_profile .bashrc
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Linux.Sys.BashHistory
 author: "Matt Green - @mgreen27"
 description: |
@@ -65,6 +68,6 @@ sources:
                     then= Line =~ WhitelistRegex,
                     else= FALSE)
           })
+````
 
-</code></pre>
 

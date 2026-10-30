@@ -1,12 +1,13 @@
 ---
 title: Windows.Detection.Yara.Process
+description: "Runs YARA over processes in memory and optionally uploads process\ndumps."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
-description: |
-  Runs YARA over processes in memory and optionally uploads process
-  dumps.
+build:
+  list: never
 ---
 
 Runs YARA over processes in memory and optionally uploads process
@@ -30,7 +31,9 @@ selected NumberOfHits is redundant and not advised as hits are
 grouped by path to ensure files only downloaded once.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.Detection.Yara.Process
 author: Matt Green - @mgreen27
 description: |
@@ -123,7 +126,7 @@ sources:
 
     query: |
       -- check which Yara to use
-      LET yara_rules &lt;= YaraUrl || YaraRule
+      LET yara_rules <= YaraUrl || YaraRule
 
       -- find velociraptor process
       LET me = SELECT Pid FROM pslist(pid=getpid())
@@ -198,6 +201,6 @@ sources:
 
 column_types:
   - name: HitContext
-    type: preview_upload
-</code></pre>
+    type: preview_upload````
+
 

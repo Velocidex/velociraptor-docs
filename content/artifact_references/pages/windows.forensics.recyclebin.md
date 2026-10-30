@@ -1,12 +1,13 @@
 ---
 title: Windows.Forensics.RecycleBin
+description: "Parses Recycle Bin `$I` metadata files to recover deleted file names,\noriginal paths, and deletion timestamps."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
-description: |
-  Parses Recycle Bin `$I` metadata files to recover deleted file names,
-  original paths, and deletion timestamps.
+build:
+  list: never
 ---
 
 Parses Recycle Bin `$I` metadata files to recover deleted file names,
@@ -37,7 +38,9 @@ data. There may be additional unallocated-but-readable $I files
 referenced in the MFT that may be recoverable.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.Forensics.RecycleBin
 description: |
   Parses Recycle Bin `$I` metadata files to recover deleted file names,
@@ -104,6 +107,6 @@ sources:
                     )) AS Upload
                  FROM parse_recyclebin(filename=OSPath)
               })
+````
 
-</code></pre>
 

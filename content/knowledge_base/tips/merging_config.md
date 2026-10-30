@@ -26,22 +26,19 @@ merge](https://datatracker.ietf.org/doc/html/rfc7396) and [JSON
 patch](https://jsonpatch.com/) are standard ways of specifying a
 transformation on a JSON object.
 
-{{% notice tip Viewing the Configuration in JSON %}}
-
-Normally the configuration file is in YAML but you can also view it in
-JSON using the `--json` flag to the `config show` command:
-
-```
-velociraptor --config config.yaml config show --json
-```
-
-Since YAML is a superset of JSON you can also provide this JSON blob
-to Velociraptor as the actual configuration (no need to convert it
-back to YAML). This helps to prepare the JSON merge patch - simply
-remove the fields you don't want to change and change the fields you do
-want to change.
-
-{{% /notice %}}
+> [!TIP] Viewing the Configuration in JSON
+> Normally the configuration file is in YAML but you can also view it in
+> JSON using the `--json` flag to the `config show` command:
+>
+> ```
+> velociraptor --config config.yaml config show --json
+> ```
+>
+> Since YAML is a superset of JSON you can also provide this JSON blob
+> to Velociraptor as the actual configuration (no need to convert it
+> back to YAML). This helps to prepare the JSON merge patch - simply
+> remove the fields you don't want to change and change the fields you do
+> want to change.
 
 For example, imagine we want to specify a new URL for clients to
 connect to. We can merge the following JSON blob with the config:

@@ -1,12 +1,13 @@
 ---
 title: Windows.Persistence.PowershellProfile
+description: "Searches for and parses PowerShell profile scripts across user and\nsystem directories for persistence detection."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
-description: |
-  Searches for and parses PowerShell profile scripts across user and
-  system directories for persistence detection.
+build:
+  list: never
 ---
 
 Searches for and parses PowerShell profile scripts across user and
@@ -24,7 +25,9 @@ System-wide configured profiles. The user can also target and
 exclude specific content with relevant regex filters.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.Persistence.PowershellProfile
 author: Matt Green - @mgreen27
 description: |
@@ -88,6 +91,6 @@ sources:
             AND NOT if(condition=StringWhiteList,
                         then= Content=~StringWhiteList,
                         else= False)
+````
 
-</code></pre>
 

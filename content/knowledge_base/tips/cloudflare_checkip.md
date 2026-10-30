@@ -20,7 +20,7 @@ hostname under that domain, e.g. "velociraptor.example.com"
 
 Using this information you can now create the dyndns configuration:
 
-```yaml
+```yaml {filename="server.config.yaml"}
 Frontend:
   ....
   dyn_dns:
@@ -32,7 +32,7 @@ Frontend:
 Make sure the Frontend.Hostname field is set to the correct hostname
 to update - for example
 
-```yaml
+```yaml {filename="server.config.yaml"}
 Frontend:
   hostname: velociraptor.example.com
 ```

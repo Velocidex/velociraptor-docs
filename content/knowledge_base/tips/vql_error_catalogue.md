@@ -15,12 +15,11 @@ and
 See [How to monitor event artifact errors](/knowledge_base/tips/monitoring_artifact_errors/)
 for the surrounding setup.
 
-{{% notice tip %}}
-Use the configuration setting
-[collection_error_regex](/docs/deployment/references/#Frontend.collection_error_regex)
-(default "ERROR:") to mark a client collection as failed when log
-entries match a regex.
-{{% /notice %}}
+> [!TIP]
+> Use the configuration setting
+> [collection_error_regex](/docs/deployment/references/#Frontend.collection_error_regex)
+> (default "ERROR:") to mark a client collection as failed when log
+> entries match a regex.
 
 ## Why this is not the artifact's default
 

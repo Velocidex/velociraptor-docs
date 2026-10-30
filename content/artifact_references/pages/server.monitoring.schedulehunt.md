@@ -1,11 +1,13 @@
 ---
 title: Server.Monitoring.ScheduleHunt
+description: "Runs client interrogation periodically."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true
 tags: [Server Event Artifact]
-description: |
-  Runs client interrogation periodically.
+build:
+  list: never
 ---
 
 Runs client interrogation periodically.
@@ -21,7 +23,9 @@ collection mechanism only collects basic information from the
 clients.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Server.Monitoring.ScheduleHunt
 description: |
   Runs client interrogation periodically.
@@ -62,6 +66,6 @@ sources:
                   spec=dict(`Generic.Client.Info`=dict()),
                   description=HuntDescription)
       FROM schedule
+````
 
-</code></pre>
 

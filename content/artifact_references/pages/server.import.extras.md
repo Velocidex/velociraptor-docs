@@ -1,12 +1,13 @@
 ---
 title: Server.Import.Extras
+description: "Downloads and imports artifact bundles from predefined external\nrepositories."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true
 tags: [Server Artifact]
-description: |
-  Downloads and imports artifact bundles from predefined external
-  repositories.
+build:
+  list: never
 ---
 
 Downloads and imports artifact bundles from predefined external
@@ -23,7 +24,9 @@ outside the Velociraptor tree.
 * [The Triage Artifacts](https://triage.velocidex.com/)
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Server.Import.Extras
 description: |
   Downloads and imports artifact bundles from predefined external
@@ -62,6 +65,6 @@ sources:
       query={
         SELECT * FROM Artifact.Server.Import.ArtifactBundle(URL=URL, Tag=Tag)
       })
+````
 
-</code></pre>
 

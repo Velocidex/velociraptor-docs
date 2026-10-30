@@ -1,12 +1,13 @@
 ---
 title: Linux.Applications.Chrome.Extensions
+description: "Enumerates installed Chrome extensions by locating and parsing\n`manifest.json` files for all users."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
-description: |
-  Enumerates installed Chrome extensions by locating and parsing
-  `manifest.json` files for all users.
+build:
+  list: never
 ---
 
 Enumerates installed Chrome extensions by locating and parsing
@@ -23,7 +24,9 @@ those locale files. It then resolves the extensions name and
 description from there.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Linux.Applications.Chrome.Extensions
 description: |
   Enumerates installed Chrome extensions by locating and parsing
@@ -152,6 +155,6 @@ sources:
                Manifest.key as Key
 
         FROM parsed_manifest_files
+````
 
-</code></pre>
 

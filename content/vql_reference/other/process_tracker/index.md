@@ -1,0 +1,45 @@
+---
+title: process_tracker
+sitemap:
+  disable: true
+no_edit: true
+no_children: true
+description: |
+  Install a global process tracker.
+
+  The process tracker is an in-memory cache. It has a limited size with older
+  records being expired. This LRU cache size is controlled by the `max_size`
+  argument. The default is 10k records.
+
+  The tracker has two queries: a sync_query and an update_query. The update
+  query resets the internal database.
+
+build:
+  list: never
+---
+
+
+
+{{< badge >}}Function{{< /badge >}}
+
+Arg | Description | Type
+----|-------------|-----
+sync_query|Source for full tracker updates. Query must emit rows with the ProcessTrackerUpdate shape - usually uses pslist() to form a full sync.|StoredQuery
+sync_period|How often to do a full sync (default 5000 msec).|int64
+update_query|An Event query that produces live updates of the tracker state.|StoredQuery
+max_size|Maximum size of process tracker LRU.|uint64
+max_expiry|Expire process records older than this much.|uint64
+enrichments|One or more VQL lambda functions that can enrich the data for the process.|list of string
+cache|The path to the cache file - if not set we use a memory based cache.|string
+### Description
+
+Install a global process tracker.
+
+The process tracker is an in-memory cache. It has a limited size with older
+records being expired. This LRU cache size is controlled by the `max_size`
+argument. The default is 10k records.
+
+The tracker has two queries: a sync_query and an update_query. The update
+query resets the internal database.
+
+

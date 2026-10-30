@@ -1,0 +1,6 @@
+{{- /* Top-level content section keys excluded from the search index and the
+   /search/ page's "Filter by Section" accordion.  Shared by baseof.html
+   (which emits data-pagefind-ignore for these) and the search shortcode
+   (which skips them in its per-section tally).  One source of truth so the
+   indexed section set always matches the pill list. */ -}}
+{{- return (slice "discord" "golang" "search" "youtube") -}}

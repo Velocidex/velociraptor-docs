@@ -3,14 +3,13 @@
 This guide walks you through the configuration of Microsoft ADFS as an OIDC
 authentication provider for Velociraptor.
 
-{{% notice warning "Environment" %}}
-This procedure has been tested with Windows Server 2022 and ADFS 4.0
-Velociraptor has been deployed using self signed certificate
-
-ADFS OpenID Configuration can be read with https://auth.domain.local/adfs/.well-known/openid-configuration
-SSL certificate on ADFS is provided by Let's Encrypt.
-Velociraptor Server is on velociraptor.local
-{{% /notice %}}
+> [!WARNING] Environment
+> This procedure has been tested with Windows Server 2022 and ADFS 4.0
+> Velociraptor has been deployed using self signed certificate
+>
+> ADFS OpenID Configuration can be read with https://auth.domain.local/adfs/.well-known/openid-configuration
+> SSL certificate on ADFS is provided by Let's Encrypt.
+> Velociraptor Server is on velociraptor.local
 
 ![setup_adfs](network_overview.png)
 
@@ -78,7 +77,7 @@ tell Velociraptor to use a [different
 field](/docs/deployment/references/#GUI.authenticator.claims.username)
 in the claim as the username:
 
-```yaml
+```yaml {filename="server.config.yaml"}
   authenticator:
     claims:
       username: upn
@@ -97,7 +96,7 @@ Validate your summary and click Next, then complete.
 In the `GUI` section of your Velociraptor config you should have the following
 authenticator settings by default:
 
-```yaml
+```yaml {filename="server.config.yaml"}
   authenticator:
     type: Basic
 ```
@@ -105,7 +104,7 @@ authenticator settings by default:
 We no longer want Basic auth and instead want SSO, so replace that with these
 new settings to match our Keycloak configuration:
 
-```yaml
+```yaml {filename="server.config.yaml"}
     type: oidc
     oidc_issuer: https://domain.local/adfs
     oidc_name: adfs
@@ -125,22 +124,19 @@ The server should now start cleanly and continue running. In the log messages
 you should see `GUI will use the oidc authenticator`. That means everything is
 OK with the authenticator config.
 
-{{% notice tip %}}
-
-While configuring, testing and potentially troubleshooting problems, it's
-easier if you can see Velociraptor's log messages. You can stop the server
-service and then run the server manually on the command line by using the
-following commands:
-
-```bash
-sudo systemctl stop velociraptor_server
-sudo -u velociraptor bash
-velociraptor -c /etc/velociraptor/server.config.yaml frontend -v
-```
-
-This will display the log messages in the terminal.
-
-{{% /notice %}}
+> [!TIP]
+> While configuring, testing and potentially troubleshooting problems, it's
+> easier if you can see Velociraptor's log messages. You can stop the server
+> service and then run the server manually on the command line by using the
+> following commands:
+>
+> ```bash
+> sudo systemctl stop velociraptor_server
+> sudo -u velociraptor bash
+> velociraptor -c /etc/velociraptor/server.config.yaml frontend -v
+> ```
+>
+> This will display the log messages in the terminal.
 
 
 ## 5. Add Users

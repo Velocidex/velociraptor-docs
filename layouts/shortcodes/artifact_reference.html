@@ -1,17 +1,7 @@
-
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js">
-</script>
-
-<div class="search-box">
-  <div class="input-group">
-    <input type="text" id="myInput" onkeyup="doSearchArtifacts()" class="form-control"
-           placeholder="Search for an artifact" aria-describedby="basic-addon2">
-    <span class="input-group-addon" id="basic-addon2"><i class="fas fa-search"></i></span>
-  </div>
+{{/* Self-contained artifact reference search over /artifact_reference/data.json. */}}
+<div class="search-box" data-section-search="artifact_reference">
+  <input type="search" class="hx:block hx:w-full hx:rounded-md hx:border hx:border-gray-200 hx:bg-white hx:px-4 hx:py-2 hx:text-gray-800 hx:placeholder-gray-400 hx:dark:border-neutral-800 hx:dark:bg-neutral-900 hx:dark:text-neutral-200 hx:dark:placeholder-neutral-500"
+         placeholder="Search for an artifact"
+         aria-label="Search for an artifact">
 </div>
-
-<div class="row search_results"></div>
-
-<script>
-  initArtifactReference();
-</script>
+<script src="/js/section-search.js"></script>

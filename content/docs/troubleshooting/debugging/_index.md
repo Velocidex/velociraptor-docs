@@ -50,20 +50,17 @@ at a specific instant in time.
 
 ![Collecting server profiles](server_profiles.svg)
 
-{{% notice note "Seeking assistance from the community" %}}
-
-If you encounter an issue that requires more thorough inspection, you
-can seek assistance from the community on Discord or the mailing
-list. In this case, you will probably be asked to attach a profile to
-your request. This helps the developers to understand issues within
-the system.
-
-Simply collect the relevant artifact (either from the server with
-`Server.Monitor.Profile` or a client with `Generic.Client.Profile`)
-and export the collection into a zip file from the GUI. You can then
-send us the Zip file for analysis.
-
-{{% /notice %}}
+> [!NOTE] Seeking assistance from the community
+> If you encounter an issue that requires more thorough inspection, you
+> can seek assistance from the community on Discord or the mailing
+> list. In this case, you will probably be asked to attach a profile to
+> your request. This helps the developers to understand issues within
+> the system.
+>
+> Simply collect the relevant artifact (either from the server with
+> `Server.Monitor.Profile` or a client with `Generic.Client.Profile`)
+> and export the collection into a zip file from the GUI. You can then
+> send us the Zip file for analysis.
 
 
 ### The Debug Console
@@ -164,4 +161,4 @@ instructive to read about each profile item to understand how Velociraptor works
 internally, understand the trade-offs made, and how to get the most out of
 Velociraptor in the real world.
 
-{{% children description=true depth=2 %}}
+{{% children description=true %}}

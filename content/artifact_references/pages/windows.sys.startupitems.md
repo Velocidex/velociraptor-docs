@@ -1,19 +1,22 @@
 ---
 title: Windows.Sys.StartupItems
+description: "Enumerates startup applications from registry Run keys and Startup\nfolder locations.\n"
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
-description: |
-  Enumerates startup applications from registry Run keys and Startup
-  folder locations.
+build:
+  list: never
 ---
 
 Enumerates startup applications from registry Run keys and Startup
 folder locations.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.Sys.StartupItems
 description: |
   Enumerates startup applications from registry Run keys and Startup
@@ -57,7 +60,7 @@ sources:
       SELECT OS From info() where OS = 'windows'
 
     query: |
-        LET approved &lt;=
+        LET approved <=
            SELECT Name as ApprovedName,
                   encode(string=Data, type="hex") as Enabled
            FROM glob(globs=startupApprovedGlobs.KeyGlobs,
@@ -106,6 +109,6 @@ sources:
         FROM chain(
            first=registry_runners,
            second=file_runners)
+````
 
-</code></pre>
 

@@ -1,5 +1,11 @@
 ---
+type: docs
+cascade:
+  type: docs
+sidebar:
+  exclude: true
 title: Documentation Development Guidelines
+date: 2026-03-28
 no_menu: true
 description: |
   If you are new to contributing content to the Velociraptor project

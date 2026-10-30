@@ -1,12 +1,13 @@
 ---
 title: Server.Utils.BackupGCS
+description: "Automatically zips and uploads collected flow results to a Google\nCloud Storage bucket."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true
 tags: [Server Event Artifact]
-description: |
-  Automatically zips and uploads collected flow results to a Google
-  Cloud Storage bucket.
+build:
+  list: never
 ---
 
 Automatically zips and uploads collected flow results to a Google
@@ -20,7 +21,9 @@ DefaultGCSKey)
 Thanks to @shortxstack and @Recon_InfoSec
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Server.Utils.BackupGCS
 description: |
   Automatically zips and uploads collected flow results to a Google
@@ -53,14 +56,14 @@ parameters:
 sources:
   - query: |
       -- Allow these settings to be set by the artifact parameter or the server metadata.
-      LET bucket &lt;= if(condition=Bucket, then=Bucket,
+      LET bucket <= if(condition=Bucket, then=Bucket,
            else=server_metadata().DefaultBucket)
-      LET project &lt;= if(condition=Project, then=Project,
+      LET project <= if(condition=Project, then=Project,
            else=server_metadata().DefaultGCSProject)
-      LET gcskey &lt;= if(condition=GCSKey, then=GCSKey,
+      LET gcskey <= if(condition=GCSKey, then=GCSKey,
            else=server_metadata().DefaultGCSKey)
 
-      LET completions = SELECT *,
+      LET completions = SELECT ClientId, FlowId,
          client_info(client_id=ClientId).os_info.fqdn AS Fqdn,
          create_flow_download(client_id=ClientId,
              flow_id=FlowId, wait=TRUE) AS FlowDownload
@@ -79,6 +82,6 @@ sources:
       WHERE Upload OR
         if(condition=RemoveDownloads,
            then=rm(filename=file_store(path=FlowDownload)))
+````
 
-</code></pre>
 

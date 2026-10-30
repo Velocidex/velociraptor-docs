@@ -1,0 +1,69 @@
+---
+title: user_options
+sitemap:
+  disable: true
+no_edit: true
+no_children: true
+description: |
+  Update and read the user GUI options
+
+  ### Example
+
+  The following will set the user language to French, dark
+  theme and add a sidebar link named Foobar. The default password
+  for zip exports will also be set to `foobar`.
+
+  ```vql
+  SELECT user_options(user=whoami(),
+         lang="fr",
+         theme="veloci-dark",
+         links=[dict(
+            text="Foobar",
+            url="https://www.google.com",
+            type="sidebar",
+            new_tab=TRUE), ],
+          default_password="foobar")
+  FROM scope()
+  ```
+
+build:
+  list: never
+---
+
+
+
+{{< badge >}}Function{{< /badge >}}
+
+Arg | Description | Type
+----|-------------|-----
+user|The user to create or update.|string (required)
+theme|Set the user's theme.|string
+timezone|Set the user's timezone.|string
+lang|Set the user's language.|string
+org|Set the user's default org id.|string
+links|Set the user's default links. This should be a list of dicts with columns: type, text, url, icon_url, new_tab, encode, parameter, method, disabled.|StoredQuery
+default_password|Set the user's default password for Zip Exports.|string
+### Description
+
+Update and read the user GUI options
+
+### Example
+
+The following will set the user language to French, dark
+theme and add a sidebar link named Foobar. The default password
+for zip exports will also be set to `foobar`.
+
+```vql
+SELECT user_options(user=whoami(),
+       lang="fr",
+       theme="veloci-dark",
+       links=[dict(
+          text="Foobar",
+          url="https://www.google.com",
+          type="sidebar",
+          new_tab=TRUE), ],
+        default_password="foobar")
+FROM scope()
+```
+
+

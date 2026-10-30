@@ -1,0 +1,13 @@
+# Site UI strings overriding Hextra's defaults.
+
+[copyright]
+other = "© 2021–2026 Velociraptor - Digging deeper!"
+
+[poweredBy]
+other = "Powered by Hextra"
+
+[menu]
+other = "Menu"
+
+[skipToContent]
+other = "Skip to content"

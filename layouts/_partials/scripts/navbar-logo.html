@@ -1,0 +1,9 @@
+{{- /* Navbar-logo visibility (assets/js/navbar-logo.js): shows the small
+       navbar raptor mark on desktop once the sidebar logo scrolls out of
+       view.  Loaded after sidebar-scroll.js (which owns the same scroll
+       container) but order between them does not matter. */ -}}
+{{- $jsNavbarLogo := resources.Get "js/navbar-logo.js" -}}
+{{- if hugo.IsProduction -}}
+  {{- $jsNavbarLogo = $jsNavbarLogo | minify | fingerprint -}}
+{{- end -}}
+<script defer src="{{ $jsNavbarLogo.RelPermalink }}" integrity="{{ $jsNavbarLogo.Data.Integrity }}"></script>

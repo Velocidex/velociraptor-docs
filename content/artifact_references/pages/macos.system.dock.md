@@ -1,12 +1,13 @@
 ---
 title: MacOS.System.Dock
+description: "Lists docked applications and their metadata from each user's Dock\nplist."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
-description: |
-  Lists docked applications and their metadata from each user's Dock
-  plist.
+build:
+  list: never
 ---
 
 Lists docked applications and their metadata from each user's Dock
@@ -21,7 +22,9 @@ have tampered with an entry, or if an entry has been added to
 emulate a legitimate application.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: MacOS.System.Dock
 description: |
   Lists docked applications and their metadata from each user's Dock
@@ -67,6 +70,6 @@ sources:
 column_types:
   - name: Book
     type: base64hex
+````
 
-</code></pre>
 

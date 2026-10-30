@@ -1,3 +1,5 @@
-<div class="toc">
+{{- /* Inline table of contents (Hextra-styled wrapper). */ -}}
+{{- $_hugo_config := `{ "version": 1 }` -}}
+<nav class="toc hx:mt-6 hx:rounded-lg hx:border hx:border-gray-200 hx:dark:border-neutral-800 hx:p-4 not-prose">
   {{ .Page.TableOfContents }}
-</div>
+</nav>

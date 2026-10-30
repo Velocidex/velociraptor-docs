@@ -8,19 +8,15 @@ weight: 50
 summary: "Working with disk images"
 aliases:
   - "/knowledge_base/tips/image_analysis/"
-description: |
-  {{% notice tip %}}
+description: "Working with disk images"
 ---
 
-{{% notice tip %}}
-
-Velociraptor works best when running on a live endpoint, where it can correlate
-information from disk with information provided by the endpoint's operating
-system - for example, with memory and other volatile sources. Running clients on
-live endpoints should always be your first choice as it presents the richest
-source of data.
-
-{{% /notice %}}
+> [!TIP]
+> Velociraptor works best when running on a live endpoint, where it can correlate
+> information from disk with information provided by the endpoint's operating
+> system - for example, with memory and other volatile sources. Running clients on
+> live endpoints should always be your first choice as it presents the richest
+> source of data.
 
 While increasingly impractical due to the size of modern hard drives, and
 despite technologies such as TRIM protocols on ubiquitous SSD drives making it
@@ -57,12 +53,9 @@ config using the `--remap` CLI flag.
 
 ![Running a client with a dead disk remapping config](deaddisk_client.svg)
 
-{{% notice tip %}}
-
-Velociraptor can use the same accessor remapping & impersonation approach with
-[offline collection containers](/docs/deployment/offline_collections/collection_data/#dead-disk-analysis-on-a-collection-container).
-
-{{% /notice %}}
+> [!TIP]
+> Velociraptor can use the same accessor remapping & impersonation approach with
+> [offline collection containers](/docs/deployment/offline_collections/collection_data/#dead-disk-analysis-on-a-collection-container).
 
 ### Accessor Remapping
 
@@ -128,7 +121,7 @@ any changes_.
 For example, this is a remapping rule that provides access to the Windows
 SOFTWARE registry hive inside an EWF-format disk image:
 
-```yaml
+```yaml {filename="remapping.yaml"}
 - type: mount
   description: Map the /Windows/System32/Config/SOFTWARE Registry hive on HKEY_LOCAL_MACHINE\Software
     (Prefixed at /)
@@ -196,7 +189,7 @@ macOS.
 
 Here is an example of an impersonation rule:
 
-```yaml
+```yaml {filename="remapping.yaml"}
 - type: impersonation
   os: windows
   hostname: VirtualHostname

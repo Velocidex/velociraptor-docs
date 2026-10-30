@@ -1,4 +1,5 @@
 ---
+icon: book-open
 title: Notebooks
 date: 2021-06-11T15:32:04Z
 last_reviewed: 2026-06-10
@@ -24,13 +25,10 @@ build reports that can be updated as new results arrive, post-process
 the results of hunts and collections, and collaborate with other users
 on an investigation.
 
-{{% notice tip %}}
-
-If you prefer to learn by doing, try the
-[Creating Your First Notebook](/docs/notebooks/creating-your-first-notebook/)
-walkthrough.
-
-{{% /notice %}}
+> [!TIP]
+> If you prefer to learn by doing, try the
+> [Creating Your First Notebook](/docs/notebooks/creating-your-first-notebook/)
+> walkthrough.
 
 A notebook is made up of **cells**. Each cell is either a `Markdown`
 cell (for formatted text, headings, and prose content) or a `VQL` cell
@@ -129,6 +127,5 @@ take up the full width of the browser window. You can return to the
 pane view by clicking the collapse button at the upper right.
 
 ![Full screen notebook](fullscreen.png)
-
 
 

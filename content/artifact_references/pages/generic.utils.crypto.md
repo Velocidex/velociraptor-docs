@@ -1,12 +1,13 @@
 ---
 title: Generic.Utils.Crypto
+description: "A utility artifact that provides HMAC-SHA256 and other custom hash\nfunctions."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
-description: |
-  A utility artifact that provides HMAC-SHA256 and other custom hash
-  functions.
+build:
+  list: never
 ---
 
 A utility artifact that provides HMAC-SHA256 and other custom hash
@@ -15,7 +16,9 @@ functions.
 To use, import this artifact and call the functions in your queries.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Generic.Utils.Crypto
 description: |
   A utility artifact that provides HMAC-SHA256 and other custom hash
@@ -36,14 +39,14 @@ export: |
   ```
 
   */
-  LET Sha256Blocksize &lt;= 64
+  LET Sha256Blocksize <= 64
 
   // Helper function to hash easier.
   LET Sha256Hash(X) = unhex(string=hash(accessor="data", path=X).SHA256)
 
   // The key is hashed if it is longer than blocksize and padded if not.
   LET HMACGetKey(Key) = if(
-    condition=len(list=Key) &lt;= Sha256Blocksize,
+    condition=len(list=Key) <= Sha256Blocksize,
     then=Key + "\x00" * (Sha256Blocksize - len(list=Key)),
     else=HMACGetKey(Key=Sha256Hash(X=Key)))
 
@@ -66,6 +69,6 @@ sources:
     // Sample usage
     SELECT HexEncode(X=HMac(Key="Secret", Message="My Message"))
     FROM scope()
+````
 
-</code></pre>
 
