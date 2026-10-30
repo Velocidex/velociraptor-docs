@@ -2,7 +2,7 @@
 title: Collections and File Acquisition over SSH
 menutitle: Collections over SSH
 date: 2025-11-06
-last_reviewed: 2026-06-23
+last_reviewed: 2026-09-25
 draft: false
 weight: 30
 summary: |
@@ -126,6 +126,7 @@ the `SSH_CONFIG` VQL variable, which accepts these fields:
 | `password` | Password authentication |
 | `private_key` | Private key content (unencrypted PEM format) |
 | `secret` | Name of a server secret to use instead of inline credentials |
+| `hostkey` | Base64-encoded host key to check the remote host against |
 
 Although credentials (`username`, `password`/`private_key`) can be
 explicitly passed to the accessor, this is strongly discouraged. See
@@ -161,6 +162,11 @@ The accessor requires the `NETWORK` permission to operate.
 > When this is enabled, inline credentials (like `username` and
 > `private_key` in `SSH_CONFIG`) are rejected, and only `secret=`
 > lookups are allowed.
+>
+> Note that a host key is not a credential, so this does not prevent
+> [host key verification](#host-key-verification). You can still pin a
+> key by setting `hostkey` alongside `secret=`, or by adding a
+> `hostkey` field to the secret itself.
 
 ### Creating SSH secrets
 
@@ -207,8 +213,113 @@ LET SSH_CONFIG <= dict(
 - The `hostname` field must include the port (for example, `10.0.0.1:22`).
 - Private keys must be in unencrypted PEM format. Encrypted keys are
   not supported.
-- The host key of the remote SSH server is not verified - it is
-  trusted by default.
+- The remote host's key is accepted without being checked. See
+  [Host key verification](#host-key-verification) below for how to
+  check it instead.
+
+
+### Host key verification
+
+An SSH server proves its identity with a **host key**. If the same key
+comes back on a later connection, that is good evidence you are talking
+to the same machine rather than to an impostor sitting in between.
+
+Velociraptor does not check the host key by default. VQL queries run
+non-interactively, so - unlike the `ssh` command - the accessor has no
+opportunity to ask you whether to trust a key it hasn't seen before.
+Targets are often devices like routers and firewalls whose keys you
+have no way of knowing in advance.
+
+Instead of checking it up front, the accessor **logs the host key it
+received** on every connection:
+
+```text
+ssh: Accepted host key AAAAC3NzaC1lZDI1NTE5AAAAI...
+```
+
+Because this goes to the query logs, you can check it after the fact
+and notice a key that changed between runs - see
+[VQL error handling](/docs/vql/fundamentals/#vql-error-handling) for
+where to find those logs.
+
+If you would rather check the key before connecting, set the `hostkey`
+field in `SSH_CONFIG`. The accessor then rejects any connection where
+the remote host presents a different key, and the query fails during
+the SSH handshake:
+
+```text
+ssh: handshake failed: Rejected host key AAAAC3NzaC1lZDI1NTE5AAAAI...: Did not match AAAAB3NzaC1yc2E...
+```
+
+The comparison is exact - there is no partial matching, so the string
+you supply has to be the key the server actually presents.
+
+###### Example: Pinning a host key
+
+```vql
+LET SSH_CONFIG <= dict(
+    hostname='192.168.1.100:22',
+    username='admin',
+    private_key=read_file(filename='/etc/velociraptor/ssh_keys/remote.key'),
+    hostkey='AAAAC3NzaC1lZDI1NTE5AAAAI...')
+```
+
+`hostkey` also works alongside `secret=`, so you can pin the key for a
+shared secret without editing it:
+
+```vql
+LET SSH_CONFIG <= dict(
+    secret='alpine',
+    hostkey='AAAAC3NzaC1lZDI1NTE5AAAAI...')
+```
+
+Alternatively, add a `hostkey` field to the secret itself, in which case
+the key travels with the credentials and applies to every user of that
+secret.
+
+There are three ways to get the correct value:
+
+1. Read it from the query log after a first successful connection, as
+   described above. This is the most reliable option, because it is
+   the key the server actually presented during the handshake.
+2. Run `ssh-keyscan` against the host and take the third field:
+
+   ```bash
+   $ ssh-keyscan 192.168.1.100
+   # 192.168.1.100:22 SSH-2.0-OpenSSH_9.6p1
+   192.168.1.100 ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAI...
+   ```
+
+3. Read the server's own public key file, for example
+   `/etc/ssh/ssh_host_ed25519_key.pub`, and take the second field:
+
+   ```bash
+   $ cut -d' ' -f2 /etc/ssh/ssh_host_ed25519_key.pub
+   AAAAC3NzaC1lZDI1NTE5AAAAI...
+   ```
+
+Both give you the same string, because it is the same key encoded the
+same way.
+
+> [!IMPORTANT] Two things to watch out for
+> **A host can have several keys.** A typical SSH server holds a
+> separate host key for each algorithm it supports (RSA, ECDSA,
+> Ed25519) and presents whichever one the two sides agree on during the
+> handshake. The key you see in the query log depends on the algorithms
+> that host and the Velociraptor binary support, so pinning the wrong
+> one produces a mismatch even though nothing is wrong. If a pinned key
+> is rejected unexpectedly, check the query log to see which key was
+> actually presented. Note also that `hostkey` expects the
+> base64-encoded key itself, not the shorter `SHA256:...` fingerprint
+> that `ssh-keygen -l` prints.
+>
+> **Secrets and `hostkey`.** An SSH secret may carry its own `hostkey`
+> field. When it does, that key is pinned and connections presenting
+> any other key are rejected. When the secret does not define one, a
+> `hostkey` set in `SSH_CONFIG` is honoured instead, so you can pin a
+> key for a shared secret without editing the secret itself. A host
+> key held in the secret takes precedence and cannot be overridden
+> from `SSH_CONFIG`.
 
 
 ## Clientless collections
@@ -535,7 +646,8 @@ remappings:
     scope: |
       LET SSH_CONFIG <= dict(hostname='192.168.56.120:22',
               username='root',
-              private_key=read_file(filename='/velociraptor-clients/id_ed25519_openwrt'))
+              private_key=read_file(filename='/velociraptor-clients/id_ed25519_openwrt'),
+              hostkey='AAAAC3NzaC1lZDI1NTE5AAAAI...')
     from:
       accessor: ssh
       prefix: /
@@ -548,7 +660,8 @@ remappings:
     scope: |
       LET SSH_CONFIG <= dict(hostname='192.168.56.120:22',
               username='root',
-              private_key=read_file(filename='/velociraptor-clients/id_ed25519_openwrt'))
+              private_key=read_file(filename='/velociraptor-clients/id_ed25519_openwrt'),
+              hostkey='AAAAC3NzaC1lZDI1NTE5AAAAI...')
     from:
       accessor: ssh
       prefix: /
@@ -576,6 +689,14 @@ remappings:
    with the `ssh` accessor, so every file read operation goes through
    SSH. It also specifies that Linux paths are expected, which is
    necessary if the virtual client is running on Windows, for example.
+
+   Because a virtual client runs unattended and reconnects on its own
+   schedule, it is worth pinning the host key in both `mount` rules. If
+   the router is ever rebuilt, or something else starts answering on
+   that address, the client stops rather than silently collecting from
+   the wrong machine. See
+   [Host key verification](#host-key-verification) for how to obtain
+   the value.
 
 The `shadow` rules pass through other commonly used
 accessors.
