@@ -1,0 +1,60 @@
+name: Generic.Detection.UNK_DeadDrop.ExtensionFiles
+author: Ilja Krasnjanski
+description: |
+  Scan a configured VS Code extension directory for the recovered Google Update
+  Support package manifest and wallet-configuration markers. This scans files
+  only; it does not execute files, inspect process memory, upload file contents,
+  or unpack VSIX archives. The signature targets the installed extension's
+  extracted package.json.
+reference:
+  - https://github.com/KrasForge/unk-deaddrop-companion
+  - https://krasforge.github.io/UNK_DeadDrop/articles/02-vsix-editor-execution/
+type: CLIENT
+implied_permissions:
+  - FILESYSTEM_READ
+parameters:
+  - name: PathGlob
+    type: string
+    description: Scoped directory glob. Change this for the target OS; avoid whole-disk scans.
+    default: C:/Users/*/.vscode/extensions/**
+  - name: MaxFileSize
+    type: int64
+    description: Skip files larger than this many bytes.
+    default: 33554432
+  - name: YaraRules
+    type: yara
+    description: One manifest signature. Source-oriented rules remain in the companion repository.
+    default: |
+        rule UNK_DeadDrop_VSIX_Manifest_Experimental
+        {
+            meta:
+                description = "Extracted Google Update Support VSIX manifest and company-wallet configuration"
+                author = "UNK_DeadDrop research contributors"
+                date = "2026-10-26"
+                evidence_cutoff = "2026-07-24"
+                reference = "https://krasforge.github.io/UNK_DeadDrop/articles/02-vsix-editor-execution/"
+                source_note = "docs/detection-notes.md"
+                status = "experimental"
+                scope = "small extracted VSIX manifest members; does not decompress archives"
+            strings:
+                $identity1 = "google-update-support" ascii
+                $identity2 = "google-dev-tools" ascii
+                $identity3 = "onStartupFinished" ascii
+                $config1 = "googleUpdateSupport.companyWalletServerUrl" ascii
+                $config2 = "googleUpdateSupport.companyWalletClientId" ascii
+                $config3 = "googleUpdateSupport.companyWalletAgentToken" ascii
+                $config4 = "googleUpdateSupport.windowsActivationMode" ascii
+            condition:
+                filesize < 4KB and all of ($identity*) and 2 of ($config*)
+        }
+
+sources:
+  - query: |
+      LET candidate_files = SELECT OSPath, Size
+        FROM glob(globs=PathGlob, nosymlink='True')
+        WHERE NOT IsDir AND NOT IsLink AND Size <= MaxFileSize
+
+      SELECT * FROM foreach(row=candidate_files, query={
+        SELECT FileName, Rule, Tags, Meta, String.Name AS YaraString
+        FROM yara(files=OSPath, rules=YaraRules)
+      })
