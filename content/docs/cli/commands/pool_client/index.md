@@ -2,7 +2,7 @@
 menutitle: "pool_client"
 title: 'The "pool_client" command'
 date: 2026-09-09
-last_reviewed: 2026-09-09
+last_reviewed: 2026-10-30
 draft: false
 weight: 67
 summary: "Run a pool client for load testing"
@@ -16,13 +16,13 @@ The `pool_client` command simulates many Velociraptor clients on a
 single host. It is mainly used for load testing a Velociraptor
 deployment: you can spin up hundreds or thousands of virtual clients
 to see how the server copes with the extra load. It is also useful
-for testing and learning scenarios, for example testing how hunts
-behave when many clients are enrolled.
+for testing scenarios, such as how hunts behave when many clients
+enroll.
 
 Each virtual client connects to the server with its own client ID,
 so the server sees a fleet of independent clients. However, all the
 virtual clients run on the same host, so the pool client avoids
-running the same query over and over again on that host.
+running the same query repeatedly on that host.
 
 ---
 
@@ -46,15 +46,15 @@ The pool client remembers the results of every collection it runs.
 A collection is a request to run an artifact, for example
 `Windows.System.Pslist` or `Generic.Client.Info`. When a virtual
 client is asked to run a collection, the pool client first checks
-whether it has already run the same collection before. Two
-collections are the same when they ask for the same artifact with
-the same parameters. For example, `Windows.System.Pslist` with the
-same filter is the same collection no matter which virtual client
-asks for it. If the pool client has already run it, it reports the
-saved results again instead of running the collection again. If it
-has not, it runs the collection and saves the results.
+whether it has run the same collection before. Two collections are
+the same when they ask for the same artifact with the same
+parameters. For example, `Windows.System.Pslist` with the same
+filter is the same collection no matter which virtual client asks
+for it. If the pool client has run it, it reports the saved results
+again instead of running the collection again. If it has not, it
+runs the collection and saves the results.
 
-This means each collection is only ever actually run once on the
+This means the pool client runs each collection only once on the
 host, no matter how many virtual clients receive it. Each client
 then reports the results to the server as if it had run the
 collection itself.
@@ -70,8 +70,8 @@ In practice this means:
   one.
 - **Running the same collection again** on another client returns
   the same results as the first time.
-- **The initial interrogation** is shared by all clients. The first
-  client to enroll runs `Generic.Client.Info` and the rest reuse its
+- **All clients share the initial interrogation.** The first client
+  to enroll runs `Generic.Client.Info` and the rest reuse its
   results. Each client then reports its own codename hostname, while
   the rest of the host information is the same for every client.
 
@@ -88,18 +88,18 @@ time. By default it runs up to 10 collections in parallel (the
 until a running collection finishes. This stops the pool client from
 overwhelming the host with too many queries at once. If you run many
 virtual clients, you may need to raise this value so collections and
-hunts finish quickly. Be careful though: each parallel query uses
-host resources, so raising it too far can slow the host down.
+hunts finish quickly. Each parallel query uses host resources, so a
+high value can slow the host down.
 
-To distinguish the virtual clients in the GUI, each one gets a unique
-codename hostname made from an adjective and a noun, for example
-`brave-falcon` or `quantum-phoenix`. The codename is also used as the
-fully qualified domain name, reusing the domain of the real host. So
-on a host called `myhost.example.com`, a virtual client might report
-its FQDN as `brave-falcon.example.com`. A number is appended to the
-name only when you run almost ten thousand clients, to keep every
-name unique. The rest of the reported client information reflects the
-real host.
+To distinguish the virtual clients in the graphical user interface
+(GUI), each one gets a unique codename hostname made from an
+adjective and a noun, for example `brave-falcon` or
+`quantum-phoenix`. The codename is also used as the fully qualified
+domain name, reusing the domain of the real host. So on a host
+called `myhost.example.com`, a virtual client might report its FQDN
+as `brave-falcon.example.com`. A number is appended to the name only
+when you run almost ten thousand clients, to keep every name unique.
+The rest of the reported client information reflects the real host.
 
 If you run pool clients on several hosts at the same time, two
 virtual clients may end up with the same hostname. This is not a
@@ -127,7 +127,7 @@ starts.
 
 ###### Example
 
-```sh
+```bash
 velociraptor pool_client --config client.config.yaml --number 100
 ```
 
