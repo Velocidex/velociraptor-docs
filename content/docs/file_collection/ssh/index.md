@@ -242,6 +242,14 @@ and notice a key that changed between runs - see
 [VQL error handling](/docs/vql/fundamentals/#vql-error-handling) for
 where to find those logs.
 
+The line is logged whether or not you pin a key, including when a
+pinned key matches. A run that uses `hostkey` therefore still records
+which key the server presented, so you can grep for `Accepted host key`
+afterwards to confirm what a particular remapping or secret actually
+connected to. Search for that phrase rather than the whole line as
+shown above, because the level prefixing in front of it is not
+consistent between log messages.
+
 If you would rather check the key before connecting, set the `hostkey`
 field in `SSH_CONFIG`. The accessor then rejects any connection where
 the remote host presents a different key, and the query fails during
@@ -308,10 +316,11 @@ same way.
 > handshake. The key you see in the query log depends on the algorithms
 > that host and the Velociraptor binary support, so pinning the wrong
 > one produces a mismatch even though nothing is wrong. If a pinned key
-> is rejected unexpectedly, check the query log to see which key was
-> actually presented. Note also that `hostkey` expects the
-> base64-encoded key itself, not the shorter `SHA256:...` fingerprint
-> that `ssh-keygen -l` prints.
+> is rejected unexpectedly, the rejection error names both keys - the
+> one the server presented first, and the one you pinned - so you can
+> see which key the host actually used. Note also that `hostkey`
+> expects the base64-encoded key itself, not the shorter `SHA256:...`
+> fingerprint that `ssh-keygen -l` prints.
 >
 > **Secrets and `hostkey`.** An SSH secret may carry its own `hostkey`
 > field. When it does, that key is pinned and connections presenting
@@ -320,6 +329,20 @@ same way.
 > key for a shared secret without editing the secret itself. A host
 > key held in the secret takes precedence and cannot be overridden
 > from `SSH_CONFIG`.
+
+#### What a pinned key does and does not tell you
+
+A host key match shows that the machine you reached is the one whose
+key you pinned. It says nothing about the state of that machine - if
+the remote host is compromised, the correct key still matches, and the
+files it serves may be altered.
+
+You are in the same position here as when collecting from a
+Velociraptor client. The client's identity is verified, but the data it
+returns is only as trustworthy as the endpoint. Treat a pinned key as
+protection against reaching the *wrong* machine, such as an impostor on
+the network path or a different device that has taken over the same
+address, not as a guarantee about the integrity of the results.
 
 
 ## Clientless collections
