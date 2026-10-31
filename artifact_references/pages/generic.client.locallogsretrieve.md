@@ -1,0 +1,56 @@
+# Generic.Client.LocalLogsRetrieve
+
+Fetches encrypted local log files from endpoints via the upload
+function.
+
+It is possible to tell the client to log to an encrypted local
+storage file (see `Generic.Client.LocalLogs` for an example).
+
+This artifact allows us to collect the file from the client later
+and decrypt it on the server while not creating any information
+leakage risk.
+
+
+---
+
+````yaml
+name: Generic.Client.LocalLogsRetrieve
+description: |
+  Fetches encrypted local log files from endpoints via the upload
+  function.
+
+  It is possible to tell the client to log to an encrypted local
+  storage file (see `Generic.Client.LocalLogs` for an example).
+  
+  This artifact allows us to collect the file from the client later
+  and decrypt it on the server while not creating any information
+  leakage risk.
+
+type: CLIENT
+
+parameters:
+- name: LocalFilename
+  default: "%TEMP%/locallogs.log"
+  description: The local filename that will be retrieved (Env variables will be expanded).
+
+sources:
+- query: |
+    SELECT upload(file=expand(path=LocalFilename)) AS Upload
+    FROM scope()
+  notebook:
+    - type: vql
+      name: Decrypt logs
+      template: |
+        /*
+        # Retrieved local logs from endpoint
+        */
+
+        SELECT * FROM foreach(row={
+           SELECT * FROM uploads(client_id=ClientId, flow_id=FlowId)
+        }, query={
+           SELECT * FROM read_crypto_file(filename=vfs_path, accessor="fs")
+        })
+````
+
+
+

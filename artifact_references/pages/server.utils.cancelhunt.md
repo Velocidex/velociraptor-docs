@@ -1,0 +1,60 @@
+# Server.Utils.CancelHunt
+
+Cancels all in-progress flows for one or more specified hunts.
+
+Sometimes a hunt has been scheduled but is no longer useful. While
+stopping the hunt from the GUI prevents new clients from receiving
+the hunt, it does not actively cancel collections currently in
+flight.
+
+This artifact enumerates all flows in the hunt and actively cancels
+each one of them.
+
+
+---
+
+````yaml
+name: Server.Utils.CancelHunt
+description: |
+  Cancels all in-progress flows for one or more specified hunts.
+
+  Sometimes a hunt has been scheduled but is no longer useful. While
+  stopping the hunt from the GUI prevents new clients from receiving
+  the hunt, it does not actively cancel collections currently in
+  flight.
+
+  This artifact enumerates all flows in the hunt and actively cancels
+  each one of them.
+
+type: SERVER
+
+parameters:
+  - name: HuntId
+  - name: Hunts
+    type: json_array
+    description: A list of hunts to cancel
+    default: '[]'
+
+sources:
+  - query: |
+      LET all_flows(HuntId) = SELECT Flow.client_id AS client_id, Flow.session_id AS flow_id
+      FROM hunt_flows(hunt_id=HuntId)
+      WHERE NOT Flow.state =~ "ERROR|FINISHED"
+
+      LET cancellations(HuntId) = SELECT HuntId, client_id, flow_id,
+             cancel_flow(client_id=client_id, flow_id=flow_id) AS Cancellation
+      FROM all_flows(HuntId=HuntId)
+
+      LET AllHunts <= if(condition=HuntId, then=Hunts + HuntId, else=Hunts)
+
+      SELECT * FROM foreach(row={
+        SELECT _value AS HuntId
+        FROM items(item=AllHunts)
+      }, query={
+        SELECT * FROM cancellations(HuntId=HuntId)
+      }, workers=50
+      )
+````
+
+
+

@@ -1,0 +1,46 @@
+# Windows.System.AuditPolicy
+
+Collects Windows Audit Policy configuration data from Windows
+systems via auditpol.
+
+Use this artifact to determine which Windows event logs are audited and
+identify audit configuration discrepancies across the environment.
+
+
+---
+
+````yaml
+name: Windows.System.AuditPolicy
+
+description: |
+  Collects Windows Audit Policy configuration data from Windows
+  systems via auditpol.
+
+  Use this artifact to determine which Windows event logs are audited and
+  identify audit configuration discrepancies across the environment.
+
+type: CLIENT
+
+author: Zach Stanford - @svch0st
+
+implied_permissions:
+  - EXECVE
+
+sources:
+  - precondition:
+      SELECT OS From info() where OS = 'windows'
+
+    query: |
+      LET output = SELECT * FROM execve(
+        argv=["auditpol.exe","/get","/category:*","/r"])
+
+      SELECT * FROM foreach(
+        row=output,
+        query={
+            SELECT * FROM parse_csv(filename=Stdout,accessor="data")
+        }
+      )
+````
+
+
+
