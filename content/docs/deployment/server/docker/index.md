@@ -4,7 +4,7 @@ title: Docker deployment
 draft: false
 weight: 50
 date: 2026-06-21
-last_reviewed: 2026-06-23
+last_reviewed: 2026-10-31
 summary: |
   Run the Velociraptor server inside a Docker container, using the
   officially supported image from the GitHub Container Registry.
@@ -28,11 +28,21 @@ directory. That directory's
 [README](https://github.com/Velocidex/velociraptor/blob/master/Docker/README.md)
 contains the full technical reference and step-by-step instructions.
 
-The CI system builds the container image automatically and publishes
-it whenever changes are merged to the main branch. The
-`ghcr.io/velocidex/velociraptor-server:latest` tag always points to
-the most recent build. Release versions are tagged with their version
-number (for example, `ghcr.io/velocidex/velociraptor-server:0.77`).
+The CI system builds the container image automatically. Builds from
+the `master` branch are published with the `dev` tag. Each release is
+published with its version number (for example,
+`ghcr.io/velocidex/velociraptor-server:0.77.3`), and the `latest` tag
+always points to the most recent release. So `latest` does not follow
+the `master` branch.
+
+| Tag | Points to |
+|---|---|
+| `latest` | The most recent release |
+| `dev` | The latest build from the `master` branch |
+| `<version>` | A specific release, for example `0.77.3` |
+
+Use `latest` (or a version tag) for production deployments. The `dev`
+tag follows the `master` branch and may contain unreleased changes.
 
 You will need:
 
@@ -116,13 +126,13 @@ To upgrade:
    docker-compose up
    ```
 
-The new container runs the latest Velociraptor binary using your
+The new container runs the most recent Velociraptor release using your
 existing configuration file and datastore. Clients reconnect using
 the same cryptographic keys and continue operating normally.
 
 If you want to pin a specific version, change the image tag in your
 `compose.yaml` from `:latest` to a version tag such as
-`ghcr.io/velocidex/velociraptor-server:0.77`.
+`ghcr.io/velocidex/velociraptor-server:0.77.3`.
 
 ## Environment variables
 
