@@ -151,7 +151,7 @@ could consider using those accessors.
 
 The following example remapping file can be used as a starting point.
 
-```yaml
+```yaml {filename="remapping.yaml"}
 remappings:
 - type: permissions
   permissions:
@@ -266,7 +266,7 @@ offsets and attach them to the correct logical mount point. For
 example, if the `mmls` output shows a boot partition at offset 4096
 sectors:
 
-```yaml
+```yaml {filename="remapping.yaml"}
 - type: mount
   from:
     accessor: raw_ext4
@@ -297,7 +297,7 @@ file.
 Here is an example of directory remapping file. You will typically
 only need to change the mount point.
 
-```yaml
+```yaml {filename="remapping.yaml"}
 remappings:
 - type: permissions
   permissions:

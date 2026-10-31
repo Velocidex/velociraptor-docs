@@ -7,6 +7,13 @@ description: |
   uploaded by each flow. Detection results appear under Server Events
   for this artifact.
 
+  This monitor uses Velociraptor's native Sigma engine with converted
+  Hayabusa rules. It does not run the Hayabusa executable. For the executable
+  engine, install and explicitly enable the separate
+  `Server.Monitor.Windows.EventLogs.HayabusaEngine` monitor and its companion
+  analyzer. Existing monitoring configuration is not migrated automatically.
+  Enabling both monitors scans matching collections with both engines.
+
   By default this triggers on `Windows.KapeFiles.Targets` and
   `Windows.Triage.Targets`, the most common triage collections that
   upload raw Windows event logs. Adjust `ArtifactRegex` to match any

@@ -204,6 +204,10 @@ signed using the sending party’s private key.
 > The internal encryption scheme's main purpose is not only to encrypt
 > the messages but to sign them. This prevents messages from one client
 > from impersonating another client.
+>
+> The inner envelope uses SHA-1 for its RSA-OAEP and HMAC operations.
+> This is acceptable because the envelope is always delivered inside a
+> TLS session, which provides the primary cryptographic protection.
 
 ### HTTP protocol
 
@@ -567,7 +571,7 @@ and salt will be initialized from the configuration file. For other
 authentication methods that do not use passwords, the password hashes
 are ignored.
 
-```yaml
+```yaml {filename="server.config.yaml"}
 GUI:
   initial_users:
   - name: mic
@@ -819,7 +823,7 @@ After initial deployment and configuration, the administrator can set
 the server in lockdown by adding the following configuration directive
 to the `server.config.yaml` and restarting the server:
 
-```yaml
+```yaml {filename="server.config.yaml"}
 lockdown: true
 ```
 
@@ -1199,7 +1203,7 @@ org.
 You may disable the `execve()` plugin using the [configuration
 file](/docs/deployment/references/#security.denied_plugins)
 
-```yaml
+```yaml {filename="server.config.yaml"}
 security:
   denied_plugins:
       - execve
@@ -1273,7 +1277,7 @@ Tune
 for your mounting layout—for example blocking the datastore root plus
 global pseudo filesystems (`/proc/`, `/sys/`).
 
-```yaml
+```yaml {filename="server.config.yaml"}
 security:
   denied_file_accessor_prefix:
       - /opt/velociraptor/

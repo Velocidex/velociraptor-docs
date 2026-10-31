@@ -34,6 +34,8 @@ query [<flags>] <queries>...
     -f, --[no-]from_files  Args are actually file names which will contain the VQL query
         --timeout=0        Time collection out after this many seconds.
         --cpu_limit=0      A number between 0 to 100 representing maximum CPU utilization.
+        --[no-]minion_mode  Run the query in minion mode: Some functions will
+                            delegate to the API but most will run locally
         --format=json      Output format to use (text,json,csv,jsonl).
         --dump_dir=""      Directory to dump output files.
         --output=""        A file to store the output.

@@ -13,7 +13,7 @@ If you find that your cell query is routinely exceeding the timeout, you can use
 
 3. As a last resort update the default notebook timeout in the configuration file. Find or add the section called `defaults` and add the following setting:
 
-```yaml
+```yaml {filename="server.config.yaml"}
 Frontend:
 ... other settings ...
 defaults:
