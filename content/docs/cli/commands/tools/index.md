@@ -74,7 +74,7 @@ Args:
 tools upload --name=NAME [<flags>] [<path>]
     Upload a third-party tool
 
-    --name=NAME                  Name of the tool
+    --name=NAME                  Name to assign to the tool
     --tool_version=TOOL_VERSION  The version of the tool
     --filename=FILENAME          Name of the tool executable on the endpoint
     --github_project=GITHUB_PROJECT

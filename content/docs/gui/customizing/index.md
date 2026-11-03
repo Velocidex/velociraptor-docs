@@ -179,7 +179,7 @@ YAML format.
 Here is an example of a custom sidebar link that will take users to the
 Velociraptor repo on GitHub:
 
-```yaml
+```yaml {filename="server.config.yaml"}
 GUI:
   links:
   - text: Velociraptor repo
@@ -193,7 +193,7 @@ GUI:
 The following example will create a context link that will send cell data to
 a Brave search:
 
-```yaml
+```yaml {filename="server.config.yaml"}
 GUI:
   links:
   - text: Brave

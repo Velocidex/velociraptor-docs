@@ -163,7 +163,7 @@ runas|If specified, the query will run as the specified user|string
 inherit|If specified we inherit the scope instead of building a new one.|bool
 exit|A callback to consider each row. When the callback returns TRUE the query is aborted|Lambda
 
-**Required permissions:** `IMPERSONATION`
+**Required permissions:** `IMPERSONATION`, `EXECVE`, `FILESYSTEM_WRITE`, `MACHINE_STATE`
 
 ### Description
 

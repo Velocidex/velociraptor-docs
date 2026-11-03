@@ -143,6 +143,7 @@ artifacts collect [<flags>] <artifact_name>...
     --cpu_limit=0         A number between 0 to 100 representing maximum CPU utilization.
     --output_level=5      Compression level for zip output.
     --[no-]require_admin  Ensure the user is an admin
+    --[no-]cli_help_mode  Display help like a CLI command
     --password=""         When specified we encrypt zip file with this password.
     --format=json         Output format to use (csv, json, csv_only).
     --args=ARGS ...       Artifact args (e.g. --args Foo=Bar).
@@ -322,8 +323,10 @@ results of one that has already completed.
 ### [ artifacts reformat ]
 
 ```text
-artifacts reformat <paths>...
+artifacts reformat [<flags>] <paths>...
     Reformat a set of artifacts
+
+    --[no-]dry  Do not overwrite files, just report errors
 
 Args:
   <paths>  Paths to artifact yaml files
@@ -367,7 +370,10 @@ matched artifact.
 artifacts verify [<flags>] <paths>...
     Verify a set of artifacts
 
-    --[no-]builtin  Allow overriding of built in artifacts
+    --[no-]builtin       Allow overriding of built in artifacts
+    --[no-]issues_only   If set, we only emit warning and error messages
+    --max_length=100000  Maximum length of artifact to read
+    --[no-]nowall        If set, ignore warnings
 
 Args:
   <paths>  Paths to artifact yaml files

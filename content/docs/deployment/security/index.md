@@ -77,6 +77,14 @@ to them. A rogue client can flood the event stream with fabricated
 telemetry, trigger false detection rules, poison SIEM pipelines, or
 mask real activity with noise.
 
+**Client Flow injection.** Clients can send any results for any
+`CLIENT` artifact collection regardless of whether it was assigned to
+them. A rogue client can flood the server with arbitrary amount of
+data without limits (Note that artifact resource limits are enforced
+by the client itself and not the server - enforcing limits on the
+server is trivially bypassed with auto-enrollment so this is not
+implemented).
+
 **Alert injection.** Clients can send alert messages with arbitrary
 content. The server overrides only `ClientId` and `FlowId` for
 attribution but preserves `AlertName`, `EventData`, and `Timestamp`
@@ -87,6 +95,15 @@ notifications or corrupt investigation timelines.
 statistics and completion status via `FlowStats`. A rogue client can
 mark a flow as `FINISHED` immediately — before collecting any data —
 making the collection appear successful with zero results.
+
+**Auto enrollment.** Velociraptor uses a zero registration system
+which does not require pre-provitioning of clients before
+deployments. This allows any client with suitable configuration to
+automatically enroll. By extension, this allows a rogue client to
+upload arbitrary amounts of data to the server (by simply changing the
+client id, and pushing the data to multiple flows). There is currently
+no mechanism to prevent server storage exhaustion due to rogue
+clients.
 
 ### Mitigations
 
@@ -107,6 +124,12 @@ reduce risk:
 - **Segment the network.** Limit which endpoints can connect to the
   server. A client that cannot reach the server cannot abuse the trust
   model.
+- **Manage server storage** Using the methods mentioned by [How to
+  manage storage space on the
+  server](/knowledge_base/tips/deleting_old_data/). Velociraptor does
+  not currently enforce any hard limits on collected data or any built
+  in data retention policies - it is up to you to manage storage
+  appropriately.
 
 ## Velociraptor communications
 
@@ -181,6 +204,10 @@ signed using the sending party’s private key.
 > The internal encryption scheme's main purpose is not only to encrypt
 > the messages but to sign them. This prevents messages from one client
 > from impersonating another client.
+>
+> The inner envelope uses SHA-1 for its RSA-OAEP and HMAC operations.
+> This is acceptable because the envelope is always delivered inside a
+> TLS session, which provides the primary cryptographic protection.
 
 ### HTTP protocol
 
@@ -544,7 +571,7 @@ and salt will be initialized from the configuration file. For other
 authentication methods that do not use passwords, the password hashes
 are ignored.
 
-```yaml
+```yaml {filename="server.config.yaml"}
 GUI:
   initial_users:
   - name: mic
@@ -737,6 +764,17 @@ Note that password management is supposed to be very simplistic
 because for production servers we recommend to use an external
 authentication service (e.g. OIDC)
 
+{{% notice warning Org separation with Basic Authentication %}}
+
+When using Basic Authentication, any Velociraptor admin can reset any
+user's password - regardless if the user "belongs" in their org
+(Administrators for a child org can add any user to their org
+anyway). Basic authentication therefore can not be used in
+environments that require strong org user separation with untrusted
+child org administrators.
+
+{{% /notice %}}
+
 Passwords enforced through `Basic` auth are salted and hashed with
 SHA‑256 once per HTTP request for speed. Treat this as adequate only
 for lab or short-lived evaluation systems; attackers who steal the
@@ -746,10 +784,13 @@ hashing. Production deployments, especially internet-exposed fronts,
 belong behind `OIDC/OAuth2/SAML` or another enterprise `IdP` described
 under [OAuth2 services](#oauth2-services).
 
-#### OAuth2 services
+#### OAuth2 and OIDC services
 
-A number of public identity providers are directly supported in
-Velociraptor and based on OAuth2 protocol.
+Velociraptor supports modern authentication frameworks like OAuth and
+OIDC and supports all major Identity Providers (IDP). By using an
+external IDP, the task of managing users, passwords, two factor etc is
+shifted to the IDP itself - thereby relieving Velociraptor from this
+responsibility.
 
 You can read more about setting up [GitHub, Azure and Google](/blog/2020/2020-08-17-velociraptor-sso-authentication-6dd68d46dccf/) as an OAuth2 provider.
 
@@ -782,7 +823,7 @@ After initial deployment and configuration, the administrator can set
 the server in lockdown by adding the following configuration directive
 to the `server.config.yaml` and restarting the server:
 
-```yaml
+```yaml {filename="server.config.yaml"}
 lockdown: true
 ```
 
@@ -1162,7 +1203,7 @@ org.
 You may disable the `execve()` plugin using the [configuration
 file](/docs/deployment/references/#security.denied_plugins)
 
-```yaml
+```yaml {filename="server.config.yaml"}
 security:
   denied_plugins:
       - execve
@@ -1236,7 +1277,7 @@ Tune
 for your mounting layout—for example blocking the datastore root plus
 global pseudo filesystems (`/proc/`, `/sys/`).
 
-```yaml
+```yaml {filename="server.config.yaml"}
 security:
   denied_file_accessor_prefix:
       - /opt/velociraptor/
@@ -1318,4 +1359,3 @@ to this org allows them to affect other orgs. For example, any custom
 artifact created in the root org will be visible to all other orgs.
 
 You should only give trusted users access to the root org.
-

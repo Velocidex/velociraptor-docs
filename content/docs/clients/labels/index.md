@@ -108,7 +108,7 @@ label.
 To achieve this we edit the client's configuration and specify that the `Sales`
 label applies to this client.
 
-```yaml
+```yaml {filename="client.config.yaml"}
 Client:
   labels:
   - Sales

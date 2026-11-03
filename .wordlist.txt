@@ -12,3 +12,6 @@ esentutl
 certutil
 Graylog
 Pagefind
+chroot
+Homebrew
+codename

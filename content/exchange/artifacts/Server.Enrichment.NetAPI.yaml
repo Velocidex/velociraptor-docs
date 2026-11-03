@@ -1,0 +1,124 @@
+name: Server.Enrichment.NetAPI
+author: Slava Olesik, NetAPI
+description: |
+  Check a domain, hostname or URL against the NetAPI compromised feed:
+  domains reported by public threat feeds, merged into one deduplicated
+  list with the dates each entry was seen. Works without an API key: no
+  account, key or secret is needed for the default lookup. IP addresses
+  are not supported: an IP indicator returns a row with Error set and is
+  not sent to the API.
+
+  The row tells whether the indicator is listed now (reported within the
+  last 24 hours) or was listed earlier, with the first and last dates it
+  was seen and the reason or source tag of the listing. For a hostname the
+  parent domains are checked too, so `login.example.com` matches a listing
+  of `example.com`, and MatchedValue shows which name matched. An
+  indicator that was never listed returns ListedEver = false. Not listed
+  is not the same as clean.
+
+  With IncludeRank the artifact also returns the rank of the exact host in
+  the NetAPI Top 1M, a daily popularity list (CC BY 4.0) that blends
+  link-graph and traffic signals. A current listing on a well-ranked
+  domain usually points to a compromised legitimate site rather than a
+  throwaway domain.
+
+  Run from a server notebook, for example:
+
+      SELECT * FROM Artifact.Server.Enrichment.NetAPI(
+        Indicator="example.com")
+
+  To enrich hunt results, deduplicate first and pace the lookups:
+
+      SELECT * FROM foreach(
+        row={SELECT Domain FROM source() GROUP BY Domain},
+        query={SELECT * FROM Artifact.Server.Enrichment.NetAPI(
+          Indicator=Domain) WHERE sleep(time=2)})
+
+  Without a key the API allows 30 requests per minute and 1,000 per day
+  per IP address. IncludeRank adds one request per indicator. A free
+  NetAPI account raises the limits to 60 per minute and 5,000 per day:
+  create an HTTP Secrets credential, for example named `netapi`, with the
+  URL https://netapi.com/api-json/ and the extra_headers
+  {"Authorization":"Bearer <API token>"}, then set SecretName. An HTTP
+  429 is reported in Error rather than retried.
+
+reference:
+  - https://netapi.com/compromised-urls/
+  - https://netapi.com/help/api/
+
+type: SERVER
+
+parameters:
+  - name: Indicator
+    type: string
+    description: Domain, hostname or URL to look up. IP addresses are not supported.
+  - name: IncludeRank
+    type: bool
+    description: Also return the rank of the host in the NetAPI Top 1M (one more request).
+  - name: SecretName
+    type: string
+    description: Optional HTTP Secrets credential that holds a NetAPI API token. Leave empty for lookups without a key.
+
+sources:
+  - query: |
+      LET Base <= "https://netapi.com/api-json/"
+      LET UA <= "netapi-velociraptor/1.0"
+
+      LET Value <= strip(string=Indicator)
+      // NetAPI no longer publishes compromised IPs: IP input is not sent.
+      LET IsIP <= ip(parse=Value) != NULL
+      LET WantRank <= IncludeRank AND Value AND NOT IsIP
+
+      // An empty SecretName is the same as no secret: the lookup is anonymous.
+      LET CheckResponse <= SELECT Response, parse_json(data=Content) AS Body
+        FROM if(condition=Value AND NOT IsIP, then={
+          SELECT * FROM http_client(
+            url=Base,
+            secret=SecretName,
+            params=dict(method="compromised-check", value=Value),
+            user_agent=UA)
+        })
+
+      LET RankResponse <= SELECT Response, parse_json(data=Content) AS Body
+        FROM if(condition=WantRank, then={
+          SELECT * FROM http_client(
+            url=Base,
+            secret=SecretName,
+            params=dict(method="domain-rank", domain=Value),
+            user_agent=UA)
+        })
+
+      LET Check <= CheckResponse[0]
+      LET Rank <= RankResponse[0]
+
+      LET CheckError <= if(condition=Check.Response != 200,
+          then=format(format="NetAPI returned HTTP %v: %v",
+                      args=[Check.Response,
+                            if(condition=Check.Body.error.message,
+                               then=Check.Body.error.message,
+                               else="no JSON error message")]))
+
+      LET RankError <= if(condition=WantRank AND Rank.Response != 200,
+          then=format(format="Rank lookup returned HTTP %v: %v",
+                      args=[Rank.Response,
+                            if(condition=Rank.Body.error.message,
+                               then=Rank.Body.error.message,
+                               else="no JSON error message")]))
+
+      SELECT Indicator,
+          Check.Body.type AS Type,
+          Check.Body.listed_now AS ListedNow,
+          Check.Body.listed_ever AS ListedEver,
+          Check.Body.matched_value AS MatchedValue,
+          Check.Body.first_seen AS FirstSeen,
+          Check.Body.last_seen AS LastSeen,
+          Check.Body.block_reason AS Reason,
+          Check.Body.registrar.name AS Registrar,
+          if(condition=WantRank, then=Rank.Body.rank) AS Top1MRank,
+          if(condition=NOT Value, then="Indicator is empty.",
+             else=if(condition=IsIP,
+                     then="IP addresses are not supported: NetAPI no longer publishes compromised IPs.",
+                     else=if(condition=CheckError, then=CheckError,
+                             else=RankError))) AS Error,
+          Check.Body AS Report
+      FROM scope()

@@ -14,7 +14,7 @@ Metrics are also exported on the server using the `Metrics
 Server`. This is controlled in the configuration file [Monitoring](/docs/deployment/references/#Monitoring)
 section:
 
-```yaml
+```yaml {filename="server.config.yaml"}
 Monitoring:
  bind_address: 127.0.0.1
  bind_port: 8003

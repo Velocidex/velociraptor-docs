@@ -241,7 +241,7 @@ velociraptor --config server.config.yaml config frontend
 Let's look at some of the generated configuration. The client
 configuration is now changed to include both minion and master:
 
-```yaml
+```yaml {filename="client.config.yaml"}
 Client:
   server_urls:
     - https://master.velocidex-training.com:8000/
@@ -254,7 +254,7 @@ The API server is now listening on all interfaces and can be accessed
 by the public hostname. This is required for minions to connect to the
 master.
 
-```yaml
+```yaml {filename="server.config.yaml"}
 API:
   hostname: master.velocidex-training.com
   bind_address: 0.0.0.0
@@ -263,7 +263,7 @@ API:
 
 There is an additional configuration part for each minion:
 
-```yaml
+```yaml {filename="server.config.yaml"}
 ExtraFrontends:
 - hostname: minion.velocidex-training.com
   bind_address: 0.0.0.0
@@ -275,7 +275,7 @@ ExtraFrontends:
 
 Finally note the datastore configuration
 
-```yaml
+```yaml {filename="server.config.yaml"}
 Datastore:
   location: /opt/velociraptor
   filestore_directory: /opt/velociraptor
@@ -296,7 +296,7 @@ remote datastore (a gRPC based datastore implementation).
 The normal deb packaging command will create two packages when given a
 multi-frontend configuration:
 
-```yaml
+```console
 $ ./velociraptor --config server.config.yaml debian server
 $ ls -l *.deb
 -rw-rw-r-- 1 me me 27429604 Mar 28 16:32 velociraptor_server__master_master.velocidex-training.com-8000_0.74.1_amd64.deb

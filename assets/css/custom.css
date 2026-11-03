@@ -326,11 +326,6 @@ html.dark .hextra-404-title {
   color: var(--hx-color-neutral-500);
 }
 
-/* Hidden easter egg in the artifact exchange "Share your own Artifact" box. */
-p.egg {
-  display: none;
-}
-
 /* --- Generated config reference page (docs/deployment/references) ---
    Each config item and its documentation comment are wrapped together in
    a .ref-block div. The item renders as a code-font bordered card with
@@ -1003,6 +998,16 @@ html.dark .hextra-figure-caption {
     "Liberation Mono", monospace;
   font-size: 0.85em;
   overflow-wrap: anywhere;
+}
+
+/* --- Code fence filename strip ---
+   Hextra renders `<div class="hextra-code-filename">` above highlighted code
+   when the fence has a `filename` attribute (layouts/_markup/
+   render-codeblock.html). The strip is left-aligned by default, which puts it
+   in line with the code below; right-align it instead so it reads as a label
+   for the block rather than the first line of it. */
+.hextra-code-block .hextra-code-filename {
+  text-align: right;
 }
 
 /* --- GitHub-style alerts (Hextra `[!NOTE]`-style blockquotes) ---

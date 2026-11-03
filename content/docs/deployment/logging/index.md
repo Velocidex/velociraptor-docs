@@ -41,7 +41,7 @@ log level (debug, info, error) gets its own rotating log file.
 
 Add a `Logging` block to your `server.config.yaml`:
 
-```yaml
+```yaml {filename="server.config.yaml"}
 Logging:
   output_directory: /mnt/data/logs
   separate_logs_per_component: true
@@ -111,7 +111,7 @@ Each log level rotates independently. The defaults are:
 You can override these per level. For example, to rotate debug logs
 daily but keep error logs for two years:
 
-```yaml
+```yaml {filename="server.config.yaml"}
 Logging:
   output_directory: /mnt/data/logs
   debug:
@@ -125,7 +125,7 @@ Logging:
 To disable a log level entirely (for example, to stop writing debug
 logs to disk while still forwarding info and error to syslog):
 
-```yaml
+```yaml {filename="server.config.yaml"}
 Logging:
   output_directory: /mnt/data/logs
   debug:
@@ -143,7 +143,7 @@ into a SIEM.
 
 ### Configuration
 
-```yaml
+```yaml {filename="server.config.yaml"}
 Logging:
   separate_logs_per_component: true
   remote_syslog_server: syslog.example.com:514
@@ -242,7 +242,7 @@ security monitoring.
 
 To forward additional components, list them explicitly:
 
-```yaml
+```yaml {filename="server.config.yaml"}
 Logging:
   separate_logs_per_component: true
   remote_syslog_server: syslog.example.com:514
@@ -316,7 +316,7 @@ especially for audit logging.
 
 A minimal setup that writes all log levels to disk:
 
-```yaml
+```yaml {filename="server.config.yaml"}
 Logging:
   output_directory: /var/log/velociraptor
   separate_logs_per_component: true
@@ -327,7 +327,7 @@ Logging:
 Forward audit events to a remote syslog server without writing log
 files:
 
-```yaml
+```yaml {filename="server.config.yaml"}
 Logging:
   separate_logs_per_component: true
   remote_syslog_server: syslog.example.com:514
@@ -340,7 +340,7 @@ Logging:
 
 Write all logs to disk and forward audit events to syslog:
 
-```yaml
+```yaml {filename="server.config.yaml"}
 Logging:
   output_directory: /var/log/velociraptor
   separate_logs_per_component: true
@@ -355,7 +355,7 @@ Logging:
 Write logs with aggressive rotation for debug logs and long retention
 for errors:
 
-```yaml
+```yaml {filename="server.config.yaml"}
 Logging:
   output_directory: /var/log/velociraptor
   separate_logs_per_component: true

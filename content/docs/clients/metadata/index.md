@@ -106,7 +106,7 @@ thus have the form: `<field_name>:<string_to_match>`.
 
 For example, if we specify the following in the server configuration:
 
-```yaml
+```yaml {filename="server.config.yaml"}
 defaults:
   indexed_client_metadata:
     - department

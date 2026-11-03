@@ -77,7 +77,7 @@ tell Velociraptor to use a [different
 field](/docs/deployment/references/#GUI.authenticator.claims.username)
 in the claim as the username:
 
-```yaml
+```yaml {filename="server.config.yaml"}
   authenticator:
     claims:
       username: upn
@@ -96,7 +96,7 @@ Validate your summary and click Next, then complete.
 In the `GUI` section of your Velociraptor config you should have the following
 authenticator settings by default:
 
-```yaml
+```yaml {filename="server.config.yaml"}
   authenticator:
     type: Basic
 ```
@@ -104,7 +104,7 @@ authenticator settings by default:
 We no longer want Basic auth and instead want SSO, so replace that with these
 new settings to match our Keycloak configuration:
 
-```yaml
+```yaml {filename="server.config.yaml"}
     type: oidc
     oidc_issuer: https://domain.local/adfs
     oidc_name: adfs

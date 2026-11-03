@@ -326,14 +326,14 @@ authentication.
 If you need to access the GUI from other network hosts then open the
 configuration file in a text editor and change:
 
-```yaml
+```yaml {filename="server.config.yaml"}
 GUI:
   bind_address: 127.0.0.1
 ```
 
 to:
 
-```yaml
+```yaml {filename="server.config.yaml"}
 GUI:
   bind_address: 0.0.0.0
 ```

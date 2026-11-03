@@ -1,14 +1,14 @@
 name: Generic.Applications.ZeroTier
 author: "Andreas Misje – @misje"
 description: |
-  Collects ZeroTier installation artefacts from the client file system without
+  Collects ZeroTier installation artifacts from the client file system without
   requiring the ZeroTier service to be running.
 
   ZeroTier creates encrypted peer-to-peer overlay networks over any Internet
   connection. It is used legitimately for remote access and VPN replacement,
   but like any VPN service, its tunnels traverse NAT and firewalls
   without inbound ports, which makes it worth checking when
-  investigating unauthorised remote access or exfiltration.
+  investigating unauthorized remote access or exfiltration.
 
   ## Key concepts
 
@@ -23,10 +23,10 @@ description: |
   ### Networks
 
   A *network* is a ZeroTier virtual LAN with a 16-hex-digit ID. Networks can
-  be private (members require controller authorisation) or public. When a node
+  be private (members require controller authorization) or public. When a node
   joins a private network, the controller issues a *Certificate of Membership*
   (COM) — a signed, time-stamped credential recording when this node's
-  membership was last authorised and by whom.
+  membership was last authorized and by whom.
 
   ### Peers
 

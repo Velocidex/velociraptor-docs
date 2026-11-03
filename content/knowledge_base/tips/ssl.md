@@ -16,7 +16,7 @@ Using Ubuntu we generated a stock standard "Self-signed SSL" configuration:
 
 ### Update the server.config.yaml
 Locate the frontend section and add the `tls_certificate_filename` and `tls_private_key_filename` parameters. Enter the absolute path to these files. For testing, we placed in /etc however there are better places for production use.
-```yaml
+```yaml {filename="server.config.yaml"}
 Frontend:
   tls_certificate_filename: /etc/velociraptor.pem
   tls_private_key_filename: /etc/velociraptor.key
@@ -28,7 +28,7 @@ Frontend:
 ### Update the client.config.yaml
 In the client section modify `use_self_signed_ssl` to be false, and add the CA root/intermediary certificates to be trusted by the client:
 
-```yaml
+```yaml {filename="client.config.yaml"}
 use_self_signed_ssl: false
 
 Crypto:

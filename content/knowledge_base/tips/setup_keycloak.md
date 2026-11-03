@@ -228,7 +228,7 @@ Now we are ready to move to configuring the Velociraptor side of things.
 In the `GUI` section of your Velociraptor config you should have the following
 authenticator settings by default:
 
-```yaml
+```yaml {filename="server.config.yaml"}
   authenticator:
     type: Basic
 ```
@@ -236,7 +236,7 @@ authenticator settings by default:
 We no longer want Basic auth and instead want SSO, so replace that with these
 new settings to match our Keycloak configuration:
 
-```yaml
+```yaml {filename="server.config.yaml"}
     type: oidc
     oidc_issuer: https://keycloak.local/realms/myrealm
     oidc_name: keycloak
