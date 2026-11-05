@@ -1,0 +1,143 @@
+name: Server.Monitor.Windows.EventLogs.HayabusaEngine
+author: Eric Capuano - @eric_capuano
+type: SERVER_EVENT
+description: |
+  Opt into automatic Hayabusa executable analysis of future completed client
+  collections. Install `Server.Analysis.Windows.EventLogs.HayabusaEngine` first,
+  then add this monitor through the Server Events screen on a Linux amd64 server.
+  This does not redirect the existing native-Sigma artifact or monitor.
+
+  Each matching client flow schedules a separate server analysis collection.
+  Analyses run serially within this monitor; later completion events wait while
+  the current scan finishes. Temporary files are removed when each analysis
+  collection ends. Complete timelines and manifests remain in server collections.
+  The monitor polls collection state, avoiding a completion-watch registration
+  race for fast scans. It waits for query closure as well as terminal state, since
+  logging an error can mark a still-running collection as ERROR. A wait exceeding
+  AnalysisTimeout plus 60 seconds requests
+  cancellation and emits a WaitTimeout status; inspect the analysis collection.
+
+  Kind=Detection and the final Kind=Status rows come from the analyzer. Success
+  requires engine completion, no generated diagnostic logs, and successful uploads.
+  HasDiagnostics means the preserved diagnostic files require review; partial
+  detections are still forwarded. A missing final Status row means results were
+  not completely delivered. Diagnostic uploads remain in the analysis flow. Separate
+  Kind=AnalysisStatus rows report scheduling, collection state, or wait timeout.
+  ClientId and FlowId identify the input collection; AnalysisFlowId identifies
+  the server analysis containing logs and uploads. No detections alone does not
+  establish a successful scan. Check status rows and collection logs for failures
+  or resource limits.
+
+  This is a live completion watcher, not a durable work queue. It does not backfill
+  events missed while disabled, deduplicate repeated completion events, or replay
+  results after restart. Large hunts may exceed the completion stream's buffering;
+  use manual server collections for any missed flows. Already scheduled analyses
+  continue if monitoring stops. Avoid unintentionally enabling multiple monitors
+  for the same inputs, and size collection limits for your server.
+
+required_permissions:
+  - SERVER_ADMIN
+  - COLLECT_SERVER
+  - READ_RESULTS
+
+parameters:
+  - name: ArtifactRegex
+    type: regex
+    default: 'Windows\.KapeFiles\.Targets|Windows\.Triage\.Targets'
+    description: Trigger analysis when a completed client flow has results matching this regex.
+  - name: EvtxRegex
+    type: regex
+    default: '(?i)\.evtx$'
+    description: Uploaded paths to analyze. Broaden this for renamed EVTX files.
+  - name: MinimumLevel
+    type: choices
+    default: medium
+    choices:
+      - informational
+      - low
+      - medium
+      - high
+      - critical
+    description: Minimum Hayabusa rule severity; informational includes all levels.
+  - name: Threads
+    type: int
+    default: '2'
+    description: Hayabusa worker threads per analysis (1-64).
+  - name: AnalysisTimeout
+    type: int
+    default: '3600'
+    description: Timeout in seconds for each scheduled server analysis.
+  - name: AnalysisMaxRows
+    type: int
+    default: '1000000'
+    description: Maximum rows per server analysis. Truncation is reported in collection logs.
+  - name: AnalysisMaxBytes
+    type: int
+    default: '1073741824'
+    description: Maximum uploaded output bytes per server analysis (default 1 GiB).
+
+precondition: SELECT * FROM info() WHERE OS = 'linux' AND Architecture = 'amd64'
+
+sources:
+  - name: Results
+    query: |
+      LET ValidParameters <= Threads > 0 AND Threads <= 64
+          AND AnalysisTimeout > 0 AND AnalysisMaxRows > 0 AND AnalysisMaxBytes > 0
+          AND MinimumLevel IN ("informational", "low", "medium", "high", "critical")
+      LET _ <= if(condition=NOT ValidParameters,
+          then=log(level="ERROR", message="Invalid analysis limits, Threads, or MinimumLevel."))
+      LET Completions = SELECT ClientId, FlowId
+        FROM watch_monitoring(artifact="System.Flow.Completion")
+        WHERE ClientId != "server"
+          AND Flow.artifacts_with_results =~ ArtifactRegex
+
+      SELECT *
+      FROM foreach(row={ SELECT * FROM Completions WHERE ValidParameters }, query={
+        SELECT * FROM query(inherit=TRUE, query='''
+        LET InputClientId <= ClientId
+        LET InputFlowId <= FlowId
+        LET Analysis <= collect_client(client_id="server",
+            artifacts="Server.Analysis.Windows.EventLogs.HayabusaEngine",
+            env=dict(ClientId=InputClientId, FlowId=InputFlowId,
+                     EvtxRegex=EvtxRegex, MinimumLevel=MinimumLevel, Threads=Threads),
+            timeout=AnalysisTimeout, max_rows=AnalysisMaxRows, max_bytes=AnalysisMaxBytes)
+        LET Deadline <= now() + AnalysisTimeout + 60
+        LET Finished <= SELECT * FROM if(condition=Analysis.flow_id, then={
+          SELECT get_flow(client_id="server", flow_id=Analysis.flow_id) AS Details,
+                 now() > Deadline AS TimedOut
+          FROM clock(period=2)
+          -- An ERROR log changes state before the process exits. This analyzer
+          -- has one query context; its duration is set only when it closes.
+          WHERE (Details.state IN ("FINISHED", "ERROR")
+                 AND Details.execution_duration > 0) OR TimedOut
+          LIMIT 1
+        })
+        LET _ <= if(condition=Finished[0].TimedOut,
+            then=cancel_flow(client_id="server", flow_id=Analysis.flow_id))
+
+        SELECT * FROM chain(status={
+          SELECT "AnalysisStatus" AS Kind, InputClientId AS ClientId,
+                 InputFlowId AS FlowId, Analysis.flow_id AS AnalysisFlowId,
+                 if(condition=NOT Analysis.flow_id, then="SchedulingFailed",
+                    else=if(condition=Finished[0].TimedOut, then="WaitTimeout",
+                            else=Finished[0].Details.state)) AS State,
+                 Finished[0].Details.status AS Message
+          FROM scope()
+        }, results={
+          SELECT *, Analysis.flow_id AS AnalysisFlowId
+          FROM if(condition=Analysis.flow_id AND NOT Finished[0].TimedOut, then={
+            SELECT * FROM source(client_id="server", flow_id=Analysis.flow_id,
+                artifact="Server.Analysis.Windows.EventLogs.HayabusaEngine/Results")
+            WHERE Kind IN ("Detection", "Status")
+          })
+        })
+        ''')
+      })
+
+column_types:
+  - name: Timestamp
+    type: timestamp
+  - name: ClientId
+    type: client
+  - name: FlowId
+    type: flow

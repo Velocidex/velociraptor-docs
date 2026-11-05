@@ -1,0 +1,24 @@
+# Server.Internal.ClientInfoSnapshot
+
+Notifies minion nodes to refresh their client info cache when the
+master writes a new snapshot.
+
+Minions use this to trigger a refresh of their client info
+snapshots.
+
+
+---
+
+````yaml
+name: Server.Internal.ClientInfoSnapshot
+type: INTERNAL
+description: |
+  Notifies minion nodes to refresh their client info cache when the
+  master writes a new snapshot.
+  
+  Minions use this to trigger a refresh of their client info
+  snapshots.
+````
+
+
+

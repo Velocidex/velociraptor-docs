@@ -1,0 +1,122 @@
+name: MacOS.Events.InfostealerExec
+description: |
+  Streams process executions from Apple's Endpoint Security (`eslogger exec`)
+  and alerts on the command-line steps of macOS infostealers (AMOS/Atomic,
+  Poseidon, Banshee, Cthulhu):
+
+  - **KeychainSafeStorageRead**: `security find-generic-password … -s "Chrome
+    Safe Storage"` (or Brave/Edge/Opera/Arc). Browsers read this key through
+    the Keychain API, never the `security` CLI, so any match is suspicious
+    regardless of caller.
+  - **KeychainDump / KeychainExport**: `security dump-keychain`, or
+    `security export` of a keychain.
+  - **OsascriptPasswordPrompt**: `osascript` with a hidden-answer or password
+    dialog — the fake "System Preferences needs your password" lure.
+  - **DsclAuthonly**: `dscl . -authonly` — how stealers validate the phished
+    password before using it.
+  - **CurlFileUpload**: `curl` posting a file from a temp location or a zip.
+  - **DittoArchive**: `ditto -c -k`, used to zip the staging folder.
+
+  Rules match on the target executable path and the joined argument list.
+  Developer tools read the keychain constantly through the `security` CLI
+  (for example Claude Code with `-s "Claude Code-credentials"` and GitHub
+  CLI with `-s gh:github.com`, roughly 850 times a day on one test machine);
+  these do not fire because the discriminator is the service name, not the
+  caller. Do not allowlist by caller: a stealer can run `security` from any
+  shell. Rules are a CSV parameter and can be tuned without editing VQL.
+
+  This covers the credential-access and exfil stage. Pair it with
+  `MacOS.UnifiedLogHunter`'s "Browser Safe Storage Keychain Prompt" filter
+  (select it with `FilterRegex`, for example `Safe Storage`) for hosts that
+  were not running this monitor beforehand: `securityd` logs the
+  requesting binary for Safe Storage prompts, including Keychain API callers
+  that never run the `security` CLI.
+
+  #### Requirements
+  - macOS 13+ (`/usr/bin/eslogger`), root, and **Full Disk Access** for the
+    Velociraptor binary (granted via MDM PPPC); without FDA `eslogger` exits
+    with "Not permitted to create an ES Client" — logged as an error.
+  - Shells out (EXECVE permission).
+
+  #### Performance
+  `eslogger` emits every exec on the host as large JSON lines. Lines are
+  pre-filtered with a cheap string regex (`PrefilterRegex`) before JSON
+  parsing; only lines mentioning a watched binary are parsed. Note that
+  `eslogger` JSON escapes forward slashes (`\/usr\/bin\/security`), which
+  the default prefilter accounts for.
+
+  #### Testing
+  Validated on macOS 27 against a harmless AMOS-style simulation: an
+  auto-dismissing hidden-answer dialog, `dscl -authonly` against a
+  nonexistent user, a Safe Storage read denied at the keychain prompt,
+  `dump-keychain` with output discarded, a `ditto` zip of fake files, and a
+  `curl` upload to a closed local port. All six steps fired; a routine
+  keychain read in the same run did not.
+
+reference:
+  - https://developer.apple.com/documentation/endpointsecurity
+
+author: liteman
+
+type: CLIENT_EVENT
+
+precondition: SELECT OS FROM info() WHERE OS = 'darwin'
+
+required_permissions:
+  - EXECVE
+
+parameters:
+  - name: PrefilterRegex
+    description: Raw-line regex applied before JSON parsing. Must cover every ExecutableRegex below. Tolerates JSON-escaped slashes (\/).
+    default: bin\\?/(security|osascript|dscl|curl|ditto)"
+  - name: Rules
+    type: csv
+    description: First matching rule wins. ExecutableRegex matches the exec target path; ArgsRegex matches the space-joined argv.
+    default: |
+      Name,ExecutableRegex,ArgsRegex
+      KeychainSafeStorageRead,^/usr/bin/security$,(?i)find-(generic|internet)-password.*Safe Storage
+      KeychainDump,^/usr/bin/security$,dump-keychain
+      KeychainExport,^/usr/bin/security$,(?i)\bexport\b.*keychain
+      OsascriptPasswordPrompt,^/usr/bin/osascript$,(?i)(hidden answer|password)
+      DsclAuthonly,^/usr/bin/dscl$,(?i)-authonly
+      CurlFileUpload,^/usr/bin/curl$,(?i)(\s-F|--form|\s-T|--upload-file|--data-binary)\s+\S*(/tmp/|/var/folders/|\.zip)
+      DittoArchive,^/usr/bin/ditto$,\s-c\b.*\s-k\b|\s-k\b.*\s-c\b
+
+sources:
+  - query: |
+      LET stream = SELECT Stdout,
+                          Stderr
+        FROM execve(argv=["/usr/bin/eslogger", "exec"], sep="\n", length=10000000)
+      
+      -- eslogger errors (e.g. missing Full Disk Access) arrive on Stderr;
+      -- surface them loudly instead of silently producing no rows.
+      LET candidates = SELECT parse_json(data=Stdout) AS E
+        FROM stream
+        WHERE if(condition=Stderr,
+                 then=log(message="eslogger: %v", args=Stderr, level="ERROR")
+                  AND FALSE,
+                 else=Stdout =~ PrefilterRegex)
+      
+      LET execs = SELECT E,
+                         E.event.exec.target.executable.path AS Exe,
+                         join(array=E.event.exec.args, sep=" ") AS CommandLine
+        FROM candidates
+      
+      SELECT *
+      FROM foreach(row=execs,
+                   query={
+          SELECT E.time AS Time,
+                 Name AS Rule,
+                 Exe,
+                 CommandLine,
+                 E.event.exec.target.audit_token.pid AS Pid,
+                 E.process.executable.path AS Caller,
+                 E.process.signing_id AS CallerSigningId,
+                 E.process.team_id AS CallerTeamId,
+                 E.process.ppid AS CallerPpid,
+                 E.process.audit_token.euid AS Uid
+          FROM Rules
+          WHERE Exe =~ ExecutableRegex
+           AND CommandLine =~ ArgsRegex
+          LIMIT 1
+        })

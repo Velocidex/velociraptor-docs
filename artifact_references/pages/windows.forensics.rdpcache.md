@@ -1,0 +1,212 @@
+# Windows.Forensics.RDPCache
+
+Parses RDP Bitmap Cache (.BIN) files to extract and reconstruct
+cached remote desktop screen images.
+
+By default the artifact will parse .BIN RDPcache files.
+
+Filters include `UserRegex` to target a user and `Accessor` to target
+VSS via ntfs_vss.
+
+Best combined with:
+
+- `Windows.EventLogs.RDPAuth` to collect RDP focused event logs.
+- `Windows.Registry.RDP` to collect user RDP MRU and server info.
+
+
+---
+
+````yaml
+name: Windows.Forensics.RDPCache
+author: Matt Green - @mgreen27
+description: |
+  Parses RDP Bitmap Cache (.BIN) files to extract and reconstruct
+  cached remote desktop screen images.
+
+  By default the artifact will parse .BIN RDPcache files.
+
+  Filters include `UserRegex` to target a user and `Accessor` to target
+  VSS via ntfs_vss.
+
+  Best combined with:
+
+  - `Windows.EventLogs.RDPAuth` to collect RDP focused event logs.
+  - `Windows.Registry.RDP` to collect user RDP MRU and server info.
+
+reference:
+   - https://github.com/ANSSI-FR/bmc-tools
+   - https://github.com/BSI-Bund/RdpCacheStitcher
+
+parameters:
+   - name: RDPCacheGlob
+     default: C:\{{Users,Windows.old\Users}\*\AppData\Local,Documents and Settings\*\Local Settings\Application Data}\Microsoft\Terminal Server Client\Cache\*
+   - name: Accessor
+     description: Set accessor to use. Blank is default, file for api, ntfs for raw, ntfs_vss for VSS
+   - name: UserRegex
+     default: .
+     description: Regex filter of user to target. StartOf(^) and EndOf($)) regex may behave unexpectedly.
+     type: regex
+   - name: DateAfter
+     type: timestamp
+     description: "search for cache files modified after this date. YYYY-MM-DDTmm:hh:ssZ"
+   - name: DateBefore
+     type: timestamp
+     description: "search for cache files modified before this date. YYYY-MM-DDTmm:hh:ssZ"
+   - name: ParseCache
+     description: If selected will parse .BIN RDPcache files.
+     type: bool
+   - name: Workers
+     default: 100
+     type: int
+     description: Number of workers to use for ParseCache
+   - name: UploadRDPCache
+     description: If selected will upload raw cache files. Can be used for offline processing/preservation.
+     type: bool
+
+sources:
+  - name: TargetFiles
+    description: RDP BitmapCache files in scope.
+    query: |
+      -- firstly set timebounds for performance
+      LET DateAfterTime <= if(condition=DateAfter,
+        then=DateAfter, else=timestamp(epoch="1600-01-01"))
+      LET DateBeforeTime <= if(condition=DateBefore,
+        then=DateBefore, else=timestamp(epoch="2200-01-01"))
+
+      LET results = SELECT OSPath, Size, Mtime, Atime, Ctime, Btime
+        FROM glob(globs=RDPCacheGlob,accessor=Accessor)
+        WHERE OSPath =~ UserRegex
+            AND Mtime > DateAfterTime
+            AND Mtime < DateBeforeTime
+
+      LET upload_results = SELECT *, upload(file=OSPath) as CacheUpload
+        FROM results
+
+      SELECT * FROM if(condition= UploadRDPCache,
+        then= upload_results,
+        else= results )
+
+  - name: Parsed
+    description: Parsed RDP BitmapCache files.
+    query: |
+      -- Scope parsing to the requested DateAfter/DateBefore window.
+      LET DateAfterTime <= if(condition=DateAfter,
+        then=DateAfter, else=timestamp(epoch="1600-01-01"))
+      LET DateBeforeTime <= if(condition=DateBefore,
+        then=DateBefore, else=timestamp(epoch="2200-01-01"))
+
+      LET PROFILE = '''[
+        ["BIN_CONTAINER", 0, [
+            [Magic, 0, String, {length: 8, term_hex : "FFFFFF" }],
+            [Version, 8, uint32],
+            [CachedFiles, 12, Array, {
+                "type": "rgb32b",
+                "count": 10000,
+                "max_count": 2000,
+                "sentinel": "x=>x.__Size < 15",
+            }],
+        ]],
+        ["rgb32b","x=>x.__Size",[
+            [__key1, 0, uint32],
+            [__key1, 4, uint32],
+            ["Width", 8, "uint16"],
+            ["Height", 10, "uint16"],
+            [DataLength, 0, Value,{ value: "x=> 4 * x.Width * x.Height"}],
+            [DataOffset, 0, Value,{ "value": "x=>x.StartOf + 12"}],
+            ["__Size", 0, Value,{ "value": "x=>x.DataLength + 12"}],
+            ["Index", 0, Value,{ "value": "x=>count() - 1 "}],
+        ]]]'''
+
+      LET parse_rgb32b(data) = SELECT
+            _value  as Offset,
+            _value + 3 as EndOffset,
+            len(list=data) as Length,
+            data[(_value):(_value + 3)] + unhex(string="FF") as Buffer
+        FROM range(step=4,end=len(list=data))
+
+      LET fix_bmp(data) = SELECT
+            _value  as Offset,
+            _value + 255 as EndOffset,
+            join(array=data[ (_value):(_value + 256 ) ],sep='') as Buffer
+        FROM range(step=256, end= len(list=data) )
+        ORDER BY Offset DESC
+
+      LET parse_container = SELECT * OSPath,Name,Size as FileSize,
+            read_file(filename=OSPath,length=12) as Header,
+            parse_binary(filename=OSPath,profile=PROFILE,struct='BIN_CONTAINER') as Parsed
+        FROM foreach(row={
+            SELECT * FROM glob(globs=RDPCacheGlob,accessor=Accessor)
+            WHERE OSPath =~ '\.bin$'
+                AND OSPath =~ UserRegex
+                AND NOT IsDir
+                AND Mtime > DateAfterTime
+                AND Mtime < DateBeforeTime
+        })
+
+      LET find_index_differential = SELECT *, 0 - Parsed.CachedFiles.Index[0] as IndexDif
+        FROM parse_container
+
+      LET parse_cache = SELECT * FROM foreach(row=find_index_differential, query={
+        SELECT OSPath, IndexDif,
+            OSPath.Dirname + ( OSPath.Basename + '_' + format(format='%04v',args= Index + IndexDif ) + '.bmp' ) as BmpName,
+            FileSize,Header,Width,Height,DataLength,DataOffset
+        FROM foreach(row=Parsed.CachedFiles)
+      })
+
+      LET extract_data = SELECT *
+        FROM foreach(row=parse_cache,query={
+            SELECT
+                OSPath,BmpName,FileSize,Header,Width,Height,DataLength,DataOffset,
+                join(array=parse_rgb32b(data=read_file(filename=OSPath,offset=DataOffset,length=DataLength)).Buffer,sep='') as Data
+            FROM scope()
+        }, workers=Workers)
+
+      -- change endianess for unint32
+      LET pack_lt_l(data) = unhex(string=join(array=[
+        format(format='%02x',args=unhex(string=format(format='%08x',args=data))[3]),
+        format(format='%02x',args=unhex(string=format(format='%08x',args=data))[2]),
+        format(format='%02x',args=unhex(string=format(format='%08x',args=data))[1]),
+        format(format='%02x',args=unhex(string=format(format='%08x',args=data))[0])
+            ],sep=''))
+
+      -- build bmp file, adding appropriate header
+      LET build_bmp(data,width,height) = join(array=[
+                "BM",
+                pack_lt_l(data=len(list=data) + 122),
+                unhex(string="000000007A0000006C000000"),
+                pack_lt_l(data=width),
+                pack_lt_l(data=height),
+                unhex(string="0100200003000000"),
+                pack_lt_l(data=len(list=data)),
+                unhex(string="000000000000000000000000000000000000FF0000FF0000FF000000000000FF"),
+                " niW",
+                unhex(string="00" * 36),
+                unhex(string="000000000000000000000000"),
+                data
+            ], sep='')
+
+        SELECT * FROM if(condition= ParseCache,
+            then={
+                SELECT
+                    BmpName, Header, Width, Height, DataLength, DataOffset,
+                    upload(
+                        file=build_bmp(data=join(array=fix_bmp(data=Data).Buffer,sep=''),
+                        width=Width, height=Height),
+                        name=BmpName,
+                        accessor='data' ) as BmpUpload,
+                    OSPath as SourceFile
+                FROM extract_data
+                ORDER BY BmpName
+            },
+            else= Null )
+
+
+column_types:
+  - name: BmpUpload
+    type: upload_preview
+  - name: CacheUpload
+    type: upload_preview
+````
+
+
+

@@ -1,0 +1,74 @@
+# Windows.System.Pslist
+
+Enumerates running processes along with their executable paths and
+associated details, with optional authenticode trust verification
+and binary hashing.
+
+
+---
+
+````yaml
+name: Windows.System.Pslist
+description: |
+  Enumerates running processes along with their executable paths and
+  associated details, with optional authenticode trust verification
+  and binary hashing.
+
+parameters:
+  - name: ProcessRegex
+    default: .
+    type: regex
+  - name: PidRegex
+    default: .
+    type: regex
+  - name: ExePathRegex
+    default: .
+    type: regex
+  - name: CommandLineRegex
+    default: .
+    type: regex
+  - name: UsernameRegex
+    default: .
+    type: regex
+  - name: UntrustedAuthenticode
+    description: Show only Executables that are not trusted by Authenticode.
+    type: bool
+  - name: UseTracker
+    type: bool
+    description: If set we use the process tracker.
+  - name: DISABLE_DANGEROUS_API_CALLS
+    type: bool
+    description: |
+      Enable this to disable potentially flakey APIs which may cause
+      crashes.
+
+sources:
+  - precondition: SELECT OS From info() where OS = 'windows'
+
+    query: |
+        LET ProcList = SELECT * FROM if(condition=UseTracker,
+        then={
+          SELECT CreateTime, Pid, Ppid, NULL AS TokenIsElevated,
+                 Username, Name, CommandLine, Exe, NULL AS Memory
+          FROM process_tracker_pslist()
+        }, else={
+          SELECT * FROM pslist()
+        })
+
+        SELECT CreateTime, Pid, Ppid, TokenIsElevated, Name, CommandLine, Exe,
+            token(pid=int(int=Pid)) as TokenInfo,
+            hash(path=Exe) as Hash,
+            authenticode(filename=Exe) AS Authenticode,
+            Username, Memory.WorkingSetSize AS WorkingSetSize
+        FROM ProcList
+        WHERE Name =~ ProcessRegex
+            AND Pid =~ PidRegex
+            AND Exe =~ ExePathRegex
+            AND CommandLine =~ CommandLineRegex
+            AND Username =~ UsernameRegex
+            AND NOT if(condition= UntrustedAuthenticode,
+                        then= Authenticode.Trusted = 'trusted' OR NOT Exe,
+                        else= False )````
+
+
+

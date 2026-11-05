@@ -1,0 +1,180 @@
+name: Linux.Detection.Honeyfiles
+author: Zane Gittins & Matt Green (@mgreen27).
+description: |
+    This artifact deploys honeyfiles according to the Honeyfiles CSV parameter. It then monitors access to these files using eBPF.  The process tracker must be enabled, we use this to enrich events. You also must be using Velociraptor >= 0.74 to support eBPF. Honeyfiles created by this artifact are removed at exit.
+
+    * TargetPath - Location to create honeyfile.
+    * Enabled - Only generate the honeyfile if this is set to 'Y'
+    * MagicBytes - The starting magic bytes of the honeyfile.
+    * MinSize,MaxSize - The size of the honeyfile will be a random value between MinSize and MaxSize.
+
+type: CLIENT_EVENT
+
+parameters:
+   - name: Honeyfiles
+     description: The honeyfiles to generate and monitor.
+     type: csv
+     default: |
+         TargetPath,Enabled,MagicBytes,MinSize,MaxSize
+         "%USERPROFILE%/.ssh/my_id_rsa",Y,2D2D2D2D2D424547494E205253412050524956415445204B45592D2D2D2D2D,10249,20899
+         "%USERPROFILE%/.aws/credentials",Y,5B64656661756C745D,512,2048
+         "%USERPROFILE%/.gcloud/credentials.db",Y,53514c69746520666f726d6174203300,512,2048
+         "%USERPROFILE%/.azure/azureProfile.json",Y,7B0D0A,512,2048
+   - name: ProcessExceptionsRegex
+     description: Except these processes from detections when they access honeyfiles.
+     type: string
+     default: "/usr/bin/updatedb"
+   - name: HoneyUserRegex
+     description: User name regex that will be used to host honeyfiles.
+     type: string
+     default: "."
+   - name: Policy
+     description: Tracee Policy
+     default: |
+       metadata:
+         name: file-open-home
+       spec:
+          scope:
+            - global
+          rules:
+            - event: security_file_open
+              filters:
+                - args.pathname=/home/*
+sources:
+  - precondition:
+        SELECT OS From info() where OS = 'linux' AND version(plugin="watch_ebpf") >= 2
+
+    query: |
+      LET ComputerName <= dict(H={ SELECT Hostname FROM info() }).H[0].Hostname
+      
+      // Get detailed process information
+      LET GetProcInfo(EventData, Tracker, pTracker, System) =
+          dict(Image=Tracker.Data.Exe || EventData.cmdpath ||
+                 System.ProcessName,
+               ImageName=System.ProcessName,
+               CommandLine=Tracker.Data.CommandLine,
+               ParentImage=pTracker.Data.Exe,
+               ParentCommandLine=pTracker.Data.CommandLine,
+               Username=Tracker.Data.Username,
+               CreateTime=timestamp(epoch=EventData.ctime) ||
+                 System.ThreadStartTime,
+               CallChain=join(array=process_tracker_callchain(
+                                id=System.HostProcessID).Data.Name,
+                              sep="->"),
+               TrackerHit=if(condition=Tracker != NULL, then=true, else=false))
+      
+      LET RandomChars(size) = SELECT
+          format(format="%02x", args=rand(range=256)) AS HexByte
+        FROM range(end=size)
+      
+      LET check_exist(path) = SELECT
+          OSPath,
+          Size,
+          IsDir,
+          if(condition=read_file(filename=OSPath)[-7:] =~ 'VRHoney',
+             then=True,
+             else=False) AS IsHoneyFile
+        FROM stat(filename=path)
+      
+      LET enumerate_path = SELECT regex_replace(source=TargetPath,
+                                                re='''\%USERPROFILE\%''',
+                                                replace=Homedir) AS TargetPath,
+                                  *,
+                                  check_exist(path=regex_replace(
+                                                source=TargetPath,
+                                                re='''\%USERPROFILE\%''',
+                                                replace=Homedir))[0] AS Exists,
+                                  MaxSize - rand(range=(MaxSize - MinSize)) -
+                                    len(list=unhex(string=MagicBytes)) - 7 AS _PaddingSize
+        FROM Honeyfiles
+      
+      LET target_users = SELECT Name AS User,
+                                OSPath AS Homedir
+        FROM glob(globs="/home/*")
+        WHERE User =~ HoneyUserRegex
+      
+      LET show_honeyfiles = SELECT TargetPath,
+                                   Enabled,
+                                   MagicBytes,
+                                   MinSize,
+                                   MaxSize,
+                                   _PaddingSize,
+                                   Exists.Size AS Size,
+                                   Exists.IsHoneyFile AS IsHoneyFile
+        FROM foreach(row=target_users, query=enumerate_path)
+      
+      LET copy_honeyfiles = SELECT
+          *, if(condition=Enabled =~ "^(Y|YES)$"
+                 AND (NOT Size OR IsHoneyFile),
+                then=log(message="Creating file %v", dedup=-1, args=TargetPath)
+                 AND copy(dest=TargetPath,
+                          create_directories='y',
+                          accessor='data',
+                          permissions="0644",
+                          dir_permissions="0755",
+                          filename=unhex(
+                            string=MagicBytes + join(
+                              array=RandomChars(size=_PaddingSize).HexByte) +
+                              format(format='%x', args='VRHoney'))),
+                else="File does not exist") AS CreateHoneyFile
+        FROM show_honeyfiles
+      
+      LET remove_honeyfiles = SELECT
+          *, _PaddingSize,
+          if(condition=IsHoneyFile,
+             then=log(message="Removing %v", args=TargetPath, dedup=-1)
+              AND rm(filename=TargetPath),
+             else="File does not exist") AS RemoveHoneyFile
+        FROM show_honeyfiles
+      
+      LET add_honeyfiles = SELECT
+          TargetPath,
+          Enabled,
+          MagicBytes,
+          MinSize,
+          MaxSize,
+          check_exist(path=TargetPath)[0].Size AS Size,
+          check_exist(path=TargetPath)[0].IsHoneyFile AS IsHoneyFile
+        FROM copy_honeyfiles
+      
+      LET _ <= atexit(query={ SELECT * FROM remove_honeyfiles })
+      
+      LET WatchFiles <= to_dict(item={
+          SELECT TargetPath AS _key,
+                 IsHoneyFile AS _value
+          FROM add_honeyfiles
+          WHERE IsHoneyFile
+        })
+      
+      LET CurrentPid <= getpid()
+      
+      LET TargetEvents = SELECT *
+        FROM watch_ebpf(events=["security_file_open"], policy=Policy)
+        WHERE System.EventName = "security_file_open"
+         AND System.HostProcessID != CurrentPid
+      
+      LET AuditEvents = SELECT
+          *, timestamp(string=System.Timestamp) AS Timestamp,
+          get(item=WatchFiles, field=EventData.pathname) AS IsHoneyFile
+        FROM TargetEvents
+        WHERE IsHoneyFile != NULL
+      
+      LET Track = SELECT Timestamp,
+                         EventData.pathname AS FileName,
+                         GetProcInfo(EventData=EventData,
+                                     Tracker=process_tracker_get(
+                                       id=System.HostProcessID),
+                                     pTracker=process_tracker_get(
+                                       id=System.HostParentProcessID),
+                                     System=System) AS ProcInfo,
+                         *,
+                         (System.HostProcessID + EventData.pathname) AS DedupKey
+        FROM delay(query=AuditEvents, delay=3)
+      
+      SELECT Timestamp,
+             ComputerName,
+             System.HostProcessID AS Pid,
+             FileName,
+             ProcInfo
+      FROM dedup(query=Track, key="DedupKey", timeout=10)
+      WHERE NOT ProcInfo.Image =~ ProcessExceptionsRegex

@@ -1,0 +1,54 @@
+# Windows.ETW.EdgeURLs
+
+Captures URLs accessed by the Edge browser via the
+Microsoft-Windows-URLMon ETW provider.
+
+It also serves as an example of an ETW artifact, in this case using
+the provider: `Microsoft-Windows-URLMon       {245F975D-909D-49ED-B8F9-9A75691D6B6B}`
+
+NOTE: This artifact can generate a lot of data - you probably want
+to filter the URLs a bit and/or target collection to a narrow label
+group.
+
+
+---
+
+````yaml
+name: Windows.ETW.EdgeURLs
+description: |
+  Captures URLs accessed by the Edge browser via the
+  Microsoft-Windows-URLMon ETW provider.
+
+  It also serves as an example of an ETW artifact, in this case using
+  the provider: `Microsoft-Windows-URLMon       {245F975D-909D-49ED-B8F9-9A75691D6B6B}`
+
+  NOTE: This artifact can generate a lot of data - you probably want
+  to filter the URLs a bit and/or target collection to a narrow label
+  group.
+
+type: CLIENT_EVENT
+
+parameters:
+  - name: URLFilter
+    default: .
+    description: A regex that can be used to filter uninteresting URLs
+    type: regex
+
+sources:
+  - query: |
+      LET m <= memoize(key="Pid", period=30, query={
+          SELECT Pid, Exe, Username FROM pslist()
+      })
+
+      SELECT System.ID AS ID,
+             System.TimeStamp AS Timestamp,
+             get(item=m, field=System.ProcessID) AS ProcInfo,
+             get(member="EventData.URL") AS URL
+      FROM watch_etw(
+        description="Microsoft-Windows-URLMon",
+        guid="{245F975D-909D-49ED-B8F9-9A75691D6B6B}")
+      WHERE ID = 805 AND URL =~ URLFilter
+````
+
+
+

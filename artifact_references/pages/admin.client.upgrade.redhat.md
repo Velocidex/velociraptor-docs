@@ -1,0 +1,68 @@
+# Admin.Client.Upgrade.RedHat
+
+Upgrades Velociraptor clients on Red Hat hosts by installing a new RPM package
+
+NOTE: This artifact requires that you supply a client Red Hat
+package by using the tools interface. Click on the tool button in
+the GUI and upload a package.
+
+
+---
+
+````yaml
+name: Admin.Client.Upgrade.RedHat
+description: |
+  Upgrades Velociraptor clients on Red Hat hosts by installing a new RPM package
+
+  NOTE: This artifact requires that you supply a client Red Hat
+  package by using the tools interface. Click on the tool button in
+  the GUI and upload a package.
+
+tools:
+  - name: VelociraptorRedHat
+
+parameters:
+  - name: SleepDuration
+    default: "600"
+    type: int
+    description: |
+      The package is typically large and we do not want to
+      overwhelm the server so we stagger the download over this many
+      seconds.
+
+  - name: ServiceName
+    default: "velociraptor_client"
+    type: str
+    description: |
+      The name of the service to restart after the upgrade.
+
+implied_permissions:
+  - EXECVE
+
+sources:
+  - precondition:
+      SELECT OS From info() where OS =~ 'linux'
+
+    query:  |
+      // FetchBinary downloads to /tmp on linux
+      LET bin <= SELECT OSPath AS Dest
+      FROM Artifact.Generic.Utils.FetchBinary(
+         ToolName="VelociraptorRedHat", IsExecutable=FALSE,
+         SleepDuration=SleepDuration)
+
+      // Call the binary and return all its output in a single row.
+      // If we fail to download the binary we do not run the command.
+      SELECT * FROM foreach(row=bin,
+      query={
+        SELECT * FROM chain(
+          // Install the new client (Disabled preun because older versions
+          // had a bug where preun would shut down the service - see #3122).
+
+          b={SELECT * FROM execve(argv=["rpm", "--nopreun", "-U", str(str=Dest)])},
+          c={SELECT * FROM execve(argv=["systemctl", "restart", ServiceName])}
+        )
+      })
+````
+
+
+

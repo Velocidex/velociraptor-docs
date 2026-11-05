@@ -1,0 +1,19 @@
+# Server.Internal.Inventory
+
+Fires an event when the server's tool inventory is updated or
+modified.
+
+
+---
+
+````yaml
+name: Server.Internal.Inventory
+description: |
+  Fires an event when the server's tool inventory is updated or
+  modified.
+
+type: INTERNAL
+````
+
+
+

@@ -1,0 +1,39 @@
+# Generic.Client.CleanupTemp
+
+Removes old temporary files from the Velociraptor client's temp
+directory.
+
+
+---
+
+````yaml
+name: Generic.Client.CleanupTemp
+description: |
+  Removes old temporary files from the Velociraptor client's temp
+  directory.
+
+parameters:
+  - name: TempGlob
+    default: "%TEMP%/**"
+    description: Glob to find all the files in the temp folder.
+  - name: AgeSeconds
+    default: 600
+    type: int
+    description: Any files older than this many seconds will be removed.
+  - name: ReadllyDoIt
+    type: bool
+
+required_permissions:
+  - FILESYSTEM_WRITE
+
+sources:
+  - query: |
+      LET Threshold <= timestamp(epoch=now() - AgeSeconds )
+      SELECT OSPath, Size, Mtime,
+         if(condition=ReadllyDoIt, then=rm(filename=OSPath)) AS Removed
+      FROM glob(globs=expand(path=TempGlob))
+      WHERE NOT IsDir AND Mtime < Threshold
+````
+
+
+

@@ -1,0 +1,218 @@
+# Windows.Search.FileFinder
+
+Searches for files by path glob, inspects file content via YARA, and
+provides file hash and upload options.
+
+This artifact is useful in the following scenarios:
+
+* We need to locate all the places on our network where customer
+  data has been copied.
+
+* We’ve identified malware in a data breach, named using short
+  random strings in specific folders and need to search for other
+  instances across the network.
+
+* We believe our user account credentials have been dumped and
+  need to locate them.
+
+* We need to search for exposed credit card data to satisfy PCI
+  requirements.
+
+* We have a sample of data that has been disclosed and need to
+  locate other similar files
+
+**Performance Note**
+
+This artifact can be quite resource intensive, especially if we
+search file content. It will require opening each file and reading
+its entire content. To minimize the impact on the endpoint we
+recommend this artifact is collected with a rate limited applied
+(about 20-50 ops per second should be reasonable).
+
+
+---
+
+````yaml
+name: Windows.Search.FileFinder
+description: |
+  Searches for files by path glob, inspects file content via YARA, and
+  provides file hash and upload options.
+
+  This artifact is useful in the following scenarios:
+
+  * We need to locate all the places on our network where customer
+    data has been copied.
+
+  * We’ve identified malware in a data breach, named using short
+    random strings in specific folders and need to search for other
+    instances across the network.
+
+  * We believe our user account credentials have been dumped and
+    need to locate them.
+
+  * We need to search for exposed credit card data to satisfy PCI
+    requirements.
+
+  * We have a sample of data that has been disclosed and need to
+    locate other similar files
+
+  **Performance Note**
+
+  This artifact can be quite resource intensive, especially if we
+  search file content. It will require opening each file and reading
+  its entire content. To minimize the impact on the endpoint we
+  recommend this artifact is collected with a rate limited applied
+  (about 20-50 ops per second should be reasonable).
+
+
+precondition:
+  SELECT * FROM info() where OS = 'windows'
+
+parameters:
+  - name: Glob
+    description: "Search for this file glob"
+
+  - name: SearchFilesGlobTable
+    type: csv
+    default: |
+      Glob
+      C:/Users/SomeUser/*
+    description: Specify multiple globs to search for.
+
+  - name: Accessor
+    default: auto
+    description: The accessor to use
+    type: choices
+    choices:
+      - auto
+      - registry
+      - file
+      - ntfs
+      - ntfs_vss
+
+  - name: YaraRule
+    type: yara
+    default:
+    description: A yara rule to search for matching files.
+
+  - name: Upload_File
+    default: N
+    type: bool
+
+  - name: Calculate_Hash
+    default: N
+    type: bool
+
+  - name: MoreRecentThan
+    default: ""
+    type: timestamp
+
+  - name: ModifiedBefore
+    default: ""
+    type: timestamp
+
+  - name: VSS_MAX_AGE_DAYS
+    type: int
+    description: |
+      If larger than 0 we restrict VSS age to this many days
+      ago. Otherwise we find all VSS.
+
+  - name: UPLOAD_IS_RESUMABLE
+    type: bool
+    default: N
+    description: |
+      If set, file uploads will be asynchronous and resumable.
+
+sources:
+  - query: |
+      LET file_search = SELECT OSPath,
+               get(item=Data, field="mft") as Inode,
+               Mode.String AS Mode, Size,
+               Mtime AS MTime,
+               Atime AS ATime,
+               Btime AS BTime,
+               Ctime AS CTime, "" AS Keywords,
+               IsDir, Data
+        FROM glob(globs=Glob || SearchFilesGlobTable.Glob,
+                  accessor=Accessor)
+
+      LET more_recent = SELECT * FROM if(
+        condition=MoreRecentThan,
+        then={
+          SELECT * FROM file_search
+          WHERE MTime > MoreRecentThan
+        }, else=file_search)
+
+      LET modified_before = SELECT * FROM if(
+        condition=ModifiedBefore,
+        then={
+          SELECT * FROM more_recent
+          WHERE MTime < ModifiedBefore
+           AND  MTime > MoreRecentThan
+        }, else=more_recent)
+
+      LET keyword_search = SELECT * FROM if(
+        condition=YaraRule,
+        then={
+          SELECT * FROM foreach(
+            row={
+               SELECT * FROM modified_before
+               WHERE NOT IsDir
+            },
+            query={
+               SELECT OSPath, Inode, Mode,
+                      Size, MTime, ATime, CTime, BTime,
+                      str(str=String.Data) As Keywords, IsDir, Data
+
+               FROM yara(files=OSPath,
+                         key="A",
+                         rules=YaraRule,
+                         accessor=Accessor)
+            })
+        }, else=modified_before)
+
+      SELECT OSPath, Inode, Mode, Size, MTime, ATime,
+             CTime, BTime, Keywords, IsDir,
+               if(condition=Upload_File and NOT IsDir,
+                  then=upload(file=OSPath, accessor=Accessor)) AS Upload,
+               if(condition=Calculate_Hash and NOT IsDir,
+                  then=hash(path=OSPath, accessor=Accessor)) AS Hash,
+            Data
+      FROM keyword_search
+
+    notebook:
+      - type: none
+        name: quick_link
+        env:
+          - key: text
+            value: Search Files
+          - key: icon
+            value: search
+          - key: os_filter
+            value: Windows
+          - key: weight
+            value: "010"
+      - type: vql
+        template: |
+          /*
+          # Windows.Search.FileFinder
+          */
+
+          SELECT * FROM source()
+          LIMIT 50
+
+column_types:
+  - name: Modified
+    type: timestamp
+  - name: ATime
+    type: timestamp
+  - name: MTime
+    type: timestamp
+  - name: CTime
+    type: timestamp
+  - name: Upload
+    type: preview_upload
+````
+
+
+

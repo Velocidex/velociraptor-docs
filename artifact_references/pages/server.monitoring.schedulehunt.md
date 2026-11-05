@@ -1,0 +1,62 @@
+# Server.Monitoring.ScheduleHunt
+
+Runs client interrogation periodically.
+
+This is an example server event artifact that shows how to schedule
+a hunt periodically. You can change it to do the same for other
+artifacts.
+
+NOTE: Hunting for client info is not needed in the current version
+as it now happens automatically, but you may still need to do it if
+you have customized interrogation artifacts, since the automatic
+collection mechanism only collects basic information from the
+clients.
+
+
+---
+
+````yaml
+name: Server.Monitoring.ScheduleHunt
+description: |
+  Runs client interrogation periodically.
+  
+  This is an example server event artifact that shows how to schedule
+  a hunt periodically. You can change it to do the same for other
+  artifacts.
+
+  NOTE: Hunting for client info is not needed in the current version
+  as it now happens automatically, but you may still need to do it if
+  you have customized interrogation artifacts, since the automatic
+  collection mechanism only collects basic information from the
+  clients.
+
+type: SERVER_EVENT
+
+parameters:
+  - name: ScheduleDayRegex
+    default: Tuesday
+    type: regex
+  - name: ScheduleTimeRegex
+    default: "01:28"
+    type: regex
+  - name: HuntDescription
+    default: "Periodic info hunt"
+
+sources:
+  - query: |
+      LET schedule = SELECT
+           UTC.String AS Now,
+           Weekday.String AS Today
+      FROM clock(period=60)
+      WHERE Now =~ ScheduleTimeRegex + ":[0-9][0-9]"
+        AND Today =~ ScheduleDayRegex
+        AND log(message="Launching at time " + Now)
+
+      SELECT hunt(artifacts=["Generic.Client.Info"],
+                  spec=dict(`Generic.Client.Info`=dict()),
+                  description=HuntDescription)
+      FROM schedule
+````
+
+
+

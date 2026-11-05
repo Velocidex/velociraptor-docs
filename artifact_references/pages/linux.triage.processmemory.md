@@ -1,0 +1,35 @@
+# Linux.Triage.ProcessMemory
+
+Dumps process memory from a selected process and uploads it to the
+server.
+
+
+---
+
+````yaml
+name: Linux.Triage.ProcessMemory
+description: |
+  Dumps process memory from a selected process and uploads it to the
+  server.
+
+precondition: SELECT OS From info() where OS = 'linux'
+
+parameters:
+  - name: processPid
+    type: int
+    default: 2215
+
+column_types:
+  - name: CrashDump
+    type: preview_upload
+
+sources:
+  - query: |
+      SELECT Name as ProcessName, CommandLine, Pid,
+             upload(file=format(format="/%d", args=processPid),
+                    accessor="process") as CrashDump
+      FROM pslist(pid=processPid)
+````
+
+
+
