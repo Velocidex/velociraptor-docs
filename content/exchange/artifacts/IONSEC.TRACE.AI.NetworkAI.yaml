@@ -1,0 +1,73 @@
+name: IONSEC.TRACE.AI.NetworkAI
+description: |
+  IONSEC TRACE — Detect live AI network traffic by correlating running
+  processes with outbound connections and classifying destination domains
+  against a catalog of known AI providers.
+
+  This artifact collects:
+  - Established outbound connections from AI-related processes
+  - Connections to known AI API domains/endpoints
+  - DNS cache entries for AI provider domains
+  - Process-to-AI-domain correlations (which process talks to which AI)
+
+  Version: 0.2.0
+  Author: IONSEC
+  Reference: https://github.com/ionsec/trace
+  License: AGPL-3.0-or-later
+
+type: CLIENT
+parameters:
+  - name: CollectChatHistory
+    description: Not used in this artifact
+    type: bool
+    default: true
+  - name: CollectLogs
+    description: Include DNS cache and connection details
+    type: bool
+    default: true
+  - name: DeepCollection
+    description: Include all connections from AI-related processes
+    type: bool
+    default: false
+
+sources:
+  - name: AIProcessConnections
+    query: |
+      -- All outbound connections
+      LET all_conns = SELECT Pid, Name AS ProcessName, Exe, CommandLine,
+                 Laddr.IP AS LocalIP, Laddr.Port AS LocalPort,
+                 Raddr.IP AS RemoteIP, Raddr.Port AS RemotePort,
+                 Status,
+                 "ai_network_connection" AS ArtifactType, "network_ai" AS Platform
+          FROM connections()
+
+      -- Filter for connections from AI-related processes
+      SELECT * FROM all_conns
+      WHERE ProcessName =~ "(?i)(ollama|llama|lm.studio|lmstudio|kobold|gpt4all|local-ai|localai|vllm|hermes|aider|cursor|warp|codex|gemini|copilot|python|node|chrome|firefox|edge|brave)"
+         OR CommandLine =~ "(?i)(openai|anthropic|ollama|huggingface|langchain|crewai|autogpt|aider|hermes|perplexity|gemini|copilot|text-generation|gradio|streamlit)"
+         OR RemotePort IN (443, 80, 11434, 1234, 7860, 8000, 8080)
+
+  - name: DNS_AICache_Linux
+    precondition: SELECT OS FROM info() WHERE OS = 'linux'
+    query: |
+      -- Check DNS resolver config and hosts for AI domains
+      LET hosts_file = SELECT FullPath, Mtime, Size,
+                 "hosts_entry" AS ArtifactType, "network_ai" AS Platform
+          FROM glob(globs="/etc/hosts", accessor="file")
+
+      LET resolv_conf = SELECT FullPath, Mtime, Size,
+                 "dns_config" AS ArtifactType, "network_ai" AS Platform
+          FROM glob(globs="/etc/resolv.conf", accessor="file")
+
+      SELECT * FROM chain(a=hosts_file, b=resolv_conf)
+
+  - name: DNS_AICache_Windows
+    precondition: SELECT OS FROM info() WHERE OS = 'windows'
+    query: |
+      -- Windows DNS client cache for AI domains
+      LET dns_cache = SELECT Name, Data, TTL,
+                 "dns_cache_entry" AS ArtifactType, "network_ai" AS Platform
+          FROM dns_cache()
+          WHERE Name =~ "(?i)(openai|anthropic|huggingface|ollama|gemini|groq|together|mistral|deepseek|perplexity|replicate|cohere|ai21|claude|copilot)"
+
+      SELECT * FROM dns_cache
