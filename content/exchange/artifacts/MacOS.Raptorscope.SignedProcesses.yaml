@@ -1,0 +1,43 @@
+name: MacOS.Raptorscope.SignedProcesses
+author: cac0ns3c (https://github.com/cac0ns3c/Raptorscope)
+description: |
+  List running processes and enrich each with code-signature trust — stock
+  `MacOS.Sys.Pslist` emits only a `Hash`, so signature-based detections (untrusted
+  or unsigned running code) can't fire from it alone. This artifact adds a
+  `CodeSignature` object per executable via `codesign`.
+  Keywords: process, code signing, codesign, unsigned, untrusted, macOS. MITRE T1036.001.
+
+  ### Output
+  One row per process (Pid, Ppid, Name, Exe, CommandLine, Username, CreatedTime,
+  Hash, CodeSignature{Exists,Trusted,SubjectName}).
+type: CLIENT
+reference:
+  - https://attack.mitre.org/techniques/T1036/001/
+  - https://developer.apple.com/library/archive/documentation/Security/Conceptual/CodeSigningGuide/Introduction/Introduction.html
+column_types:
+  - name: CreatedTime
+    type: timestamp
+sources:
+  - name: SignedProcesses
+    precondition: SELECT OS FROM info() WHERE OS = 'darwin'
+    query: |
+      LET procs = SELECT Pid, Ppid, Name, Exe, CommandLine, Username,
+                         CreatedTime, Hash
+        FROM Artifact.MacOS.Sys.Pslist()
+      -- Per executable: `codesign --verify --strict` exits 0 only for a valid,
+      -- trusted signature; `codesign -dv` prints the signing Authority. Absent
+      -- signatures surface as "code object is not signed" on stderr.
+      SELECT Pid, Ppid, Name, Exe, CommandLine, Username, CreatedTime, Hash,
+        dict(
+          Exists=NOT (verify.Stderr =~ "code object is not signed"),
+          Trusted=(verify.ReturnCode = 0),
+          SubjectName=parse_string_with_regex(
+            string=disp.Stderr,
+            regex="Authority=(?P<A>[^\\n]+)").A
+        ) AS CodeSignature
+      FROM foreach(row=procs, query={
+        SELECT *,
+          { SELECT * FROM execve(argv=["codesign", "--verify", "--strict", Exe]) } AS verify,
+          { SELECT * FROM execve(argv=["codesign", "-dv", Exe]) } AS disp
+        FROM scope()
+      })
