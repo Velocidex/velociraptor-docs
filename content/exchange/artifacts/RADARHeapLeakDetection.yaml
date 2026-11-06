@@ -1,0 +1,58 @@
+name: Windows.Forensics.RADAR.HeapLeakDetection
+author: Deniz Ciftci
+description: |
+  It reads the RADAR (Resource Exhaustion Detection and Resolution) HeapLeakDetection registry key and decodes each application's LastDetectionTime FILETIME value into a readable UTC timestamp.
+
+  It surfaces applications that Windows flagged for abnormal memory use, which serves as a lesser-known evidence-of-execution artifact alongside Prefetch, UserAssist and ShimCache. RADAR is a memory-leak diagnostic component introduced in Windows Vista; when a process commits an abnormally large amount of memory it is recorded under DiagnosedApplications, leaving a persistent registry trace.
+
+  Presence of an entry confirms the application ran and was flagged, but LastDetectionTime is when RADAR detected the issue rather than when the program started, so it should be treated as a lower bound for execution and corroborated with other artifacts.
+
+  This is a registry-only artifact; there is no corresponding file on disk in real Windows.
+
+  - Registry:
+    - `HKLM\Software\Microsoft\RADAR\HeapLeakDetection\DiagnosedApplications`
+    - Each subkey is a flagged application holding a `LastDetectionTime` value (Windows FILETIME)
+  - Decoding:
+    - `LastDetectionTime` is stored as REG_QWORD or 8-byte little-endian REG_BINARY depending on the build
+    - Both forms are handled and normalised to UTC (e.g. 134218000228973093 -> 2026-04-27 21:47:02.897 UTC)
+  - Output:
+    - Application -> the flagged executable name
+    - LastDetectionTimeUTC -> decoded detection timestamp
+    - RegistryPath -> full path to the value
+  - Notes:
+    - Selective logging: only processes that commit large amounts of memory are recorded; well-behaved apps may never appear
+    - A useful Prefetch substitute on servers, where Prefetch is often disabled
+    - An entry can stem from software bugs, malware activity, or legitimately heavy workloads
+
+reference:
+  - https://harelsegev.github.io/posts/the-mystery-of-the-heapleakdetection-registry-key/
+  - https://www.cyberengage.org/post/using-radar-and-muicache-for-evidence-of-execution-in-windows
+  - https://github.com/MHaggis/HeapLeakDetection
+  - http://windowsir.blogspot.com/2011/09/registry-stuff.html
+
+type: CLIENT
+
+parameters:
+  - name: RegistryGlob
+    type: string
+    default: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\RADAR\HeapLeakDetection\DiagnosedApplications\**
+    description: Registry glob for the RADAR DiagnosedApplications keys.
+
+sources:
+  - precondition:
+      SELECT OS FROM info() WHERE OS = 'windows'
+    name: DiagnosedApplications
+    query: |
+      -- FILETIME = a single little-endian uint64 (8 bytes).
+      LET FileTimeProfile = '[["F", 8, [["t", 0, "uint64"]]]]'
+
+      SELECT
+        OSPath.Dirname.Basename AS Application,
+        timestamp(winfiletime=if(condition=Data.type =~ "QWORD",
+          then=Data.value,
+          else=parse_binary(accessor="registry", filename=OSPath,
+            profile=FileTimeProfile, struct="F").t)) AS LastDetectionTimeUTC,
+        OSPath AS RegistryPath
+      FROM glob(globs=RegistryGlob, accessor="registry")
+      WHERE Name =~ "(?i)^LastDetectionTime$"
+      ORDER BY LastDetectionTimeUTC DESC
