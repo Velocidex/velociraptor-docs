@@ -1,0 +1,37 @@
+name: MacOS.Detection.ClickFix
+description: |
+  Hunts for macOS ClickFix social engineering artifacts within user terminal history.
+  ClickFix tricks users into manually pasting malicious commands (like curl | bash or base64 decoding) into their terminal.
+author: Shashwat Tewari
+
+parameters:
+  - name: HistoryFiles
+    default: /Users/*/.*_history
+    description: Glob pattern to locate user bash and zsh history files.
+  - name: ClickFixRegex
+    # This regex specifically targets the common TTPs of macOS ClickFix payloads.
+    default: "(?i)(base64\\s+-d\\s*\\|\\s*bash|curl\\s+.*\\|\\s*bash|curl\\s+.*\\|\\s*nohup\\s+bash|osascript.*System Events.*password|xattr\\s+-c\\s+.*\\.app)"
+    type: regex
+    description: Regular expression to match common ClickFix pasted commands.
+
+sources:
+  # Ensure this only runs on macOS
+  - precondition: |
+      SELECT OS From info() where OS = 'darwin'
+    
+    query: |
+      -- Step 1: Find all terminal history files using OSPath
+      LET history_files = SELECT OSPath, Name 
+                          FROM glob(globs=HistoryFiles)
+
+      -- Step 2: Parse each file line-by-line
+      SELECT * FROM foreach(
+          row=history_files,
+          query={
+              SELECT 
+                  OSPath AS FilePath,
+                  Line AS SuspectedCommand
+              FROM parse_lines(filename=OSPath)
+              WHERE SuspectedCommand =~ ClickFixRegex
+          }
+      )
