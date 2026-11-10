@@ -5,6 +5,11 @@ description: |
   Analyze previously uploaded Windows EVTX files with Hayabusa and Takajo
   entirely on the server. No analysis binaries are deployed to an endpoint.
 
+  For Hayabusa analysis without Takajo, use the separate
+  `Server.Analysis.Windows.EventLogs.HayabusaEngine` artifact. It has its own
+  pinned Hayabusa version and queryable detection results. This combined
+  workflow retains its existing versions, parameters, and uploaded outputs.
+
   This replaces the endpoint collection version of this artifact. First collect
   raw EVTX files (for example `Generic.Collectors.File` with `Root` = `C:`,
   `Accessor` = `ntfs`, and `collectionSpec` Glob

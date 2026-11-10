@@ -4,24 +4,26 @@ description: |
    Windows event log fast forensics timeline generator and threat
    hunting tool.
 
-   **WARNING**: This artifact deploys and executes a third-party binary
-   (`hayabusa.exe`) on the endpoint, which carries significant
-   operational risks:
+   This artifact uses the Windows live-response package. AV/EDR behavior
+   depends on the binary version and the security product: previous packages
+   have triggered detections, so test the pinned package in your environment.
+   Running it on an endpoint changes forensic state. The `UpdateRules` option
+   also makes outbound connections to GitHub.
 
-   * Security tools (AV/EDR) commonly detect, block, or quarantine the
-     Hayabusa binary, which may raise alerts for defenders or interfere
-     with the collection.
-   * The `UpdateRules` option causes the endpoint to make outbound
-     network connections to GitHub.
-   * Running analysis tools on the endpoint modifies forensic state
-     (Prefetch, Amcache, USN journal, etc.).
+   For analysis of EVTX files already uploaded to the server, choose an
+   engine explicitly:
 
-   In most cases you should prefer Velociraptor's built-in Sigma engine,
-   which evaluates the same Hayabusa ruleset natively without deploying
-   any binary to the endpoint: import the curated `Windows.Hayabusa.Rules`
-   artifact from https://sigma.velocidex.com/ using the built-in
-   `Server.Import.CuratedSigma` artifact on Velociraptor 0.74, or
-   `Server.Import.Extras` on 0.75 and later.
+   * `Server.Analysis.Windows.EventLogs.HayabusaEngine` runs the Hayabusa
+     executable on a Linux amd64 server, without deploying it to endpoints.
+   * `Server.Analysis.Windows.EventLogs.Hayabusa` evaluates converted Hayabusa
+     rules using Velociraptor's native Sigma engine. It requires the curated
+     `Windows.Hayabusa.Rules` package and does not execute Hayabusa.
+   * `Exchange.Windows.EventLogs.Hayabusa.Takajo` runs its separately pinned
+     Hayabusa and Takajo versions on a Linux amd64 server and uploads their
+     reports.
+
+   These paths use different engines, rule versions, filters, and output
+   formats. Equivalent detection coverage or performance is not guaranteed.
 
    This artifact runs Hayabusa on the endpoint against the specified
    Windows event log directory, and generates and uploads a single CSV/JSONL
@@ -31,10 +33,10 @@ description: |
 author: Eric Capuano - @eric_capuano, Whitney Champion - @shortxstack, Zach Mathis - @yamatosecurity, Fukusuke Takahashi - @fukusuket, Julian Hill - @julianghill
 
 tools:
- - name: Hayabusa-4.2.0
-   url: https://github.com/Yamato-Security/hayabusa/releases/download/v4.2.0/hayabusa-4.2.0-win-x64-live-response.zip
-   expected_hash: 77a596960e51c5a53e56e7f6c6eaae619932253dffcbd5d40d790155c828c459
-   version: 4.2.0
+ - name: Hayabusa-4.3.0
+   url: https://github.com/Yamato-Security/hayabusa/releases/download/v4.3.0/hayabusa-4.3.0-win-x64-live-response.zip
+   expected_hash: a4a84bd39c8f3943c96c7a4783927de98f21529ae4780a73cabae90562700783
+   version: 4.3.0
 
 precondition: SELECT OS From info() where OS = 'windows'
 
@@ -137,7 +139,7 @@ sources:
    query: |
         -- Fetch the binary
         LET Toolzip <= SELECT FullPath
-        FROM Artifact.Generic.Utils.FetchBinary(ToolName="Hayabusa-4.2.0", IsExecutable=FALSE)
+        FROM Artifact.Generic.Utils.FetchBinary(ToolName="Hayabusa-4.3.0", IsExecutable=FALSE)
 
         LET TmpDir <= tempdir()
 
@@ -145,7 +147,7 @@ sources:
         LET _ <= SELECT *
         FROM unzip(filename=Toolzip.FullPath, output_directory=TmpDir)
 
-        LET HayabusaExe <= TmpDir + '\\hayabusa-4.2.0-win-x64.exe'
+        LET HayabusaExe <= TmpDir + '\\hayabusa-4.3.0-win-x64.exe'
 
         -- Optionally update the rules
         LET _ <= if(condition=UpdateRules, then={

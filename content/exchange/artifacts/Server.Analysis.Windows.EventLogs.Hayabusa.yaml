@@ -7,6 +7,17 @@ description: |
   is deployed to the endpoint or the server - the entire analysis runs
   in VQL on the server side.
 
+  This is the native Sigma option. The curated package converts Hayabusa
+  rules for Velociraptor; sharing rule origins does not establish identical
+  detection coverage. Supported rule constructs, package versions, and
+  filters can differ between engines.
+
+  To run the Hayabusa executable instead, use the separate
+  `Server.Analysis.Windows.EventLogs.HayabusaEngine` artifact. It requires
+  a Linux amd64 server with external program execution enabled and produces
+  its own result schema. Installing it does not change this artifact or
+  the existing `Server.Monitor.Windows.EventLogs.Hayabusa` monitor.
+
   This artifact is intended to post-process collections that upload
   `.evtx` files, such as `Windows.KapeFiles.Targets` or
   `Windows.Triage.Targets` (or any other collection that uploads raw

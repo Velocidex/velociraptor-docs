@@ -1,20 +1,22 @@
 name: Server.Enrichment.NetAPI
 author: Slava Olesik, NetAPI
 description: |
-  Check a domain, hostname or URL against the NetAPI compromised feed:
-  domains reported by public threat feeds, merged into one deduplicated
-  list with the dates each entry was seen. Works without an API key: no
-  account, key or secret is needed for the default lookup. IP addresses
-  are not supported: an IP indicator returns a row with Error set and is
-  not sent to the API.
+  Check a domain, hostname, URL or IP address against the NetAPI
+  compromised feeds. Domains come from public threat feeds, merged into
+  one deduplicated list with the dates each entry was seen. IP addresses
+  come from NetAPI Nightwatch, NetAPI's own honeypot network: the IPv4
+  addresses that attacked its sensors. Works without an API key: no
+  account, key or secret is needed for the default lookup.
 
   The row tells whether the indicator is listed now (reported within the
-  last 24 hours) or was listed earlier, with the first and last dates it
-  was seen and the reason or source tag of the listing. For a hostname the
-  parent domains are checked too, so `login.example.com` matches a listing
-  of `example.com`, and MatchedValue shows which name matched. An
-  indicator that was never listed returns ListedEver = false. Not listed
-  is not the same as clean.
+  last 24 hours for a domain, within the last 48 hours for an IP address)
+  or was listed earlier, with the first and last dates it was seen and
+  the reason or source tag of the listing. For an IP address the reason
+  is the type of attack, for example "NetAPI network sensors: service
+  exploit". For a hostname the parent domains are checked too, so
+  `login.example.com` matches a listing of `example.com`, and
+  MatchedValue shows which name matched. An indicator that was never
+  listed returns ListedEver = false. Not listed is not the same as clean.
 
   With IncludeRank the artifact also returns the rank of the exact host in
   the NetAPI Top 1M, a daily popularity list (CC BY 4.0) that blends
@@ -40,10 +42,12 @@ description: |
   create an HTTP Secrets credential, for example named `netapi`, with the
   URL https://netapi.com/api-json/ and the extra_headers
   {"Authorization":"Bearer <API token>"}, then set SecretName. An HTTP
-  429 is reported in Error rather than retried.
+  429 is reported in Error rather than retried. Private, loopback and
+  reserved IP addresses are never sent.
 
 reference:
   - https://netapi.com/compromised-urls/
+  - https://netapi.com/compromised-ips/
   - https://netapi.com/help/api/
 
 type: SERVER
@@ -51,7 +55,7 @@ type: SERVER
 parameters:
   - name: Indicator
     type: string
-    description: Domain, hostname or URL to look up. IP addresses are not supported.
+    description: Domain, hostname, URL or IP address to look up.
   - name: IncludeRank
     type: bool
     description: Also return the rank of the host in the NetAPI Top 1M (one more request).
@@ -65,13 +69,15 @@ sources:
       LET UA <= "netapi-velociraptor/1.0"
 
       LET Value <= strip(string=Indicator)
-      // NetAPI no longer publishes compromised IPs: IP input is not sent.
-      LET IsIP <= ip(parse=Value) != NULL
+      LET Address <= ip(parse=Value)
+      LET IsIP <= Address != NULL
+      LET IsLocal <= IsIP AND (Address.IsPrivate OR Address.IsLoopback
+          OR Address.IsLinkLocalUnicast OR NOT Address.IsGlobalUnicast)
       LET WantRank <= IncludeRank AND Value AND NOT IsIP
 
       // An empty SecretName is the same as no secret: the lookup is anonymous.
       LET CheckResponse <= SELECT Response, parse_json(data=Content) AS Body
-        FROM if(condition=Value AND NOT IsIP, then={
+        FROM if(condition=Value AND NOT IsLocal, then={
           SELECT * FROM http_client(
             url=Base,
             secret=SecretName,
@@ -116,8 +122,8 @@ sources:
           Check.Body.registrar.name AS Registrar,
           if(condition=WantRank, then=Rank.Body.rank) AS Top1MRank,
           if(condition=NOT Value, then="Indicator is empty.",
-             else=if(condition=IsIP,
-                     then="IP addresses are not supported: NetAPI no longer publishes compromised IPs.",
+             else=if(condition=IsLocal,
+                     then="Private, loopback or reserved address: not looked up.",
                      else=if(condition=CheckError, then=CheckError,
                              else=RankError))) AS Error,
           Check.Body AS Report
