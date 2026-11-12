@@ -5,7 +5,7 @@ description: |
   processes: easy to triage version of
   `netsh http show servicestate view=requestq verbose=yes`.
 
-  Built for hunting Turla's CerealNeuron (ESET, Nov 2026), a .NET
+  Built for hunting CerealNeuron (ESET, Nov 2026), a .NET
   HttpListener backdoor on Exchange servers. HTTP.sys routes requests for its
   URL prefixes to the implant rather than IIS, so they may never appear in
   IIS logs.
