@@ -1,0 +1,35 @@
+name: Generic.Forensics.VMWareInventory
+author: Kaizar Lehri
+description: |
+  Finds and parses VMware VM configuration files (.vmx) on Mac and Windows. 
+  It turns text into an organized list (dictionary) so you can easily 
+  search for settings like RAM size, Guest OS, or network modes.
+
+parameters:
+  - name: path_list
+    type: csv
+    default: |
+      globs
+      /Users/*/Virtual Machines*/**/*.vmwarevm/*.vmx
+      C:/Users/*/Documents/Virtual Machines/**/*.vmx
+
+sources:
+  - name: VMWare_Config_Audit
+    query: |
+      LET vmx_files = SELECT OSPath, Mtime FROM glob(globs=path_list.globs)
+      
+      SELECT 
+        OSPath,
+        Mtime AS LastModified,
+        to_dict(item={
+           SELECT _key, _value FROM foreach(
+             row={
+               SELECT parse_string_with_regex(
+                 string=Line,
+                 regex='^(?P<_key>[^\\s=]+)\\s*=\\s*"(?P<_value>[^"]*)"') AS Record
+               FROM parse_lines(filename=OSPath)
+             },
+             column="Record"
+           ) WHERE _key
+        }) AS Config
+      FROM vmx_files

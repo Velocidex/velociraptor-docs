@@ -1,0 +1,19 @@
+# System.Hunt.Creation
+
+Fires an event whenever a new hunt is created on the Velociraptor
+server.
+
+
+---
+
+````yaml
+name: System.Hunt.Creation
+description: |
+  Fires an event whenever a new hunt is created on the Velociraptor
+  server.
+
+type: SERVER_EVENT
+````
+
+
+

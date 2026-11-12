@@ -1,0 +1,87 @@
+# Admin.Client.Upgrade.Windows
+
+Upgrades Velociraptor clients on Windows hosts by running msiexec
+with the provided MSI.
+
+NOTE: This artifact requires that you supply a _repacked_ client MSI
+by using the tools interface. Click on the tool button in the GUI
+and upload a repacked MSI.
+
+While typically the MSI will contain the Velociraptor Windows
+client, you can actually install any other MSI by customizing this
+artifact or uploading a different MSI file.
+
+
+---
+
+````yaml
+name: Admin.Client.Upgrade.Windows
+description: |
+  Upgrades Velociraptor clients on Windows hosts by running msiexec
+  with the provided MSI.
+
+  NOTE: This artifact requires that you supply a _repacked_ client MSI
+  by using the tools interface. Click on the tool button in the GUI
+  and upload a repacked MSI.
+
+  While typically the MSI will contain the Velociraptor Windows
+  client, you can actually install any other MSI by customizing this
+  artifact or uploading a different MSI file.
+
+tools:
+  - name: WindowsMSI
+
+parameters:
+  - name: SleepDuration
+    default: "600"
+    type: int
+    description: |
+      The MSI file is typically very large and we do not want to
+      overwhelm the server so we stagger the download over this many
+      seconds.
+
+implied_permissions:
+  - EXECVE
+  - FILESYSTEM_WRITE
+
+sources:
+  - precondition:
+      SELECT OS From info() where OS = 'windows'
+
+    query:  |
+      // Force the file to be copied to the real temp directory since
+      // we are just about to remove the Tools directory.
+      LET bin <= SELECT copy(filename=OSPath,
+          dest=expand(path="%SYSTEMROOT%\\Temp\\") + basename(path=OSPath)) AS Dest
+      FROM Artifact.Generic.Utils.FetchBinary(
+         ToolName="WindowsMSI", IsExecutable=FALSE,
+         SleepDuration=SleepDuration)
+
+      // Call the binary and return all its output in a single row.
+      // If we fail to download the binary we do not run the command.
+
+      // msiexec needs some random set of commands to really force a
+      // reinstall. We don't know which one will be correct at runtime so
+      // we just try them all. If we succeed then the client will get
+      // killed and restarted.
+      SELECT * FROM foreach(row=bin,
+      query={
+       SELECT * FROM chain(a={
+         SELECT * FROM execve(
+              argv=["msiexec.exe", "/i", Dest, "/q", "REINSTALL=ALL", "REINSTALLMODE=A"],
+              length=10000000)
+
+       }, b={
+         SELECT * FROM execve(
+              argv=["msiexec.exe", "/i", Dest, "/q"], length=10000000)
+
+       }, c={
+         SELECT * FROM execve(
+              argv=["msiexec.exe", "/f", "/i", Dest, "/q"], length=10000000)
+
+       })
+      })
+````
+
+
+

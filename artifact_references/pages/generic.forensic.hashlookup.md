@@ -1,0 +1,68 @@
+# Generic.Forensic.HashLookup
+
+Collects file hashes from various sources into a central event
+stream for external lookups.
+
+It is possible to follow this artifact (e.g. with an external
+program via the Velociraptor API) to lookup the hashes with an
+external service.
+
+You can also send hashes to this artifact yourself by using the
+`send_event()` VQL function. For example, the following will add
+hashes from the results of another artifact.
+
+```vql
+SELECT *, send_event(
+    artifact="Generic.Forensic.HashLookup",
+    row=dict(SHA256=Sha256, ClientId=ClientId))
+FROM source()
+```
+
+
+---
+
+````yaml
+name: Generic.Forensic.HashLookup
+description: |
+  Collects file hashes from various sources into a central event
+  stream for external lookups.
+  
+  It is possible to follow this artifact (e.g. with an external
+  program via the Velociraptor API) to lookup the hashes with an
+  external service.
+
+  You can also send hashes to this artifact yourself by using the
+  `send_event()` VQL function. For example, the following will add
+  hashes from the results of another artifact.
+
+  ```vql
+  SELECT *, send_event(
+      artifact="Generic.Forensic.HashLookup",
+      row=dict(SHA256=Sha256, ClientId=ClientId))
+  FROM source()
+  ```
+
+type: SERVER_EVENT
+
+sources:
+  - query: |
+      // You can add more queries to this chain to automatically
+      // collect more hashes.
+      SELECT ClientId, SHA256 FROM chain(
+      a={
+        SELECT * FROM foreach(
+          row={
+            SELECT ClientId, FlowId
+            FROM watch_monitoring(artifact="System.Flow.Completion")
+            WHERE Flow.artifacts_with_results =~ "System.VFS.DownloadFile"
+          }, query={
+            SELECT ClientId, Sha256 AS SHA256
+            FROM source(
+              artifact="System.VFS.DownloadFile",
+              client_id=ClientId, flow_id=FlowId)
+         })
+      }, async=TRUE)
+````
+
+
+

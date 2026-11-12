@@ -1,0 +1,21 @@
+# Server.Audit.Logs
+
+Collects server audit events for significant user actions such as
+starting a new collection, creating a new hunt, updating an artifact
+definition etc.
+
+
+---
+
+````yaml
+name: Server.Audit.Logs
+description: |
+  Collects server audit events for significant user actions such as
+  starting a new collection, creating a new hunt, updating an artifact
+  definition etc.
+
+type: SERVER_EVENT
+````
+
+
+

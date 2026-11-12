@@ -1,0 +1,169 @@
+# Server.Internal.ArtifactDescription
+
+Renders a formatted view of any artifact's metadata, parameters,
+sources, exports, etc.
+
+
+---
+
+````yaml
+name: Server.Internal.ArtifactDescription
+description: |
+  Renders a formatted view of any artifact's metadata, parameters,
+  sources, exports, etc.
+
+type: INTERNAL
+
+reports:
+  - type: INTERNAL
+    template: |
+      {{ $artifact := Scope "artifact" }}
+
+      ## {{ $artifact.Name }}
+
+      #### Type: {{ $artifact.Type }}
+
+      {{ if $artifact.BuiltIn }}
+      {{ else }}
+      ##### Custom Artifact
+      {{ end }}
+
+      {{ if and $artifact.Metadata $artifact.Metadata.Tags }}
+      ##### Tags
+
+      {{ range $i, $t := $artifact.Metadata.Tags }}
+      * {{ $t }}
+      {{ end }}
+
+      {{ end }}
+
+      {{ if $artifact.Author }}
+      ##### Author: {{ $artifact.Author }}
+      {{end}}
+
+      {{ if $artifact.Description }}
+
+      <div class="description-content">
+
+      {{ $artifact.Description }}
+
+      {{ if $artifact.Reference }}
+      ---
+      References:
+      <ul>
+      {{- range $item := $artifact.Reference -}}
+      <li>{{ $item }}</li>
+      {{- end -}}
+      </ul>
+      {{ end }}
+      </div>
+
+      {{ end }}
+
+      {{ if $artifact.Tools }}
+      ### Tools
+
+      {{ range $artifact.Tools -}}
+      * <velo-tool-viewer name="{{.Name}}" version="{{.Version}}"></velo-tool-viewer>
+      {{ end }}
+
+      {{ end }}
+
+      {{ if $artifact.Parameters }}
+
+      ### Parameters
+
+      <table class="table table-striped">
+      <thead>
+         <tr>
+           <th>Name</th>
+           <th>Type</th>
+           <th>Default</th>
+           <th>Description</th>
+         </tr>
+      </thead>
+      <tbody>
+      {{- range $item := $artifact.Parameters -}}
+         {{- if not (eq $item.Type "hidden") -}}
+           <tr>
+             <td>{{ $item.Name }}</td>
+             <td>{{ $item.Type }}</td>
+             <td><pre>{{ $item.Default }}</pre></td>
+             <td>{{ $item.Description }}</td>
+           </tr>
+         {{- end -}}
+      {{- end -}}
+      </tbody></table>
+
+      {{ end }}
+
+      {{ if $artifact.Imports }}
+
+      <table class="table table-striped">
+      <thead>
+         <tr>
+           <th>Imports</th>
+         </tr>
+      </thead>
+      <tbody>
+      {{- range $item := $artifact.Imports -}}
+        <tr>
+          <td>{{ $item }}</td>
+        </tr>
+      {{- end -}}
+      </tbody></table>
+
+      {{ end }}
+
+      {{ if $artifact.Export }}
+      ### Exports
+
+      ```vql
+      {{ $artifact.Export }}
+      ```
+      {{ end }}
+
+      {{ range $source := $artifact.Sources }}
+
+      {{ if or $source.Queries $source.Query $source.Notebook }}
+
+      ### Source {{ $source.Name }}
+
+      {{ if $source.Query }}
+
+      ```vql
+      {{ $source.Query }}
+      ```
+
+      {{- else if $source.Queries -}}
+
+      ```vql
+      {{ range $query := $source.Queries -}}
+      {{- $query -}}
+      {{ end }}
+      ```
+
+      {{ end }}
+
+      {{ if len $source.Notebook }}
+
+      #### Notebook cells
+
+      {{ range $notebook := $source.Notebook }}
+
+      {{ if $notebook.Name }}
+      * `{{ $notebook.Type }}`: {{ $notebook.Name }}
+      {{ else }}
+      * `{{ $notebook.Type }}`
+      {{ end }}
+      {{ end }}
+
+      {{ end }}
+
+      {{ end }}
+
+      {{ end }}
+````
+
+
+

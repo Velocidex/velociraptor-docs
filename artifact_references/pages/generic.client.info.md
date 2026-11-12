@@ -1,0 +1,267 @@
+# Generic.Client.Info
+
+Collects basic system details including hostname, OS version,
+interfaces, and platform info
+
+This artifact is collected when any new client is enrolled into the
+system. The Velociraptor server watches for completions of this
+artifact and populates its internal client info index from this
+artifact.
+
+You can edit this artifact to enhance the client's interrogation
+information as required, by adding new sources.
+
+NOTE: Do not modify the BasicInformation source since its results
+are required by the server in that exact format.
+
+
+---
+
+````yaml
+name: Generic.Client.Info
+description: |
+  Collects basic system details including hostname, OS version,
+  interfaces, and platform info
+
+  This artifact is collected when any new client is enrolled into the
+  system. The Velociraptor server watches for completions of this
+  artifact and populates its internal client info index from this
+  artifact.
+
+  You can edit this artifact to enhance the client's interrogation
+  information as required, by adding new sources.
+
+  NOTE: Do not modify the BasicInformation source since its results
+  are required by the server in that exact format.
+
+sources:
+  - name: BasicInformation
+    description: |
+      This source is used internally to populate agent info. Do not
+      modify or remove this query.
+    query: |
+        LET Interfaces = SELECT HardwareAddrString AS MAC
+        FROM interfaces()
+        WHERE HardwareAddr
+
+        SELECT config.Version.Name AS Name,
+               config.Version.BuildTime as BuildTime,
+               config.Version.Version as Version,
+               config.Version.ci_build_url AS build_url,
+               config.Version.install_time as install_time,
+               config.Labels AS Labels,
+               Hostname, OS, Architecture,
+               Platform, PlatformVersion, KernelVersion, Fqdn,
+               Interfaces.MAC AS MACAddresses
+        FROM info()
+
+  - name: DetailedInfo
+    query: |
+      LET Info = SELECT * FROM info()
+      SELECT _key AS Param, _value AS Value FROM items(item=Info[0])
+
+  - name: LinuxInfo
+    description: Linux specific information about the host
+    precondition: SELECT OS From info() where OS = 'linux'
+    query: |
+      SELECT if(condition=version(function='sysinfo') != NULL, then=sysinfo()) AS `Computer Info`,
+      { SELECT Name, HardwareAddrString AS MACAddress,
+               Up, PointToPoint,
+               AddrsString AS IPAddresses
+        FROM interfaces() WHERE HardwareAddr} AS `Network Info`
+      FROM scope()
+
+  - name: WindowsInfo
+    description: Windows specific information about the host
+    precondition: SELECT OS From info() where OS = 'windows'
+    query: |
+      LET DomainLookup <= dict(
+         `0`='Standalone Workstation',
+         `1`='Member Workstation',
+         `2`='Standalone Server',
+         `3`='Member Server',
+         `4`='Backup Domain Controller',
+         `5`='Primary Domain Controller')
+
+      SELECT
+          {
+            SELECT DNSHostName, Name, Domain, TotalPhysicalMemory,
+                   get(item=DomainLookup,
+                       field=str(str=DomainRole), default="Unknown") AS DomainRole
+            FROM wmi(
+               query='SELECT * FROM win32_computersystem')
+          } AS `Computer Info`,
+          {
+            SELECT Caption,
+               join(array=IPAddress, sep=", ") AS IPAddresses,
+               join(array=IPSubnet, sep=", ") AS IPSubnet,
+               MACAddress,
+               join(array=DefaultIPGateway, sep=", ") AS DefaultIPGateway,
+               DNSHostName,
+               join(array=DNSServerSearchOrder, sep=", ") AS DNSServerSearchOrder
+            FROM wmi(
+               query="SELECT * from Win32_NetworkAdapterConfiguration" )
+            WHERE IPAddress
+          } AS `Network Info`
+      FROM scope()
+
+    notebook:
+      - type: vql_suggestion
+        name: "Enumerate Domain Roles"
+        template: |
+          /*
+          # Enumerate Domain Roles
+
+          Search all clients' enrollment information for their domain roles.
+          */
+          --
+          -- Remove the below comments to label Domain Controllers
+          SELECT *--, label(client_id=client_id, labels="DomainController", op="set") AS Label
+          FROM foreach(row={
+             SELECT * FROM clients()
+          }, query={
+              SELECT
+                `Computer Info`.Name AS Name, client_id,
+                `Computer Info`.DomainRole AS DomainRole
+              FROM source(client_id=client_id,
+                  flow_id=last_interrogate_flow_id,
+                  source="WindowsInfo")
+          })
+          -- WHERE DomainRole =~ "Controller"
+
+  - name: Users
+    precondition: SELECT OS From info() where OS = 'windows'
+    query: |
+      SELECT Name, Description, Mtime AS LastLogin
+      FROM Artifact.Windows.Sys.Users()
+
+reports:
+  - type: CLIENT
+    template: |
+      {{ define "pre" }}
+      LET Cap(X) = upcase(string=X[0:1]) + X[1:]
+
+      LET ClientInfo <= SELECT *, Cap(X=os_info.system) AS OS
+        FROM clients(client_id=ClientId)
+        LIMIT 1
+
+      LET Hostname <= ClientInfo[0].os_info.hostname
+      LET OS <= Cap(X=ClientInfo[0].os_info.system)
+
+      LET _Timestamp <= SELECT timestamp(epoch=active_time) AS Timestamp
+         FROM flows(client_id=ClientId, flow_id=FlowId)
+      LET Timestamp <= _Timestamp[0].Timestamp
+
+      // Parse the env part from the notebook definitions.
+      LET GetEnv(X) = to_dict(item={
+          SELECT key AS _key,
+                 value AS _value
+          FROM foreach(row=X)
+        })
+
+      // Look for a special notebook of name "quick_link" - we will
+      // render it here.
+      LET GetSources(X) = SELECT GetEnv(X=env) AS Env
+      FROM foreach(row=X,
+      query={
+        SELECT * FROM foreach(row=notebook)
+        WHERE notebook.name =~ "quick_link"
+      })
+
+      // Returns a list of artifact names and configuration Env
+      LET FindQuickLinks = SELECT *,
+          link_to(client_id=ClientId, flow_id='new',
+                  artifact=artifact_name, raw=TRUE) AS Link,
+          Env.weight || 10 AS Weight
+      FROM foreach(row={
+          SELECT name as artifact_name, sources
+          FROM artifact_definitions()
+          WHERE type =~ "^client$"
+        },
+                   query={
+          SELECT artifact_name, Env
+          FROM GetSources(X=sources)
+          WHERE Env.text AND OS =~ ( Env.os_filter || "." )
+        })
+      ORDER BY Weight
+
+      {{ end }}
+      {{ $_ := Query "pre" | Expand }}
+
+      {{ range Query "SELECT * FROM FindQuickLinks" | Expand -}}
+        <velo-button text="{{ Get . "Env.text" }}"
+                     icon="{{ Get . "Env.icon" }}"
+                     href="{{ Get . "Link" }}">
+        >
+        </velo-button>
+      {{- end }}
+
+
+      # {{ Scope "Hostname" }} ( {{ Scope "ClientId" }} ) @ {{ Scope "Timestamp" }}
+
+      {{ Query "SELECT * FROM source(source='BasicInformation')" | Table }}
+
+      # Memory and CPU footprint over the past 24 hours
+
+      {{ define "resources" }}
+       SELECT * FROM sample(
+         n=4,
+         query={
+           SELECT Timestamp,
+                  rate(x=CPU, y=Timestamp) * 100 As CPUPercent,
+                  RSS / 1000000 AS MemoryUse
+           FROM source(artifact="Generic.Client.Stats",
+                       client_id=ClientId,
+                       start_time=now() - 86400)
+           WHERE CPUPercent >= 0
+         })
+      {{ end }}
+
+      {{ define "computerinfo" }}
+      LET X <= SELECT *
+        FROM source(source="LinuxInfo")
+        LIMIT 1
+
+      SELECT humanize(bytes=TotalPhysicalMemory) AS  TotalPhysicalMemory,
+             humanize(bytes=TotalFreeMemory) AS  TotalFreeMemory,
+             humanize(bytes=TotalSharedMemory) AS  TotalSharedMemory,
+             humanize(bytes=TotalSwap) AS  TotalSwap,
+             humanize(bytes=FreeSwap) AS  FreeSwap
+      FROM foreach(row=X[0].`Computer Info`)
+      {{ end }}
+
+      <div>
+      {{ Query "resources" | TimeChart "RSS.yaxis" 2 }}
+      </div>
+
+      {{ $windows_info := Query "SELECT * FROM source(source='WindowsInfo')" }}
+      {{ if $windows_info | Expand }}
+      # Windows agent information
+        {{ $windows_info | Table }}
+      {{ end }}
+
+      {{ $linux_info := Query "LET X <= SELECT * FROM source(source='LinuxInfo') LIMIT 1 SELECT * FROM X" }}
+      {{ if Query "SELECT * FROM source(source='LinuxInfo')" | Expand }}
+      # Linux agent information
+
+      ### Network Info
+        {{ Query "SELECT * FROM foreach(row=X[0].`Network Info`)" | Table }}
+
+      ### Computer Info
+        {{ Query "computerinfo" | Table }}
+
+      {{ end }}
+
+      # Active Users
+      {{ Query "SELECT * FROM source(source='Users')" | Table }}
+
+
+column_types:
+  - name: BuildTime
+    type: timestamp
+  - name: LastLogin
+    type: timestamp
+````
+
+
+

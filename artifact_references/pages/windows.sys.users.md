@@ -1,0 +1,71 @@
+# Windows.Sys.Users
+
+Lists user accounts that have logged on locally by inspecting
+registry profile list keys for locally-created profiles.
+
+This method is a reliable way of identifying which users have
+physically logged into the system and thereby created local
+profiles.
+
+This will not include domain users or the output from `NetUserEnum`
+- you should collect the `Windows.Sys.AllUsers` artifact to get all
+possible users on the system.
+
+
+---
+
+````yaml
+name: Windows.Sys.Users
+description: |
+  Lists user accounts that have logged on locally by inspecting
+  registry profile list keys for locally-created profiles.
+  
+  This method is a reliable way of identifying which users have
+  physically logged into the system and thereby created local
+  profiles.
+
+  This will not include domain users or the output from `NetUserEnum`
+  - you should collect the `Windows.Sys.AllUsers` artifact to get all
+  possible users on the system.
+
+parameters:
+  - name: remoteRegKey
+    default: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\ProfileList\*
+
+implied_permissions:
+  - FILESYSTEM_WRITE
+
+imports:
+  - Windows.Sys.AllUsers
+
+sources:
+  - precondition:
+      SELECT OS From info() where OS = 'windows'
+
+    query: |
+        LET GetTimestamp(High, Low) = if(condition=High,
+                then=timestamp(winfiletime=High * 4294967296 + Low))
+        LET S = scope()
+
+        -- lookupSID() may not be available on deaddisk analysis
+        SELECT split(string=Key.OSPath.Basename, sep="-")[-1] as Uid,
+           "" AS Gid,
+           LookupSIDCache(SID=Key.OSPath.Basename || "") AS Name,
+           Key.OSPath as Description,
+           ProfileImagePath as Directory,
+           Key.OSPath.Basename as UUID,
+           Key.Mtime as Mtime,
+           {
+                SELECT Mtime
+                FROM stat(filename=expand(path=ProfileImagePath))
+            } AS HomedirMtime,
+           dict(ProfileLoadTime=GetTimestamp(
+                   High=S.LocalProfileLoadTimeHigh, Low=S.LocalProfileLoadTimeLow),
+                ProfileUnloadTime=GetTimestamp(
+                   High=S.LocalProfileUnloadTimeHigh, Low=S.LocalProfileUnloadTimeLow)
+           ) AS Data
+        FROM read_reg_key(globs=remoteRegKey, accessor="registry")
+````
+
+
+

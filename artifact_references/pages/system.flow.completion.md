@@ -1,0 +1,35 @@
+# System.Flow.Completion
+
+Emits an event for every completed flow, including imported offline
+collections, enabling post-processing automation.
+
+You can monitor this queue using the `watch_monitoring()` plugin.
+This can be used as a building block in implementing more complex
+workflows for automatically post-processing a completed collection.
+
+If you do implement post-processing workflows, you can also manually
+trigger them (e.g. for testing or to replay them) using the
+`send_event()` VQL function.
+
+
+---
+
+````yaml
+name: System.Flow.Completion
+description: |
+  Emits an event for every completed flow, including imported offline
+  collections, enabling post-processing automation.
+
+  You can monitor this queue using the `watch_monitoring()` plugin.
+  This can be used as a building block in implementing more complex
+  workflows for automatically post-processing a completed collection.
+
+  If you do implement post-processing workflows, you can also manually
+  trigger them (e.g. for testing or to replay them) using the
+  `send_event()` VQL function.
+
+type: CLIENT_EVENT
+````
+
+
+
