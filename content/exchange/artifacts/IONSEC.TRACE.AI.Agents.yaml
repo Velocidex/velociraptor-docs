@@ -1,0 +1,486 @@
+name: IONSEC.TRACE.AI.Agents
+description: |
+  IONSEC TRACE — Collect forensic artifacts from AI agent frameworks
+  (Hermes Agent, AutoGPT, CrewAI, LangChain/LangGraph, Microsoft AutoGen,
+  Aider, Shell-GPT).
+
+  Version: 0.1.0
+  Author: IONSEC
+
+  This artifact collects:
+  - Configuration files and settings for agent frameworks
+  - Conversation/chat history and session databases
+  - Agent memory, plans, and workspace artifacts
+  - Authentication tokens and API keys stored in agent configs
+  - Process detection for running agent processes
+
+type: CLIENT
+parameters:
+  - name: CollectChatHistory
+    description: Collect conversation/chat history databases (may contain PII)
+    type: bool
+    default: true
+  - name: CollectLogs
+    description: Collect agent framework logs
+    type: bool
+    default: true
+  - name: DeepCollection
+    description: Include session-level and workspace data (large, skip for quick triage)
+    type: bool
+    default: false
+
+sources:
+  - name: HermesAgent_Linux
+    precondition: SELECT OS FROM info() WHERE OS = 'linux'
+    query: |
+      LET home = expand(path=HomeDir)
+
+      LET hermes_config = SELECT FullPath, Mtime, Size, hash(path=FullPath) AS FileHash,
+                 "config" AS ArtifactType, "hermes_agent" AS Platform
+          FROM glob(globs=[
+              home + "/.hermes/config.yaml",
+              home + "/.hermes/config.yml",
+              home + "/.hermes/config.json",
+              home + "/.hermes/config.toml",
+              home + "/.hermes/profiles/**/config.yaml",
+              home + "/.hermes/profiles/**/config.yml",
+          ], accessor="file")
+
+      LET hermes_skills = SELECT FullPath, Mtime, Size, hash(path=FullPath) AS FileHash,
+                 "skill_definition" AS ArtifactType, "hermes_agent" AS Platform
+          FROM glob(globs=[
+              home + "/.hermes/skills/**",
+          ], accessor="file")
+          WHERE DeepCollection
+
+      LET hermes_memory = SELECT FullPath, Mtime, Size, hash(path=FullPath) AS FileHash,
+                 "memory" AS ArtifactType, "hermes_agent" AS Platform
+          FROM glob(globs=[
+              home + "/.hermes/memories/**",
+          ], accessor="file")
+          WHERE CollectChatHistory
+
+      LET hermes_logs = SELECT FullPath, Mtime, Size, hash(path=FullPath) AS FileHash,
+                 "log" AS ArtifactType, "hermes_agent" AS Platform
+          FROM glob(globs=[
+              home + "/.hermes/logs/**",
+          ], accessor="file")
+          WHERE CollectLogs
+
+      LET hermes_proc = SELECT Name AS ProcessName, Pid, CommandLine, Exe,
+                 create_time AS CreateTime, "process" AS ArtifactType,
+                 "hermes_agent" AS Platform
+          FROM pslist() WHERE Name =~ "(?i)hermes"
+
+      SELECT * FROM chain(a=hermes_config, b=hermes_skills, c=hermes_memory, d=hermes_logs, e=hermes_proc)
+
+  - name: HermesAgent_macOS
+    precondition: SELECT OS FROM info() WHERE OS = 'darwin'
+    query: |
+      LET home = expand(path=HomeDir)
+
+      LET hermes_config = SELECT FullPath, Mtime, Size, hash(path=FullPath) AS FileHash,
+                 "config" AS ArtifactType, "hermes_agent" AS Platform
+          FROM glob(globs=[
+              home + "/.hermes/config.yaml",
+              home + "/.hermes/config.yml",
+              home + "/.hermes/config.json",
+              home + "/.hermes/config.toml",
+              home + "/.hermes/profiles/**/config.yaml",
+              home + "/.hermes/profiles/**/config.yml",
+          ], accessor="file")
+
+      LET hermes_skills = SELECT FullPath, Mtime, Size, hash(path=FullPath) AS FileHash,
+                 "skill_definition" AS ArtifactType, "hermes_agent" AS Platform
+          FROM glob(globs=[
+              home + "/.hermes/skills/**",
+          ], accessor="file")
+          WHERE DeepCollection
+
+      LET hermes_memory = SELECT FullPath, Mtime, Size, hash(path=FullPath) AS FileHash,
+                 "memory" AS ArtifactType, "hermes_agent" AS Platform
+          FROM glob(globs=[
+              home + "/.hermes/memories/**",
+          ], accessor="file")
+          WHERE CollectChatHistory
+
+      LET hermes_logs = SELECT FullPath, Mtime, Size, hash(path=FullPath) AS FileHash,
+                 "log" AS ArtifactType, "hermes_agent" AS Platform
+          FROM glob(globs=[
+              home + "/.hermes/logs/**",
+          ], accessor="file")
+          WHERE CollectLogs
+
+      LET hermes_proc = SELECT Name AS ProcessName, Pid, CommandLine, Exe,
+                 create_time AS CreateTime, "process" AS ArtifactType,
+                 "hermes_agent" AS Platform
+          FROM pslist() WHERE Name =~ "(?i)hermes"
+
+      SELECT * FROM chain(a=hermes_config, b=hermes_skills, c=hermes_memory, d=hermes_logs, e=hermes_proc)
+
+  - name: HermesAgent_Windows
+    precondition: SELECT OS FROM info() WHERE OS = 'windows'
+    query: |
+      LET home = expand(path=HomeDir)
+
+      LET hermes_config = SELECT FullPath, Mtime, Size, hash(path=FullPath) AS FileHash,
+                 "config" AS ArtifactType, "hermes_agent" AS Platform
+          FROM glob(globs=[
+              home + "\\.hermes\\config.yaml",
+              home + "\\.hermes\\config.yml",
+              home + "\\.hermes\\config.json",
+              home + "\\.hermes\\config.toml",
+              home + "\\.hermes\\profiles\\**\\config.yaml",
+              home + "\\.hermes\\profiles\\**\\config.yml",
+          ], accessor="file")
+
+      LET hermes_skills = SELECT FullPath, Mtime, Size, hash(path=FullPath) AS FileHash,
+                 "skill_definition" AS ArtifactType, "hermes_agent" AS Platform
+          FROM glob(globs=[
+              home + "\\.hermes\\skills\\**",
+          ], accessor="file")
+          WHERE DeepCollection
+
+      LET hermes_memory = SELECT FullPath, Mtime, Size, hash(path=FullPath) AS FileHash,
+                 "memory" AS ArtifactType, "hermes_agent" AS Platform
+          FROM glob(globs=[
+              home + "\\.hermes\\memories\\**",
+          ], accessor="file")
+          WHERE CollectChatHistory
+
+      LET hermes_logs = SELECT FullPath, Mtime, Size, hash(path=FullPath) AS FileHash,
+                 "log" AS ArtifactType, "hermes_agent" AS Platform
+          FROM glob(globs=[
+              home + "\\.hermes\\logs\\**",
+          ], accessor="file")
+          WHERE CollectLogs
+
+      LET hermes_proc = SELECT Name AS ProcessName, Pid, CommandLine, Exe,
+                 create_time AS CreateTime, "process" AS ArtifactType,
+                 "hermes_agent" AS Platform
+          FROM pslist() WHERE Name =~ "(?i)hermes"
+
+      SELECT * FROM chain(a=hermes_config, b=hermes_skills, c=hermes_memory, d=hermes_logs, e=hermes_proc)
+
+  - name: AutoGPT_Linux
+    precondition: SELECT OS FROM info() WHERE OS = 'linux'
+    query: |
+      LET home = expand(path=HomeDir)
+
+      LET autogpt_config = SELECT FullPath, Mtime, Size, hash(path=FullPath) AS FileHash,
+                 "config" AS ArtifactType, "autogpt" AS Platform
+          FROM glob(globs=[
+              home + "/.autogpt/ai_settings.yaml",
+              home + "/.autogpt/auto_gpt_workspace/**",
+              home + "/auto-gpt/ai_settings.yaml",
+              home + "/Auto-GPT/ai_settings.yaml",
+          ], accessor="file")
+
+      LET autogpt_env = SELECT FullPath, Mtime, Size, hash(path=FullPath) AS FileHash,
+                 "env_config" AS ArtifactType, "autogpt" AS Platform
+          FROM glob(globs=[
+              home + "/.autogpt/.env",
+              home + "/auto-gpt/.env",
+              home + "/Auto-GPT/.env",
+          ], accessor="file")
+
+      LET autogpt_logs = SELECT FullPath, Mtime, Size, hash(path=FullPath) AS FileHash,
+                 "log" AS ArtifactType, "autogpt" AS Platform
+          FROM glob(globs=[
+              home + "/.autogpt/logs/**",
+              home + "/auto-gpt/logs/**",
+              home + "/Auto-GPT/logs/**",
+          ], accessor="file")
+          WHERE CollectLogs
+
+      LET autogpt_proc = SELECT Name AS ProcessName, Pid, CommandLine, Exe,
+                 create_time AS CreateTime, "process" AS ArtifactType,
+                 "autogpt" AS Platform
+          FROM pslist() WHERE Name =~ "(?i)autogpt" OR CommandLine =~ "(?i)autogpt"
+
+      SELECT * FROM chain(a=autogpt_config, b=autogpt_env, c=autogpt_logs, d=autogpt_proc)
+
+  - name: AutoGPT_macOS
+    precondition: SELECT OS FROM info() WHERE OS = 'darwin'
+    query: |
+      LET home = expand(path=HomeDir)
+
+      LET autogpt_config = SELECT FullPath, Mtime, Size, hash(path=FullPath) AS FileHash,
+                 "config" AS ArtifactType, "autogpt" AS Platform
+          FROM glob(globs=[
+              home + "/.autogpt/ai_settings.yaml",
+              home + "/.autogpt/auto_gpt_workspace/**",
+              home + "/auto-gpt/ai_settings.yaml",
+              home + "/Auto-GPT/ai_settings.yaml",
+          ], accessor="file")
+
+      LET autogpt_env = SELECT FullPath, Mtime, Size, hash(path=FullPath) AS FileHash,
+                 "env_config" AS ArtifactType, "autogpt" AS Platform
+          FROM glob(globs=[
+              home + "/.autogpt/.env",
+              home + "/auto-gpt/.env",
+              home + "/Auto-GPT/.env",
+          ], accessor="file")
+
+      LET autogpt_logs = SELECT FullPath, Mtime, Size, hash(path=FullPath) AS FileHash,
+                 "log" AS ArtifactType, "autogpt" AS Platform
+          FROM glob(globs=[
+              home + "/.autogpt/logs/**",
+              home + "/auto-gpt/logs/**",
+              home + "/Auto-GPT/logs/**",
+          ], accessor="file")
+          WHERE CollectLogs
+
+      LET autogpt_proc = SELECT Name AS ProcessName, Pid, CommandLine, Exe,
+                 create_time AS CreateTime, "process" AS ArtifactType,
+                 "autogpt" AS Platform
+          FROM pslist() WHERE Name =~ "(?i)autogpt" OR CommandLine =~ "(?i)autogpt"
+
+      SELECT * FROM chain(a=autogpt_config, b=autogpt_env, c=autogpt_logs, d=autogpt_proc)
+
+  - name: AutoGPT_Windows
+    precondition: SELECT OS FROM info() WHERE OS = 'windows'
+    query: |
+      LET home = expand(path=HomeDir)
+
+      LET autogpt_config = SELECT FullPath, Mtime, Size, hash(path=FullPath) AS FileHash,
+                 "config" AS ArtifactType, "autogpt" AS Platform
+          FROM glob(globs=[
+              home + "\\.autogpt\\ai_settings.yaml",
+              home + "\\auto-gpt\\ai_settings.yaml",
+              home + "\\Auto-GPT\\ai_settings.yaml",
+          ], accessor="file")
+
+      LET autogpt_env = SELECT FullPath, Mtime, Size, hash(path=FullPath) AS FileHash,
+                 "env_config" AS ArtifactType, "autogpt" AS Platform
+          FROM glob(globs=[
+              home + "\\.autogpt\\.env",
+              home + "\\auto-gpt\\.env",
+              home + "\\Auto-GPT\\.env",
+          ], accessor="file")
+
+      LET autogpt_logs = SELECT FullPath, Mtime, Size, hash(path=FullPath) AS FileHash,
+                 "log" AS ArtifactType, "autogpt" AS Platform
+          FROM glob(globs=[
+              home + "\\.autogpt\\logs\\**",
+              home + "\\auto-gpt\\logs\\**",
+              home + "\\Auto-GPT\\logs\\**",
+          ], accessor="file")
+          WHERE CollectLogs
+
+      LET autogpt_proc = SELECT Name AS ProcessName, Pid, CommandLine, Exe,
+                 create_time AS CreateTime, "process" AS ArtifactType,
+                 "autogpt" AS Platform
+          FROM pslist() WHERE Name =~ "(?i)autogpt" OR CommandLine =~ "(?i)autogpt"
+
+      SELECT * FROM chain(a=autogpt_config, b=autogpt_env, c=autogpt_logs, d=autogpt_proc)
+
+  - name: CrewAI_All
+    query: |
+      LET home = expand(path=HomeDir)
+
+      LET crewai_config = SELECT FullPath, Mtime, Size, hash(path=FullPath) AS FileHash,
+                 "config" AS ArtifactType, "crewai" AS Platform
+          FROM glob(globs=[
+              home + "/.crewai/crewai.toml",
+              home + "/.crewai/config.toml",
+              home + "\\.crewai\\crewai.toml",
+              home + "\\.crewai\\config.toml",
+          ], accessor="file")
+
+      LET crewai_env = SELECT FullPath, Mtime, Size, hash(path=FullPath) AS FileHash,
+                 "env_config" AS ArtifactType, "crewai" AS Platform
+          FROM glob(globs=[
+              home + "/.crewai/.env",
+              home + "\\.crewai\\.env",
+          ], accessor="file")
+
+      LET crewai_logs = SELECT FullPath, Mtime, Size, hash(path=FullPath) AS FileHash,
+                 "log" AS ArtifactType, "crewai" AS Platform
+          FROM glob(globs=[
+              home + "/.crewai/logs/**",
+              home + "\\.crewai\\logs\\**",
+          ], accessor="file")
+          WHERE CollectLogs
+
+      LET crewai_proc = SELECT Name AS ProcessName, Pid, CommandLine, Exe,
+                 create_time AS CreateTime, "process" AS ArtifactType,
+                 "crewai" AS Platform
+          FROM pslist() WHERE CommandLine =~ "(?i)crewai"
+
+      SELECT * FROM chain(a=crewai_config, b=crewai_env, c=crewai_logs, d=crewai_proc)
+
+  - name: LangChain_All
+    query: |
+      LET home = expand(path=HomeDir)
+
+      LET langchain_config = SELECT FullPath, Mtime, Size, hash(path=FullPath) AS FileHash,
+                 "config" AS ArtifactType, "langchain" AS Platform
+          FROM glob(globs=[
+              home + "/.langchain/config.json",
+              home + "/.langchain/config.yaml",
+              home + "/.langchain/config.toml",
+              home + "\\.langchain\\config.json",
+              home + "\\.langchain\\config.yaml",
+              home + "\\.langchain\\config.toml",
+          ], accessor="file")
+
+      LET langchain_checkpoints = SELECT FullPath, Mtime, Size, hash(path=FullPath) AS FileHash,
+                 "checkpoint_database" AS ArtifactType, "langchain" AS Platform
+          FROM glob(globs=[
+              home + "/.langchain/checkpoints.sqlite",
+              home + "/.langchain/checkpoints.sqlite-wal",
+              home + "/.langchain/checkpoints.sqlite-shm",
+              home + "\\.langchain\\checkpoints.sqlite",
+              home + "\\.langchain\\checkpoints.sqlite-wal",
+              home + "\\.langchain\\checkpoints.sqlite-shm",
+          ], accessor="file")
+          WHERE CollectChatHistory
+
+      LET langchain_env = SELECT FullPath, Mtime, Size, hash(path=FullPath) AS FileHash,
+                 "env_config" AS ArtifactType, "langchain" AS Platform
+          FROM glob(globs=[
+              home + "/.langchain/.env",
+              home + "\\.langchain\\.env",
+          ], accessor="file")
+
+      LET langchain_logs = SELECT FullPath, Mtime, Size, hash(path=FullPath) AS FileHash,
+                 "log" AS ArtifactType, "langchain" AS Platform
+          FROM glob(globs=[
+              home + "/.langchain/logs/**",
+              home + "\\.langchain\\logs\\**",
+          ], accessor="file")
+          WHERE CollectLogs
+
+      LET langchain_proc = SELECT Name AS ProcessName, Pid, CommandLine, Exe,
+                 create_time AS CreateTime, "process" AS ArtifactType,
+                 "langchain" AS Platform
+          FROM pslist() WHERE CommandLine =~ "(?i)langchain|langgraph"
+
+      SELECT * FROM chain(a=langchain_config, b=langchain_checkpoints, c=langchain_env, d=langchain_logs, e=langchain_proc)
+
+  - name: AutoGen_All
+    query: |
+      LET home = expand(path=HomeDir)
+
+      LET autogen_config = SELECT FullPath, Mtime, Size, hash(path=FullPath) AS FileHash,
+                 "config" AS ArtifactType, "autogen" AS Platform
+          FROM glob(globs=[
+              home + "/.autogen/config.json",
+              home + "/.autogen/settings.json",
+              home + "\\.autogen\\config.json",
+              home + "\\.autogen\\settings.json",
+          ], accessor="file")
+
+      LET autogen_logs = SELECT FullPath, Mtime, Size, hash(path=FullPath) AS FileHash,
+                 "log" AS ArtifactType, "autogen" AS Platform
+          FROM glob(globs=[
+              home + "/.autogen/logs/**",
+              home + "\\.autogen\\logs\\**",
+          ], accessor="file")
+          WHERE CollectLogs
+
+      LET autogen_workspaces = SELECT FullPath, Mtime, Size, hash(path=FullPath) AS FileHash,
+                 "workspace" AS ArtifactType, "autogen" AS Platform
+          FROM glob(globs=[
+              home + "/.autogen/workspaces/**",
+              home + "\\.autogen\\workspaces\\**",
+          ], accessor="file")
+          WHERE DeepCollection
+
+      LET autogen_proc = SELECT Name AS ProcessName, Pid, CommandLine, Exe,
+                 create_time AS CreateTime, "process" AS ArtifactType,
+                 "autogen" AS Platform
+          FROM pslist() WHERE CommandLine =~ "(?i)autogen"
+
+      SELECT * FROM chain(a=autogen_config, b=autogen_logs, c=autogen_workspaces, d=autogen_proc)
+
+  - name: Aider_All
+    query: |
+      LET home = expand(path=HomeDir)
+
+      LET aider_config = SELECT FullPath, Mtime, Size, hash(path=FullPath) AS FileHash,
+                 "config" AS ArtifactType, "aider" AS Platform
+          FROM glob(globs=[
+              home + "/.aider.conf.yml",
+              home + "/.aider.conf.yaml",
+              home + "/.aider*",
+              home + "\\.aider.conf.yml",
+              home + "\\.aider.conf.yaml",
+          ], accessor="file")
+          WHERE NOT IsDir
+
+      LET aider_history = SELECT FullPath, Mtime, Size, hash(path=FullPath) AS FileHash,
+                 "chat_history" AS ArtifactType, "aider" AS Platform
+          FROM glob(globs=[
+              home + "/.aider.chat.history.md",
+              home + "/.aider.input.history",
+              home + "/.aider.output.history",
+              home + "\\.aider.chat.history.md",
+              home + "\\.aider.input.history",
+              home + "\\.aider.output.history",
+          ], accessor="file")
+          WHERE CollectChatHistory
+
+      LET aider_tags = SELECT FullPath, Mtime, Size, hash(path=FullPath) AS FileHash,
+                 "tag_cache" AS ArtifactType, "aider" AS Platform
+          FROM glob(globs=[
+              home + "/.aider.tags.cache.v3/**",
+              home + "\\.aider.tags.cache.v3\\**",
+          ], accessor="file")
+          WHERE CollectLogs
+
+      LET aider_proc = SELECT Name AS ProcessName, Pid, CommandLine, Exe,
+                 create_time AS CreateTime, "process" AS ArtifactType,
+                 "aider" AS Platform
+          FROM pslist() WHERE Name =~ "(?i)aider" OR CommandLine =~ "(?i)aider"
+
+      SELECT * FROM chain(a=aider_config, b=aider_history, c=aider_tags, d=aider_proc)
+
+  - name: ShellGPT_All
+    query: |
+      LET home = expand(path=HomeDir)
+
+      LET shellgpt_config = SELECT FullPath, Mtime, Size, hash(path=FullPath) AS FileHash,
+                 "config" AS ArtifactType, "shell_gpt" AS Platform
+          FROM glob(globs=[
+              home + "/.shell_gpt/.sgptrc",
+              home + "/.config/shell-gpt/.sgptrc",
+              home + "/.shell_gpt/config.json",
+              home + "/.config/shell-gpt/config.json",
+              home + "\\.shell_gpt\\.sgptrc",
+              home + "\\AppData\\Roaming\\shell-gpt\\.sgptrc",
+          ], accessor="file")
+
+      LET shellgpt_history = SELECT FullPath, Mtime, Size, hash(path=FullPath) AS FileHash,
+                 "chat_history" AS ArtifactType, "shell_gpt" AS Platform
+          FROM glob(globs=[
+              home + "/.shell_gpt/chat_history.json",
+              home + "/.config/shell-gpt/chat_history.json",
+              home + "\\.shell_gpt\\chat_history.json",
+              home + "\\AppData\\Roaming\\shell-gpt\\chat_history.json",
+          ], accessor="file")
+          WHERE CollectChatHistory
+
+      LET shellgpt_env = SELECT FullPath, Mtime, Size, hash(path=FullPath) AS FileHash,
+                 "env_config" AS ArtifactType, "shell_gpt" AS Platform
+          FROM glob(globs=[
+              home + "/.shell_gpt/.env",
+              home + "/.config/shell-gpt/.env",
+              home + "\\.shell_gpt\\.env",
+          ], accessor="file")
+
+      LET shellgpt_proc = SELECT Name AS ProcessName, Pid, CommandLine, Exe,
+                 create_time AS CreateTime, "process" AS ArtifactType,
+                 "shell_gpt" AS Platform
+          FROM pslist() WHERE CommandLine =~ "(?i)shell.gpt|sgpt"
+
+      SELECT * FROM chain(a=shellgpt_config, b=shellgpt_history, c=shellgpt_env, d=shellgpt_proc)
+
+column_types:
+  - name: ArtifactType
+    type: string
+  - name: Platform
+    type: string
+  - name: FileHash
+    type: string

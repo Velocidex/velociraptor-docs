@@ -1,0 +1,477 @@
+name: IONSEC.TRACE.AI.DevTools
+description: |
+  IONSEC TRACE — Collect forensic artifacts from AI developer tools
+  (Cursor, Claude Code, Codex CLI, Continue, Cline, Warp, GitHub Copilot, Jupyter AI).
+
+  Version: 0.1.0
+  Author: IONSEC
+
+  This artifact collects:
+  - Configuration files and settings for AI dev tools
+  - Conversation/chat history and session data
+  - Extension/plugin configurations
+  - Cache and log data
+  - Process detection for running AI dev tool processes
+
+type: CLIENT
+parameters:
+  - name: CollectChatHistory
+    description: Collect conversation/chat history databases (may contain PII)
+    type: bool
+    default: true
+  - name: CollectLogs
+    description: Collect AI dev tool logs
+    type: bool
+    default: true
+  - name: DeepCollection
+    description: Include session-level and cache data (large, skip for quick triage)
+    type: bool
+    default: false
+
+sources:
+  - name: Cursor_Linux
+    precondition: SELECT OS FROM info() WHERE OS = 'linux'
+    query: |
+      LET home = expand(path=HomeDir)
+
+      LET cursor_config = SELECT FullPath, Mtime, Size, hash(path=FullPath) AS FileHash,
+                 "config" AS ArtifactType, "cursor" AS Platform
+          FROM glob(globs=[
+              home + "/.cursor/config.json",
+              home + "/.cursor/settings.json",
+              home + "/.cursor/mcp.json",
+              home + "/.cursor/extensions/**",
+          ], accessor="file")
+          WHERE DeepCollection
+
+      LET cursor_storage = SELECT FullPath, Mtime, Size, hash(path=FullPath) AS FileHash,
+                 "storage" AS ArtifactType, "cursor" AS Platform
+          FROM glob(globs=[
+              home + "/.cursor/storage/**",
+              home + "/.cursor/User/globalStorage/**",
+              home + "/.cursor/User/workspaceStorage/**",
+          ], accessor="file")
+          WHERE DeepCollection
+
+      LET cursor_history = SELECT FullPath, Mtime, Size, hash(path=FullPath) AS FileHash,
+                 "chat_history" AS ArtifactType, "cursor" AS Platform
+          FROM glob(globs=[
+              home + "/.cursor/User/globalStorage/cur****/cursorChat/**",
+              home + "/.cursor/User/globalStorage/cur****/cursorComposer/**",
+          ], accessor="file")
+          WHERE CollectChatHistory
+
+      LET cursor_logs = SELECT FullPath, Mtime, Size, hash(path=FullPath) AS FileHash,
+                 "log" AS ArtifactType, "cursor" AS Platform
+          FROM glob(globs=[
+              home + "/.cursor/logs/**",
+          ], accessor="file")
+          WHERE CollectLogs
+
+      LET cursor_proc = SELECT Name AS ProcessName, Pid, CommandLine, Exe,
+                 create_time AS CreateTime, "process" AS ArtifactType,
+                 "cursor" AS Platform
+          FROM pslist() WHERE Name =~ "(?i)cursor"
+
+      SELECT * FROM chain(a=cursor_config, b=cursor_storage, c=cursor_history, d=cursor_logs, e=cursor_proc)
+
+  - name: Cursor_macOS
+    precondition: SELECT OS FROM info() WHERE OS = 'darwin'
+    query: |
+      LET home = expand(path=HomeDir)
+
+      LET cursor_config = SELECT FullPath, Mtime, Size, hash(path=FullPath) AS FileHash,
+                 "config" AS ArtifactType, "cursor" AS Platform
+          FROM glob(globs=[
+              home + "/.cursor/config.json",
+              home + "/.cursor/settings.json",
+              home + "/.cursor/mcp.json",
+              home + "/Library/Application Support/Cursor/**",
+          ], accessor="file")
+          WHERE DeepCollection
+
+      LET cursor_storage = SELECT FullPath, Mtime, Size, hash(path=FullPath) AS FileHash,
+                 "storage" AS ArtifactType, "cursor" AS Platform
+          FROM glob(globs=[
+              home + "/.cursor/User/globalStorage/**",
+              home + "/.cursor/User/workspaceStorage/**",
+              home + "/Library/Application Support/Cursor/User/globalStorage/**",
+              home + "/Library/Application Support/Cursor/User/workspaceStorage/**",
+          ], accessor="file")
+          WHERE DeepCollection
+
+      LET cursor_history = SELECT FullPath, Mtime, Size, hash(path=FullPath) AS FileHash,
+                 "chat_history" AS ArtifactType, "cursor" AS Platform
+          FROM glob(globs=[
+              home + "/.cursor/User/globalStorage/cur****/cursorChat/**",
+              home + "/.cursor/User/globalStorage/cur****/cursorComposer/**",
+              home + "/Library/Application Support/Cursor/User/globalStorage/cur****/cursorChat/**",
+              home + "/Library/Application Support/Cursor/User/globalStorage/cur****/cursorComposer/**",
+          ], accessor="file")
+          WHERE CollectChatHistory
+
+      LET cursor_logs = SELECT FullPath, Mtime, Size, hash(path=FullPath) AS FileHash,
+                 "log" AS ArtifactType, "cursor" AS Platform
+          FROM glob(globs=[
+              home + "/.cursor/logs/**",
+              home + "/Library/Logs/Cursor/**",
+          ], accessor="file")
+          WHERE CollectLogs
+
+      LET cursor_proc = SELECT Name AS ProcessName, Pid, CommandLine, Exe,
+                 create_time AS CreateTime, "process" AS ArtifactType,
+                 "cursor" AS Platform
+          FROM pslist() WHERE Name =~ "(?i)cursor"
+
+      SELECT * FROM chain(a=cursor_config, b=cursor_storage, c=cursor_history, d=cursor_logs, e=cursor_proc)
+
+  - name: Cursor_Windows
+    precondition: SELECT OS FROM info() WHERE OS = 'windows'
+    query: |
+      LET home = expand(path=HomeDir)
+      LET appdata = expand(path=AppDataDir)
+
+      LET cursor_config = SELECT FullPath, Mtime, Size, hash(path=FullPath) AS FileHash,
+                 "config" AS ArtifactType, "cursor" AS Platform
+          FROM glob(globs=[
+              home + "\\.cursor\\config.json",
+              home + "\\.cursor\\settings.json",
+              home + "\\.cursor\\mcp.json",
+              appdata + "\\Cursor\\**",
+          ], accessor="file")
+          WHERE DeepCollection
+
+      LET cursor_storage = SELECT FullPath, Mtime, Size, hash(path=FullPath) AS FileHash,
+                 "storage" AS ArtifactType, "cursor" AS Platform
+          FROM glob(globs=[
+              appdata + "\\Cursor\\User\\globalStorage\\**",
+              appdata + "\\Cursor\\User\\workspaceStorage\\**",
+          ], accessor="file")
+          WHERE DeepCollection
+
+      LET cursor_history = SELECT FullPath, Mtime, Size, hash(path=FullPath) AS FileHash,
+                 "chat_history" AS ArtifactType, "cursor" AS Platform
+          FROM glob(globs=[
+              appdata + "\\Cursor\\User\\globalStorage\\cur****\\cursorChat\\**",
+              appdata + "\\Cursor\\User\\globalStorage\\cur****\\cursorComposer\\**",
+          ], accessor="file")
+          WHERE CollectChatHistory
+
+      LET cursor_logs = SELECT FullPath, Mtime, Size, hash(path=FullPath) AS FileHash,
+                 "log" AS ArtifactType, "cursor" AS Platform
+          FROM glob(globs=[
+              appdata + "\\Cursor\\logs\\**",
+          ], accessor="file")
+          WHERE CollectLogs
+
+      LET cursor_proc = SELECT Name AS ProcessName, Pid, CommandLine, Exe,
+                 create_time AS CreateTime, "process" AS ArtifactType,
+                 "cursor" AS Platform
+          FROM pslist() WHERE Name =~ "(?i)cursor"
+
+      SELECT * FROM chain(a=cursor_config, b=cursor_storage, c=cursor_history, d=cursor_logs, e=cursor_proc)
+
+  - name: ClaudeCode_All
+    query: |
+      LET home = expand(path=HomeDir)
+
+      LET claude_config = SELECT FullPath, Mtime, Size, hash(path=FullPath) AS FileHash,
+                 "config" AS ArtifactType, "claude_code" AS Platform
+          FROM glob(globs=[
+              home + "/.claude/config.json",
+              home + "/.claude/settings.json",
+              home + "/.claude/credentials.json",
+              home + "/.claude/projects/**",
+              home + "\\.claude\\config.json",
+              home + "\\.claude\\settings.json",
+              home + "\\.claude\\credentials.json",
+              home + "\\.claude\\projects\\**",
+          ], accessor="file")
+
+      LET claude_history = SELECT FullPath, Mtime, Size, hash(path=FullPath) AS FileHash,
+                 "chat_history" AS ArtifactType, "claude_code" AS Platform
+          FROM glob(globs=[
+              home + "/.claude/conversations/**",
+              home + "/.claude/history/**",
+              home + "\\.claude\\conversations\\**",
+              home + "\\.claude\\history\\**",
+          ], accessor="file")
+          WHERE CollectChatHistory
+
+      LET claude_logs = SELECT FullPath, Mtime, Size, hash(path=FullPath) AS FileHash,
+                 "log" AS ArtifactType, "claude_code" AS Platform
+          FROM glob(globs=[
+              home + "/.claude/logs/**",
+              home + "\\.claude\\logs\\**",
+          ], accessor="file")
+          WHERE CollectLogs
+
+      LET claude_proc = SELECT Name AS ProcessName, Pid, CommandLine, Exe,
+                 create_time AS CreateTime, "process" AS ArtifactType,
+                 "claude_code" AS Platform
+          FROM pslist() WHERE Name =~ "(?i)claude" OR CommandLine =~ "(?i)claode"
+
+      SELECT * FROM chain(a=claude_config, b=claude_history, c=claude_logs, d=claude_proc)
+
+  - name: CodexCLI_All
+    query: |
+      LET home = expand(path=HomeDir)
+
+      LET codex_config = SELECT FullPath, Mtime, Size, hash(path=FullPath) AS FileHash,
+                 "config" AS ArtifactType, "codex_cli" AS Platform
+          FROM glob(globs=[
+              home + "/.codex/config.json",
+              home + "/.codex/config.yaml",
+              home + "/.codex/config.toml",
+              home + "/.codex/.env",
+              home + "\\.codex\\config.json",
+              home + "\\.codex\\config.yaml",
+              home + "\\.codex\\config.toml",
+              home + "\\.codex\\.env",
+          ], accessor="file")
+
+      LET codex_history = SELECT FullPath, Mtime, Size, hash(path=FullPath) AS FileHash,
+                 "chat_history" AS ArtifactType, "codex_cli" AS Platform
+          FROM glob(globs=[
+              home + "/.codex/history/**",
+              home + "/.codex/sessions/**",
+              home + "\\.codex\\history\\**",
+              home + "\\.codex\\sessions\\**",
+          ], accessor="file")
+          WHERE CollectChatHistory
+
+      LET codex_proc = SELECT Name AS ProcessName, Pid, CommandLine, Exe,
+                 create_time AS CreateTime, "process" AS ArtifactType,
+                 "codex_cli" AS Platform
+          FROM pslist() WHERE Name =~ "(?i)codex" OR CommandLine =~ "(?i)codex"
+
+      SELECT * FROM chain(a=codex_config, b=codex_history, c=codex_proc)
+
+  - name: Continue_All
+    query: |
+      LET home = expand(path=HomeDir)
+
+      LET continue_config = SELECT FullPath, Mtime, Size, hash(path=FullPath) AS FileHash,
+                 "config" AS ArtifactType, "continue" AS Platform
+          FROM glob(globs=[
+              home + "/.continue/config.json",
+              home + "/.continue/config.yaml",
+              home + "/.continue/config.ts",
+              home + "/.continue/config.js",
+              home + "/.continue/continue.json",
+              home + "\\.continue\\config.json",
+              home + "\\.continue\\config.yaml",
+              home + "\\.continue\\continue.json",
+              home + "\\.continue\\config.ts",
+          ], accessor="file")
+
+      LET continue_history = SELECT FullPath, Mtime, Size, hash(path=FullPath) AS FileHash,
+                 "chat_history" AS ArtifactType, "continue" AS Platform
+          FROM glob(globs=[
+              home + "/.continue/sessions/**",
+              home + "/.continue/dev_data/**",
+              home + "\\.continue\\sessions\\**",
+              home + "\\.continue\\dev_data\\**",
+          ], accessor="file")
+          WHERE CollectChatHistory
+
+      LET continue_logs = SELECT FullPath, Mtime, Size, hash(path=FullPath) AS FileHash,
+                 "log" AS ArtifactType, "continue" AS Platform
+          FROM glob(globs=[
+              home + "/.continue/logs/**",
+              home + "\\.continue\\logs\\**",
+          ], accessor="file")
+          WHERE CollectLogs
+
+      LET continue_proc = SELECT Name AS ProcessName, Pid, CommandLine, Exe,
+                 create_time AS CreateTime, "process" AS ArtifactType,
+                 "continue" AS Platform
+          FROM pslist() WHERE CommandLine =~ "(?i)continue"
+
+      SELECT * FROM chain(a=continue_config, b=continue_history, c=continue_logs, d=continue_proc)
+
+  - name: Cline_All
+    query: |
+      LET home = expand(path=HomeDir)
+
+      LET cline_config = SELECT FullPath, Mtime, Size, hash(path=FullPath) AS FileHash,
+                 "config" AS ArtifactType, "cline" AS Platform
+          FROM glob(globs=[
+              home + "/.cline/config.json",
+              home + "/.cline/settings.json",
+              home + "\\.cline\\config.json",
+              home + "\\.cline\\settings.json",
+          ], accessor="file")
+
+      LET cline_history = SELECT FullPath, Mtime, Size, hash(path=FullPath) AS FileHash,
+                 "chat_history" AS ArtifactType, "cline" AS Platform
+          FROM glob(globs=[
+              home + "/.cline/tasks/**",
+              home + "/.cline/conversations/**",
+              home + "\\.cline\\tasks\\**",
+              home + "\\.cline\\conversations\\**",
+          ], accessor="file")
+          WHERE CollectChatHistory
+
+      LET cline_vscode = SELECT FullPath, Mtime, Size, hash(path=FullPath) AS FileHash,
+                 "extension_config" AS ArtifactType, "cline" AS Platform
+          FROM glob(globs=[
+              home + "/.vscode/extensions/saoudrizwan.claude-dev*/**",
+              home + "/.vscode/extensions/saoudrizwan.claude-dev*",
+              home + "\\.vscode\\extensions\\saoudrizwan.claude-dev*\\**",
+              home + "\\AppData\\Roaming\\Code\\User\\globalStorage\\saoudrizwan.claude-dev*\\**",
+              home + "/Library/Application Support/Code/User/globalStorage/saoudrizwan.claude-dev*/**",
+          ], accessor="file")
+          WHERE DeepCollection
+
+      LET cline_proc = SELECT Name AS ProcessName, Pid, CommandLine, Exe,
+                 create_time AS CreateTime, "process" AS ArtifactType,
+                 "cline" AS Platform
+          FROM pslist() WHERE CommandLine =~ "(?i)cline"
+
+      SELECT * FROM chain(a=cline_config, b=cline_history, c=cline_vscode, d=cline_proc)
+
+  - name: Warp_All
+    query: |
+      LET home = expand(path=HomeDir)
+
+      LET warp_config = SELECT FullPath, Mtime, Size, hash(path=FullPath) AS FileHash,
+                 "config" AS ArtifactType, "warp" AS Platform
+          FROM glob(globs=[
+              home + "/.warp/config.json",
+              home + "/.warp/settings.json",
+              home + "/.warp/themes/**",
+              home + "\\.warp\\config.json",
+              home + "\\.warp\\settings.json",
+          ], accessor="file")
+
+      LET warp_history = SELECT FullPath, Mtime, Size, hash(path=FullPath) AS FileHash,
+                 "chat_history" AS ArtifactType, "warp" AS Platform
+          FROM glob(globs=[
+              home + "/.warp/sessions/**",
+              home + "/.warp/warp_history/**",
+              home + "/.warp/ai_history/**",
+              home + "\\.warp\\sessions\\**",
+              home + "\\.warp\\ai_history\\**",
+          ], accessor="file")
+          WHERE CollectChatHistory
+
+      LET warp_logs = SELECT FullPath, Mtime, Size, hash(path=FullPath) AS FileHash,
+                 "log" AS ArtifactType, "warp" AS Platform
+          FROM glob(globs=[
+              home + "/.warp/logs/**",
+              home + "\\.warp\\logs\\**",
+          ], accessor="file")
+          WHERE CollectLogs
+
+      LET warp_proc = SELECT Name AS ProcessName, Pid, CommandLine, Exe,
+                 create_time AS CreateTime, "process" AS ArtifactType,
+                 "warp" AS Platform
+          FROM pslist() WHERE Name =~ "(?i)warp"
+
+      SELECT * FROM chain(a=warp_config, b=warp_history, c=warp_logs, d=warp_proc)
+
+  - name: GitHubCopilot_All
+    query: |
+      LET home = expand(path=HomeDir)
+
+      LET copilot_config = SELECT FullPath, Mtime, Size, hash(path=FullPath) AS FileHash,
+                 "config" AS ArtifactType, "github_copilot" AS Platform
+          FROM glob(globs=[
+              home + "/.config/github-copilot/config.json",
+              home + "/.config/github-copilot/apps.json",
+              home + "/.github-copilot/**",
+              home + "\\.github-copilot\\**",
+              home + "\\AppData\\Roaming\\GitHub Copilot\\**",
+              home + "/Library/Application Support/GitHub Copilot/**",
+          ], accessor="file")
+          WHERE NOT IsDir OR FullPath =~ "config|settings|apps|token"
+
+      LET copilot_vscode = SELECT FullPath, Mtime, Size, hash(path=FullPath) AS FileHash,
+                 "extension_config" AS ArtifactType, "github_copilot" AS Platform
+          FROM glob(globs=[
+              home + "/.vscode/extensions/github.copilot*/**",
+              home + "/.vscode/extensions/github.copilot-chat*/**",
+              home + "\\.vscode\\extensions\\github.copilot*\\**",
+              home + "\\AppData\\Roaming\\Code\\User\\globalStorage\\github.copilot*\\**",
+              home + "/Library/Application Support/Code/User/globalStorage/github.copilot*/**",
+          ], accessor="file")
+          WHERE DeepCollection
+
+      LET copilot_jetbrains = SELECT FullPath, Mtime, Size, hash(path=FullPath) AS FileHash,
+                 "extension_config" AS ArtifactType, "github_copilot" AS Platform
+          FROM glob(globs=[
+              home + "/.config/JetBrains/*/plugins/github-copilot*/**",
+              home + "\\.config\\JetBrains\\*\\plugins\\github-copilot*\\**",
+              home + "/.local/share/JetBrains/Toolbox/apps/*/plugins/github-copilot*/**",
+          ], accessor="file")
+          WHERE DeepCollection
+
+      LET copilot_logs = SELECT FullPath, Mtime, Size, hash(path=FullPath) AS FileHash,
+                 "log" AS ArtifactType, "github_copilot" AS Platform
+          FROM glob(globs=[
+              home + "/.config/github-copilot/logs/**",
+              home + "\\.config\\github-copilot\\logs\\**",
+              home + "\\AppData\\Roaming\\GitHub Copilot\\logs\\**",
+          ], accessor="file")
+          WHERE CollectLogs
+
+      LET copilot_proc = SELECT Name AS ProcessName, Pid, CommandLine, Exe,
+                 create_time AS CreateTime, "process" AS ArtifactType,
+                 "github_copilot" AS Platform
+          FROM pslist() WHERE CommandLine =~ "(?i)copilot"
+
+      SELECT * FROM chain(a=copilot_config, b=copilot_vscode, c=copilot_jetbrains, d=copilot_logs, e=copilot_proc)
+
+  - name: JupyterAI_All
+    query: |
+      LET home = expand(path=HomeDir)
+
+      LET jupyter_config = SELECT FullPath, Mtime, Size, hash(path=FullPath) AS FileHash,
+                 "config" AS ArtifactType, "jupyter_ai" AS Platform
+          FROM glob(globs=[
+              home + "/.jupyter/jupyter_ai_config.json",
+              home + "/.jupyter/jupyter_ai_config.yaml",
+              home + "/.jupyter/jupyter_server_config.json",
+              home + "/.jupyter/jupyter_server_config.py",
+              home + "/.jupyter/jupyter_notebook_config.json",
+              home + "\\.jupyter\\jupyter_ai_config.json",
+              home + "\\.jupyter\\jupyter_ai_config.yaml",
+              home + "\\.jupyter\\jupyter_server_config.json",
+              home + "\\.jupyter\\jupyter_notebook_config.json",
+              home + "/Library/Application Support/Jupyter/jupyter_ai_config.json",
+          ], accessor="file")
+
+      LET jupyter_history = SELECT FullPath, Mtime, Size, hash(path=FullPath) AS FileHash,
+                 "chat_history" AS ArtifactType, "jupyter_ai" AS Platform
+          FROM glob(globs=[
+              home + "/.jupyter/ai_chat/**",
+              home + "/.local/share/jupyter/ai_chat/**",
+              home + "\\.jupyter\\ai_chat\\**",
+              home + "\\AppData\\Local\\jupyter\\ai_chat\\**",
+          ], accessor="file")
+          WHERE CollectChatHistory
+
+      LET jupyter_logs = SELECT FullPath, Mtime, Size, hash(path=FullPath) AS FileHash,
+                 "log" AS ArtifactType, "jupyter_ai" AS Platform
+          FROM glob(globs=[
+              home + "/.jupyter/logs/**",
+              home + "/.local/share/jupyter/logs/**",
+              home + "\\.jupyter\\logs\\**",
+          ], accessor="file")
+          WHERE CollectLogs
+
+      LET jupyter_proc = SELECT Name AS ProcessName, Pid, CommandLine, Exe,
+                 create_time AS CreateTime, "process" AS ArtifactType,
+                 "jupyter_ai" AS Platform
+          FROM pslist() WHERE CommandLine =~ "(?i)jupyter.ai|jupyter-ai"
+
+      SELECT * FROM chain(a=jupyter_config, b=jupyter_history, c=jupyter_logs, d=jupyter_proc)
+
+column_types:
+  - name: ArtifactType
+    type: string
+  - name: Platform
+    type: string
+  - name: FileHash
+    type: string

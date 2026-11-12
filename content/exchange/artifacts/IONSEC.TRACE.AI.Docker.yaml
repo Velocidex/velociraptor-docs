@@ -1,0 +1,77 @@
+name: IONSEC.TRACE.AI.Docker
+description: |
+  IONSEC TRACE — Collect forensic evidence of AI workloads running in Docker
+  containers and Docker's built-in AI assistant (Gordon).
+
+  This artifact collects:
+  - Docker AI assistant (Gordon) config, history, and conversation threads
+  - The Docker AI model registry (~/.docker/models)
+  - Running Docker containers whose image matches known AI workloads
+    (ollama, LocalAI, vLLM, OpenWebUI, text-generation-webui, LiteLLM, etc.)
+  - Installed Docker images matching AI image patterns
+
+  Version: 0.2.0
+  Author: IONSEC
+  Reference: https://github.com/ionsec/trace
+  License: AGPL-3.0-or-later
+
+type: CLIENT
+parameters:
+  - name: CollectChatHistory
+    description: Collect Gordon conversation threads (may contain PII)
+    type: bool
+    default: true
+  - name: CollectLogs
+    description: Collect Docker daemon and container logs
+    type: bool
+    default: true
+  - name: DeepCollection
+    description: Include the full AI model registry and image inventory
+    type: bool
+    default: false
+
+sources:
+  - name: Gordon
+    query: |
+      LET home = expand(path=HomeDir)
+      LET gordon_dir = home + "/.docker/gordon"
+
+      LET gordon_config = SELECT FullPath, Mtime, Size, hash(path=FullPath) AS FileHash,
+                 "gordon_config" AS ArtifactType, "docker_gordon" AS Platform
+          FROM glob(globs=gordon_dir + "/config.json", accessor="file")
+
+      LET gordon_history = SELECT FullPath, Mtime, Size, hash(path=FullPath) AS FileHash,
+                 "gordon_history" AS ArtifactType, "docker_gordon" AS Platform
+          FROM glob(globs=gordon_dir + "/history", accessor="file")
+
+      LET gordon_threads = SELECT FullPath, Mtime, Size, hash(path=FullPath) AS FileHash,
+                 "gordon_conversation" AS ArtifactType, "docker_gordon" AS Platform
+          FROM glob(globs=gordon_dir + "/threads/**", accessor="file")
+          WHERE CollectChatHistory
+
+      SELECT * FROM chain(a=gordon_config, b=gordon_history, c=gordon_threads)
+
+  - name: AIModelRegistry
+    query: |
+      LET home = expand(path=HomeDir)
+      LET models_dir = home + "/.docker/models"
+
+      LET registry_files = SELECT FullPath, Mtime, Size, hash(path=FullPath) AS FileHash,
+                 "ai_model_registry" AS ArtifactType, "docker_ai" AS Platform
+          FROM glob(globs=models_dir + "/**", accessor="file")
+          WHERE DeepCollection
+
+      SELECT * FROM registry_files
+
+  - name: RunningContainers
+    query: |
+      -- Running/stopped Docker containers matching AI image patterns.
+      -- Uses `docker ps -a` directly and reports any AI-image lines.
+      LET containers_out = SELECT Stdout FROM execve(argv=[
+          "docker", "ps", "-a", "--format", "{{.ID}}\t{{.Image}}\t{{.Names}}\t{{.Status}}"
+      ], length=100000)
+
+      SELECT Stdout AS ContainerList,
+             "ai_container" AS ArtifactType, "docker_ai" AS Platform
+      FROM containers_out
+      WHERE Stdout =~ "(?i)(ollama|localai|vllm|open-webui|openwebui|text-generation-webui|textgen|llama-cpp|llamacpp|litellm|bifrost|unsloth|koboldcpp|gpt4all|anythingllm|comfyui|stable-diffusion|automatic1111)"
