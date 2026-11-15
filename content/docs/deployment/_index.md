@@ -95,11 +95,14 @@ While this technically allows you to run the server or the client on any
 platform that we have a binary for,
 _please note that the server is only fully supported on Linux_.
 This is mainly due to performance considerations inherent in other platforms
-such as Windows. However for non-production deployments - for example
-evaluation, development or testing - it might be convenient for you to run the
-server on a different platform, and you may decide to do so, but please keep in
-mind that for production deployments the server should run on Linux. Issues with
-other platforms will receive limited support.
+such as Windows. However, for non-production deployments - for example
+evaluation, development, testing, or training - it might be convenient for you
+to run the server on a different platform, and you may do so, but for
+production deployments the server should run on Linux. Issues with other
+platforms are not supported, and we do not commit to investigating or
+fixing bugs that only affect unsupported platforms. See
+[Server Platform Support](/docs/overview/support/#server-platform-support) in
+our Support Policy for the details.
 
 Binaries for the most common platforms and architectures are available on
 our [Downloads](/downloads/) page.

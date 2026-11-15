@@ -173,6 +173,38 @@ configurations are not guaranteed to work, but you may work with us to
 include them in the next release, or open a feature request on [our
 issue tracker](https://github.com/Velocidex/velociraptor/issues).
 
+## Server Platform Support
+
+The Velociraptor server is fully supported on Linux only. This is
+mainly due to performance considerations inherent in other platforms,
+such as Windows, where the filesystem and networking behavior the
+server depends on degrades significantly under the load of a large
+deployment. For production deployments we strongly recommend running the
+server on Linux, and Linux is the only server platform covered by
+our [deployment guides](/docs/deployment/).
+
+Velociraptor binaries are nevertheless built for other platforms, and the
+server component runs there as a fully functional Velociraptor server. You
+may run a Windows server if it suits you, for example for evaluation,
+development, testing, or training, and the
+[`server_service`](/docs/cli/commands/server_service/) command group can
+install it as a Windows service.
+
+Running the server on a non-Linux platform is possible, but it is not
+supported. We make no commitment to investigate or fix bugs that only affect
+the server on an unsupported platform. If you report an issue that we can
+only reproduce on Windows (or another non-Linux platform), we will ask you to
+reproduce it on a supported Linux server first, and close reports that
+cannot be reproduced there.
+
+To summarize:
+
+- The server is fully supported on Linux only.
+
+- Running the server on Windows or macOS is possible and may be useful
+  for evaluation, development, testing, or training, but it is an
+  unsupported configuration and is not recommended for production.
+
 
 ## Support Channels
 
