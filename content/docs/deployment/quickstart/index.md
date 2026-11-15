@@ -177,13 +177,14 @@ server to download the Windows binary that we will use for the client.
 > platform that we have a binary for. However
 > _please note that the server is only fully supported on Linux_,
 > mainly due to performance considerations inherent in other platforms such as
-> Windows. For non-production deployments (e.g. development or testing) it might
-> be convenient for you to run the server on another platform and that's fine if
-> you feel adventurous and confident in your troubleshooting skills. Just keep in
-> mind that for production deployments we strongly recommend that the server
-> should run on Linux and that issues encountered when running the server on other
-> platforms will not be supported. For this reason we only describe deploying the
-> server on Linux in this guide.
+> Windows. For non-production deployments (for example, evaluation, development,
+> testing, or training) it might be convenient for you to run the server on
+> another platform. You are welcome to try it, but it is unsupported and we may
+> not be able to help you if you encounter problems. Keep in mind that for
+> deployments we strongly recommend running the server on Linux. For this reason
+> we only describe deploying the server on Linux in this guide. See
+> [Server Platform Support](/docs/overview/support/#server-platform-support)
+> in our Support Policy.
 
 For these pre-installation steps you may want to create a new working directory:
 
