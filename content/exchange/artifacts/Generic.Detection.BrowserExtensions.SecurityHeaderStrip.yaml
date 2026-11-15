@@ -1,0 +1,283 @@
+name: Generic.Detection.BrowserExtensions.SecurityHeaderStrip
+author: Mohith Gajjela - @Mohith26
+description: |
+  Finds browser extensions whose declarativeNetRequest (DNR) rules remove
+  or overwrite the `Content-Security-Policy` or `X-Frame-Options` response
+  headers on every site.
+
+  Stripping these two headers is the gate of the CRXfiltrate (also known
+  as Phoenix Invicta) extension family documented by 7AI Threat Research
+  and Wladimir Palant: once CSP is gone, the extension's content script can
+  inject server-chosen JavaScript into pages the user is signed in to.
+  Extension IDs and domains in that family rotate quickly, but the header
+  strip is in every build, so this artifact looks for the technique instead
+  of relying only on an ID list. It never runs extension code: it only
+  reads `manifest.json` and the static rule files the manifest registers.
+
+  For each Chromium-based browser profile (Chrome, Edge, Brave, Vivaldi,
+  Opera, Chromium) and each Firefox `.xpi`, the artifact reads the
+  manifest, opens every ruleset listed under
+  `declarative_net_request.rule_resources` (including rulesets that are
+  disabled by default, since an extension can enable them at runtime), and
+  reports each `modifyHeaders` rule that removes or sets a header matching
+  `SecurityHeaderRegex`.
+
+  Each hit is graded:
+
+  - **Confirmed**: the extension ID is on the published CRXfiltrate list
+    (`KnownBadExtensions`, from 7AI's September 2026 indicators). An
+    installed ID is reported even if no stripping rule is found.
+  - **High**: strips both CSP and X-Frame-Options, the rule matches every
+    URL, the extension has access to all sites, and the same rule also
+    removes header names that are not real HTTP headers (CRXfiltrate pads
+    the two real headers with invented, theme-matching names such as
+    `gamma-adjustment-service`).
+  - **Medium**: strips CSP or X-Frame-Options on every URL with all-sites
+    access, without decoy padding. Some ad blockers and developer tools do
+    this legitimately, so review the extension's purpose.
+  - **Low**: the strip is limited to specific domains, or the extension
+    lacks host access to all sites.
+
+  Limitations: dynamic and session rules added at runtime with
+  `updateDynamicRules` / `updateSessionRules` are stored in the browser's
+  LevelDB state and are not parsed here, and header changes made with the
+  older `webRequest` API are not covered.
+
+reference:
+  - https://7ai.com/crxfiltrate
+  - https://palant.info/2025/01/20/malicious-extensions-circumvent-googles-remote-code-ban/
+  - https://developer.chrome.com/docs/extensions/reference/api/declarativeNetRequest
+
+type: CLIENT
+
+parameters:
+  - name: ChromiumManifestGlobs
+    description: Globs for Chromium-based extension manifests (Extensions/<id>/<version>/manifest.json).
+    type: json_array
+    default: |
+      ["C:/Users/*/AppData/Local/{Google/Chrome,Google/Chrome Beta,Microsoft/Edge,BraveSoftware/Brave-Browser,Vivaldi,Chromium}/User Data/*/Extensions/*/*/manifest.json",
+       "C:/Users/*/AppData/Roaming/Opera Software/Opera Stable/{,*/}Extensions/*/*/manifest.json",
+       "/Users/*/Library/Application Support/{Google/Chrome,Google/Chrome Beta,Microsoft Edge,BraveSoftware/Brave-Browser,Vivaldi,Chromium,com.operasoftware.Opera}/{,*/}Extensions/*/*/manifest.json",
+       "/{root,home/*}/.config/{google-chrome,google-chrome-beta,chromium,microsoft-edge,BraveSoftware/Brave-Browser,vivaldi,opera}/{,*/}Extensions/*/*/manifest.json",
+       "/home/*/snap/chromium/common/chromium/*/Extensions/*/*/manifest.json"]
+  - name: FirefoxXpiGlobs
+    description: Globs for Firefox extension packages (.xpi files in each profile's extensions folder).
+    type: json_array
+    default: |
+      ["C:/Users/*/AppData/Roaming/Mozilla/Firefox/Profiles/*/extensions/*.xpi",
+       "/Users/*/Library/Application Support/Firefox/Profiles/*/extensions/*.xpi",
+       "/{root,home/*}/.mozilla/firefox/*/extensions/*.xpi",
+       "/home/*/snap/firefox/common/.mozilla/firefox/*/extensions/*.xpi"]
+  - name: SecurityHeaderRegex
+    description: Response headers whose removal or replacement is reported.
+    type: regex
+    default: ^(content-security-policy|x-frame-options)$
+  - name: RulesetPrefilterRegex
+    description: |
+      Rule files are only parsed if their raw text matches this regex.
+      Keep it in sync with SecurityHeaderRegex if you change that.
+    type: regex
+    default: (?i)(content-security-policy|x-frame-options)
+  - name: RealHeaderRegex
+    description: |
+      Header names treated as real when counting decoy padding. Removed
+      headers that match neither this nor SecurityHeaderRegex are reported
+      as DecoyHeaders.
+    type: regex
+    default: ^(accept-.*|access-control-.*|age|alt-svc|cache-control|clear-site-data|connection|content-.*|cross-origin-.*|date|etag|expect-ct|expires|keep-alive|last-modified|link|location|nel|origin-agent-cluster|permissions-policy|pragma|referrer-policy|report-to|reporting-endpoints|retry-after|server|server-timing|set-cookie|strict-transport-security|timing-allow-origin|trailer|transfer-encoding|upgrade|vary|via|warning|www-authenticate|x-content-type-options|x-dns-prefetch-control|x-download-options|x-permitted-cross-domain-policies|x-powered-by|x-robots-tag|x-ua-compatible|x-xss-protection|document-policy|feature-policy|sec-.*|x-frame-options)$
+  - name: KnownBadExtensions
+    description: Extension IDs published by 7AI Threat Research as confirmed CRXfiltrate members (https://7ai.com/crxfiltrate, September 2026).
+    type: csv
+    default: |
+      ID,Name,Store
+      acbcnnccgmpbkoeblinmoadogmmgodoo,Click & Pick,chrome
+      agbpompnnjeifckjclddobpocffkdnhj,SmartSnap,chrome
+      ajabpfgngbkodbhcfjhmmedgnaojinnn,FontXplorer,chrome
+      ajloakkohlpbobanidjnlakdbiggebjg,RecJump,chrome
+      aplhgigkopkholapijailboandapfaim,ColorPickPro,chrome
+      bkknccgnmpcnhppklomdjkphccmpblga,1-Click Color Picker: Instant Eyedropper,edge
+      coebfgijooginjcfgmmgiibomdcjnomi,AdBlock for YouTube: Skip-n-Watch,chrome
+      efikooedhaahjglcdnapogcgamjbnlhl,SoundBoom - Volume Booster & Bass Booster,chrome
+      ejmfoodojfccafleholegghikoefekgc,ShieldBlock - Ad & Tracker Blocker,chrome
+      ekafoahfmdgaeefeeneiijbehnbocbij,Dopni: Automatic Cashback,chrome
+      emnhnjiiloghpnekjifmoimflkdmjhgp,SkipAds Plus,chrome
+      fmpgmcidlaojgncjlhjkhfbjchafcfoe,1-Click Color Picker,chrome
+      gpibachbddnihfkbjcfggbejjgjdijeb,Better Color Picker,chrome
+      hinkijopmipplcccjeiblmiipdpagdbl,PowerSound - High-Quality Volume Booster,chrome
+      ibbkokjdcfjakihkpihlffljabiepdag,Easy Dark Mode,chrome
+      ieihbaicbgpebhkfebnfkdhkpdemljfb,Manuals Viewer,chrome
+      igoghichneaojlmhlacbichiffonigon,Font Expert,edge
+      ihfedmikeegmkebekpjflhnlmfbafbfe,ScreenCapX,chrome
+      imgeppnfphpcabhdgeoogilebimgmpop,ScreenCapX,edge
+      jbdegnmcajkhjemebonejojlgkgcddhc,AdBlock for YouTube: SkipAds,edge
+      jckoejjnaljgkmgblmbodoegoefofhee,MyColorPick,chrome
+      jfdmjjaaabgoamceejigdchflioaljha,NiceCapture,chrome
+      jlhlcmihbedjgmogjimknlhjahgpdokj,True Sound Booster,chrome
+      jlpchojjamcikhgmedobmfodcefjmccn,SnipCapture,chrome
+      jpaihclmbopabkcedfdhphihnddnmhjf,QuickCapture - Snipping Tool & Screenshot,chrome
+      keeocmalfanaeglbdieodbbpoplbklnb,SnapItFast - Screenshot & Snipping Tool,chrome
+      keindcobgjidcoehnbhhpknomcjhohnf,FocusAura - Limit & Block Distracting Websites,chrome
+      kgijhaeibgpjlgekmmgnbkhnejbojocm,GoRec,chrome
+      lkalpedlpidbenfnnldoboegepndcddk,Capture It,chrome
+      lkbhphangehffigagihcinfgjmhojakl,SoundPusher - Volume Booster & Audio Enhancer,chrome
+      lpbdflcaaalpnclpmfbhpmpafpmhhcap,Volume Booster,edge
+      mkoegjeakpnbjklhimnimkgokbifeaoh,ExtraSound Volume Booster,chrome
+      mnekplagdpddfnbbgebnbhljbbkhnhic,AI powered Sound Booster,edge
+      mnlhchinncppkmahmlcminlgodhkjkmd,PixelPick / 1-Tap-Picker,chrome
+      nbljjljaoanknannhlonmaknhckcoldi,SimpleSnap,chrome
+      ncnnhapjfmfgljblcgpeojgbhcihhece,ColorPickster - One-Click Color Picker,chrome
+      njaclngoobdnphkahnehdejhliehbhid,EverCapture,chrome
+      nonajfcfdpeheinkafjiefpdhfalffof,AdBlock - Ads and YouTube,chrome
+      oadhnncgejdlomamokgijepfafmiikga,OneRec - Screen Recorder with Audio & Camera,chrome
+      ocbfgbpocngolfigkhfehckgeihdhgll,Manual Finder 2024,chrome
+      ojkoofedgcdebdnajjeodlooojdphnlj,Volume Booster,chrome
+      oncjoeekejdkgbknikjhfncokppbcann,Loud MAX,chrome
+      oocephjckjidfgiaaffnmkiiikmadkml,RecZap,chrome
+      pjlheckmodimboibhpdcgkpkbpjfhooe,Font Expert,chrome
+      pkdhhfbdicijjfamiellmlnnggpbiifj,Cute Custom Cursors,edge
+      pnhkolkelkfnfphohbdnboedhejlfbho,RecItEasy,chrome
+
+sources:
+  - query: |
+      LET KnownIDs <= SELECT lowcase(string=ID) AS ID, Name AS KnownName FROM KnownBadExtensions
+
+      LET AllSitesRegex = '^(<all_urls>|\\*://\\*/\\*?|https?://\\*/\\*?)$'
+      LET BroadUrlFilterRegex = '^[|*]*(https?:?/*)?[*]*$'
+      LET BroadRegexFilterRegex = '^\\^?(https?\\??:?(\\\\?/){0,2}|\\(https\\?\\|wss\\?\\):(\\\\?/){0,2})?\\.[*+]\\$?$'
+
+      LET BrowserOf(P) = if(condition=P =~ "(?i)edge", then="Edge",
+         else=if(condition=P =~ "(?i)brave", then="Brave",
+         else=if(condition=P =~ "(?i)vivaldi", then="Vivaldi",
+         else=if(condition=P =~ "(?i)opera", then="Opera",
+         else=if(condition=P =~ "(?i)firefox|mozilla", then="Firefox",
+         else=if(condition=P =~ "(?i)chromium", then="Chromium",
+         else="Chrome"))))))
+
+      // Null-safe list concatenation (MV2 manifests have no host_permissions).
+      LET AsList(X) = if(condition=X, then=X, else=array())
+
+      // Many extension JSON files start with a UTF-8 byte order mark.
+      LET ReadText(Accessor, Path) = regex_replace(re="^\\x{FEFF}", replace="",
+         source=read_file(accessor=Accessor, filename=Path, length=20000000))
+      LET ReadJson(Accessor, Path) = parse_json(data=ReadText(Accessor=Accessor, Path=Path))
+
+      LET ChromiumExtensions = SELECT OSPath AS ManifestPath, "auto" AS Accessor,
+             OSPath.String AS Location,
+             OSPath.Components[-3] AS Identifier,
+             OSPath.Components[-2] AS Version,
+             ReadJson(Accessor="auto", Path=OSPath) AS Manifest
+        FROM glob(globs=ChromiumManifestGlobs)
+
+      LET FirefoxExtensions = SELECT * FROM foreach(row={
+            SELECT OSPath AS XpiPath FROM glob(globs=FirefoxXpiGlobs)
+          }, query={
+            SELECT pathspec(DelegatePath=XpiPath, Path="manifest.json") AS ManifestPath,
+                   "zip" AS Accessor,
+                   XpiPath.String AS Location,
+                   Manifest.browser_specific_settings.gecko.id ||
+                     Manifest.applications.gecko.id ||
+                     XpiPath.Basename AS Identifier,
+                   Manifest.version AS Version,
+                   Manifest
+            FROM foreach(row={
+              SELECT ReadJson(Accessor="zip",
+                       Path=pathspec(DelegatePath=XpiPath, Path="manifest.json")) AS Manifest
+              FROM scope()
+            })
+          })
+
+      // Resolve __MSG_name__ strings from the default locale. Message
+      // names are case-insensitive in Chrome, so keys are lowercased.
+      LET LowerKeys(D) = to_dict(item={
+         SELECT lowcase(string=_key) AS _key, _value FROM items(item=D) })
+      LET Localized(Accessor, ManifestPath, Manifest, Value) = if(
+         condition=format(format="%v", args=Value) =~ "^__MSG_.+__$" AND Manifest.default_locale,
+         then=get(item=LowerKeys(D=ReadJson(Accessor=Accessor,
+                    Path=ManifestPath.Dirname + "_locales" + Manifest.default_locale + "messages.json")),
+                  member=lowcase(string=regex_replace(source=Value, re="^__MSG_(.+)__$", replace="$1"))).message || Value,
+         else=Value)
+
+      LET Extensions = SELECT *,
+             Localized(Accessor=Accessor, ManifestPath=ManifestPath,
+                       Manifest=Manifest, Value=Manifest.name) AS Name,
+             BrowserOf(P=Location) AS Browser,
+             filter(list=AsList(X=Manifest.host_permissions) + AsList(X=Manifest.permissions),
+                    regex=AllSitesRegex) AS AllSitesGrants,
+             lowcase(string=Identifier) IN KnownIDs.ID AS KnownBad
+        FROM chain(a=ChromiumExtensions, b=FirefoxExtensions)
+        WHERE Manifest
+
+      // One row per ruleset file registered in the manifest.
+      LET Rulesets = SELECT * FROM foreach(row=Extensions, query={
+          SELECT Browser, Identifier, Version, Name, Location, Accessor,
+                 ManifestPath, AllSitesGrants, KnownBad,
+                 id AS RulesetId,
+                 NOT enabled = FALSE AS RulesetEnabled,
+                 ManifestPath.Dirname + split(string=path, sep="/") AS RulesetPath
+          FROM foreach(row=Manifest.declarative_net_request.rule_resources)
+          WHERE path
+        })
+
+      // Ad blockers ship hundreds of large rulesets, so only parse the
+      // ones whose raw text mentions a header we care about.
+      LET CandidateRulesets = SELECT *, ReadText(Accessor=Accessor, Path=RulesetPath) AS Text
+        FROM Rulesets
+        WHERE Text =~ RulesetPrefilterRegex
+
+      LET Rules = SELECT * FROM foreach(row=CandidateRulesets, query={
+          SELECT Browser, Identifier, Version, Name, Location, AllSitesGrants,
+                 KnownBad, RulesetId, RulesetEnabled, RulesetPath,
+                 id AS RuleId, action AS Action, condition AS Condition
+          FROM foreach(row=parse_json_array(data=Text))
+          WHERE Action.type = "modifyHeaders"
+        })
+
+      LET HeaderOps(Action) = SELECT lowcase(string=header) AS Header,
+             operation AS Operation
+        FROM foreach(row=Action.responseHeaders)
+        WHERE Operation =~ "^(remove|set)$"
+
+      LET Analysed = SELECT *,
+             HeaderOps(Action=Action).Header AS ChangedHeaders,
+             filter(list=HeaderOps(Action=Action).Header, regex=SecurityHeaderRegex) AS StrippedSecurityHeaders,
+             filter(list=HeaderOps(Action=Action).Header, regex="^content-security-policy$") AS CSP,
+             filter(list=HeaderOps(Action=Action).Header, regex="^x-frame-options$") AS XFO,
+             (NOT Condition.requestDomains AND NOT Condition.initiatorDomains AND
+              NOT Condition.domains AND
+              (NOT Condition.urlFilter OR Condition.urlFilter =~ BroadUrlFilterRegex) AND
+              (NOT Condition.regexFilter OR Condition.regexFilter =~ BroadRegexFilterRegex)) AS MatchesAllUrls
+        FROM Rules
+
+      LET DecoysOf(Headers) = SELECT _value AS H FROM foreach(row=Headers)
+        WHERE NOT H =~ SecurityHeaderRegex AND NOT H =~ RealHeaderRegex
+
+      LET Hits = SELECT *, DecoysOf(Headers=ChangedHeaders) AS DecoyRows
+        FROM Analysed
+        WHERE StrippedSecurityHeaders
+
+      LET Graded = SELECT Browser, Identifier, Version, Name,
+             if(condition=KnownBad, then="Confirmed",
+               else=if(condition=CSP AND XFO AND MatchesAllUrls AND AllSitesGrants AND DecoyRows,
+                 then="High",
+               else=if(condition=MatchesAllUrls AND AllSitesGrants,
+                 then="Medium", else="Low"))) AS Severity,
+             StrippedSecurityHeaders, DecoyRows.H AS DecoyHeaders,
+             MatchesAllUrls, AllSitesGrants, KnownBad AS OnCRXfiltrateList,
+             RulesetId, RulesetEnabled, RuleId,
+             Condition AS RuleCondition,
+             RulesetPath.String AS RulesetPath, Location
+        FROM Hits
+
+      // Extensions on the published list that have no stripping rule in
+      // their static rulesets are still reported.
+      LET GradedRows <= SELECT * FROM Graded
+      LET KnownWithoutRule = SELECT Browser, Identifier, Version, Name,
+             "Confirmed" AS Severity, NULL AS StrippedSecurityHeaders,
+             NULL AS DecoyHeaders, NULL AS MatchesAllUrls, AllSitesGrants,
+             TRUE AS OnCRXfiltrateList, NULL AS RulesetId,
+             NULL AS RulesetEnabled, NULL AS RuleId, NULL AS RuleCondition,
+             NULL AS RulesetPath, Location
+        FROM Extensions
+        WHERE KnownBad AND NOT Identifier IN GradedRows.Identifier
+
+      SELECT * FROM chain(a=GradedRows, b=KnownWithoutRule)
