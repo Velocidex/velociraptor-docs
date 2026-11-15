@@ -192,10 +192,10 @@ install it as a Windows service.
 
 Running the server on a non-Linux platform is possible, but it is not
 supported. We make no commitment to investigate or fix bugs that only affect
-the server on an unsupported platform. If you report an issue that we can
-only reproduce on Windows (or another non-Linux platform), we will ask you to
+the server on an unsupported platform. If you report an issue that affects
+a server running on Windows or another non-Linux platform, we will ask you to
 reproduce it on a supported Linux server first, and close reports that
-cannot be reproduced there.
+cannot be reproduced on Linux.
 
 To summarize:
 
