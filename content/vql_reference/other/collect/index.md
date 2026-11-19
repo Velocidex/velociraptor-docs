@@ -21,7 +21,7 @@ build:
 
 Arg | Description | Type
 ----|-------------|-----
-artifacts|A list of artifacts to collect.|list of string (required)
+artifacts|A list of artifacts to collect.|list of string
 output|A path to write the output file on.|string
 report|A path to write the report on (deprecated and ignored).|string
 args|Optional parameters.|Any
