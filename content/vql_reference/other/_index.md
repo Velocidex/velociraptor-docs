@@ -21,6 +21,12 @@ not yet been categorized.
 |[azure_monitor_upload](azure_monitor_upload)|Plugin|Upload rows to Azure Monitor / Log Analytics via the Logs Ingestion API (Data Collection Rule)|
 |[background](background)|Function|Run a query in the background|
 |[batch](batch)|Plugin|Batches query rows into multiple arrays|
+|[bit_and](bit_and)|Function|Returns a bitwise AND operation between two integers|
+|[bit_not](bit_not)|Function|Returns a bitwise NOT operation on an integer|
+|[bit_or](bit_or)|Function|Returns a bitwise OR operation between two integers|
+|[bit_shl](bit_shl)|Function|Shifts the value to the left|
+|[bit_shr](bit_shr)|Function|Shifts the value to the right|
+|[bit_xor](bit_xor)|Function|Returns a bitwise XOR operation on an integer|
 |[cache](cache)|Function|Creates a cache object|
 |[cache_dns](cache_dns)|Function|Add a DNS record to the cache|
 |[cat](cat)|Plugin|Read files in chunks|
@@ -57,6 +63,7 @@ not yet been categorized.
 |[lru](lru)|Function|Creates an LRU object|
 |[magic](magic)|Function|Identify a file using magic rules|
 |[mail](mail)|Function|Send Email to a remote server|
+|[map](map)|Function|Apply a map on a list of items|
 |[max](max)|Function|Finds the largest item in the aggregate|
 |[min](min)|Function|Finds the smallest item in the aggregate|
 |[netcat](netcat)|Plugin|Make a tcp connection and read data from a socket|
@@ -77,9 +84,11 @@ not yet been categorized.
 |[rand](rand)|Function|Selects a random number|
 |[rate](rate)|Function|Calculates the rate (derivative) between two quantities|
 |[read_crypto_file](read_crypto_file)|Plugin|Read a previously stored encrypted local storage file|
+|[reduce](reduce)|Function|Apply a lambda function on each item and return the accumulator|
 |[reformat](reformat)|Function|Reformat VQL|
 |[rekey](rekey)|Function|Causes the client to rekey and regenerate a new client ID|
 |[remap](remap)|Function|Apply a remapping configuration to the root scope|
+|[reverse](reverse)|Function|reverse an array|
 |[rm](rm)|Function|Remove a file from the filesystem using the API|
 |[rsyslog](rsyslog)|Function|Send an RFC5424 compliant remote syslog message|
 |[sample](sample)|Plugin|Executes 'query' and samples every n'th row|

@@ -851,6 +851,110 @@
         ]
     },
     {
+        "name": "bit_and",
+        "description": "Returns a bitwise AND operation between two integers.",
+        "type": "Function",
+        "args": [
+            {
+                "name": "a",
+                "type": "uint64"
+            },
+            {
+                "name": "b",
+                "type": "uint64"
+            }
+        ],
+        "platforms": [
+            "linux_amd64_cgo"
+        ]
+    },
+    {
+        "name": "bit_not",
+        "description": "Returns a bitwise NOT operation on an integer.",
+        "type": "Function",
+        "args": [
+            {
+                "name": "value",
+                "type": "uint64"
+            }
+        ],
+        "platforms": [
+            "linux_amd64_cgo"
+        ]
+    },
+    {
+        "name": "bit_or",
+        "description": "Returns a bitwise OR operation between two integers.",
+        "type": "Function",
+        "args": [
+            {
+                "name": "a",
+                "type": "uint64"
+            },
+            {
+                "name": "b",
+                "type": "uint64"
+            }
+        ],
+        "platforms": [
+            "linux_amd64_cgo"
+        ]
+    },
+    {
+        "name": "bit_shl",
+        "description": "Shifts the value to the left.",
+        "type": "Function",
+        "args": [
+            {
+                "name": "value",
+                "type": "uint64"
+            },
+            {
+                "name": "bits",
+                "type": "uint64"
+            }
+        ],
+        "platforms": [
+            "linux_amd64_cgo"
+        ]
+    },
+    {
+        "name": "bit_shr",
+        "description": "Shifts the value to the right.",
+        "type": "Function",
+        "args": [
+            {
+                "name": "value",
+                "type": "uint64"
+            },
+            {
+                "name": "bits",
+                "type": "uint64"
+            }
+        ],
+        "platforms": [
+            "linux_amd64_cgo"
+        ]
+    },
+    {
+        "name": "bit_xor",
+        "description": "Returns a bitwise XOR operation on an integer.",
+        "type": "Function",
+        "args": [
+            {
+                "name": "a",
+                "type": "uint64"
+            },
+            {
+                "name": "b",
+                "type": "uint64"
+            }
+        ],
+        "platforms": [
+            "linux_amd64_cgo"
+        ]
+    },
+    {
         "name": "bzip2",
         "description": "Access the content of bzip2 files.",
         "type": "Accessor",
@@ -1021,7 +1125,7 @@
         "name": "carve_usn",
         "description": "Carve for the USN journal entries from a device.",
         "type": "Plugin",
-        "version": 2,
+        "version": 3,
         "args": [
             {
                 "name": "device",
@@ -1047,6 +1151,16 @@
                 "name": "usn_filename",
                 "type": "OSPath",
                 "description": "A path to a raw USN file to carve. If not provided we carve the image file or the device."
+            },
+            {
+                "name": "start",
+                "type": "uint64",
+                "description": "Starting offset."
+            },
+            {
+                "name": "length",
+                "type": "uint64",
+                "description": "How long to scan for."
             }
         ],
         "category": "parsers",
@@ -1393,8 +1507,7 @@
                 "name": "artifacts",
                 "type": "string",
                 "description": "A list of artifacts to collect.",
-                "repeated": true,
-                "required": true
+                "repeated": true
             },
             {
                 "name": "output",
@@ -2811,7 +2924,7 @@
             },
             {
                 "name": "specs",
-                "type": "LazyExpr",
+                "type": "Any",
                 "description": "The collection request spec that will be saved. We use this to create the new collection.",
                 "required": true
             },
@@ -5528,6 +5641,27 @@
             "linux_amd64_cgo",
             "windows_386_cgo",
             "windows_amd64_cgo"
+        ]
+    },
+    {
+        "name": "map",
+        "description": "Apply a map on a list of items.",
+        "type": "Function",
+        "args": [
+            {
+                "name": "items",
+                "type": "Any",
+                "description": "A list of items to apply the lambda on",
+                "required": true
+            },
+            {
+                "name": "lambda",
+                "type": "Lambda",
+                "description": "A VQL Lambda to apply on each item"
+            }
+        ],
+        "platforms": [
+            "linux_amd64_cgo"
         ]
     },
     {
@@ -8763,6 +8897,27 @@
         ]
     },
     {
+        "name": "reduce",
+        "description": "Apply a lambda function on each item and return the accumulator. The lambda is expected to receive the accumulator and the item. For example `(acc, x)=>acc + x`",
+        "type": "Function",
+        "args": [
+            {
+                "name": "items",
+                "type": "Any",
+                "description": "A list of items to apply the lambda on",
+                "required": true
+            },
+            {
+                "name": "lambda",
+                "type": "Lambda",
+                "description": "A VQL Lambda to apply on each item"
+            }
+        ],
+        "platforms": [
+            "linux_amd64_cgo"
+        ]
+    },
+    {
         "name": "reformat",
         "description": "Reformat VQL",
         "type": "Function",
@@ -9099,6 +9254,23 @@
             "linux_amd64_cgo",
             "windows_386_cgo",
             "windows_amd64_cgo"
+        ]
+    },
+    {
+        "name": "reverse",
+        "description": "reverse an array.",
+        "type": "Function",
+        "args": [
+            {
+                "name": "items",
+                "type": "Any",
+                "description": "A list of items to reverse",
+                "repeated": true,
+                "required": true
+            }
+        ],
+        "platforms": [
+            "linux_amd64_cgo"
         ]
     },
     {
@@ -11589,6 +11761,7 @@
         "name": "upload_sftp",
         "description": "Upload files to SFTP.",
         "type": "Function",
+        "version": 2,
         "args": [
             {
                 "name": "file",
@@ -11604,8 +11777,7 @@
             {
                 "name": "user",
                 "type": "string",
-                "description": "The username to connect to the endpoint with",
-                "required": true
+                "description": "The username to connect to the endpoint with"
             },
             {
                 "name": "path",
@@ -11620,19 +11792,22 @@
             {
                 "name": "privatekey",
                 "type": "string",
-                "description": "The private key to use",
-                "required": true
+                "description": "The private key to use"
             },
             {
                 "name": "endpoint",
                 "type": "string",
-                "description": "The Endpoint to use including port number (e.g. 192.168.1.1:22 )",
-                "required": true
+                "description": "The Endpoint to use including port number (e.g. 192.168.1.1:22 )"
             },
             {
                 "name": "hostkey",
                 "type": "string",
                 "description": "Host key to verify. Blank to disable"
+            },
+            {
+                "name": "secret",
+                "type": "string",
+                "description": "Alternatively, use a secret from the secrets service. Secret must be of type 'SSH PrivateKey'"
             }
         ],
         "metadata": {

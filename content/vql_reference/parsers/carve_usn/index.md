@@ -38,6 +38,8 @@ image_filename|A raw image to open. You can also provide the accessor if using a
 accessor|The accessor to use.|string
 mft_filename|A path to a raw $MFT file to use for path resolution.|OSPath
 usn_filename|A path to a raw USN file to carve. If not provided we carve the image file or the device.|OSPath
+start|Starting offset.|uint64
+length|How long to scan for.|uint64
 
 **Required permissions:** `FILESYSTEM_READ`
 

@@ -30,7 +30,7 @@ Arg | Description | Type
 ----|-------------|-----
 name|A name for this collection template.|string (required)
 description|A description for the template.|string
-specs|The collection request spec that will be saved. We use this to create the new collection.|LazyExpr (required)
+specs|The collection request spec that will be saved. We use this to create the new collection.|Any (required)
 type|The type of favorite.|string (required)
 ### Description
 
