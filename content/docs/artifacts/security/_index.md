@@ -348,7 +348,7 @@ sources:
 
 The `impersonate: admin` directive tells Velociraptor to run the artifact
 with the permissions of the admin user instead of the launching user. This
-is similar to the Linux `setuid` mechanism, except that the effect applies to
+is similar to the Linux `suid` mechanism, except that the effect applies to
 one artifact rather than to a binary.
 
 ![Server artifact collection succeeding with the impersonated user](impersonation.png)
