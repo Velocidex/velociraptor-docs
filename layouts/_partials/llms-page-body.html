@@ -1,0 +1,10 @@
+{{- /*
+Body text of a page as plain markdown, for the llms-full corpus.
+
+Standalone shortcode lines (e.g. {{% children %}}) are dropped: they only
+make sense when Hugo renders the page, and as raw text they are noise that
+looks like template syntax to a reader.
+*/ -}}
+{{- $body := .RawContent -}}
+{{- $body = replaceRE `(?m)^[ \t]*\{\{[<%].*?[>%]\}\}[ \t]*$\n?` "" $body -}}
+{{- return (strings.TrimSpace $body) -}}
