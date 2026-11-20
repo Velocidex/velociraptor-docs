@@ -1,0 +1,79 @@
+name: IONSEC.TRACE.AI.ShadowAI
+description: |
+  IONSEC TRACE — Detect unsanctioned shadow-AI tools and collect their
+  forensic artifacts across the endpoint.
+
+  This meta-collector sweeps for the presence and artifacts of a broad set
+  of AI tools in one pass, including:
+  - Coding agents: Cursor, Claude Code, Codex, Aider, Continue, Cline,
+    Antigravity, Devin, Eigent
+  - Editors: VSCodium, Windsurf, Kilo Code, Roo Code
+  - Terminal AI: Warp, Shell-GPT
+  - Inference: Ollama, LM Studio, Jan, AnythingLLM
+  - Autonomous: OpenClaw (and Clawdbot/Moltbot/NanoClaw), Open Interpreter
+  - Cloud: GitHub Copilot, Amazon Q, Gemini CLI
+
+  Version: 0.2.0
+  Author: IONSEC
+  Reference: https://github.com/ionsec/trace
+  License: AGPL-3.0-or-later
+
+type: CLIENT
+parameters:
+  - name: CollectChatHistory
+    description: Collect chat/conversation history files
+    type: bool
+    default: true
+  - name: CollectLogs
+    description: Collect tool logs
+    type: bool
+    default: true
+  - name: DeepCollection
+    description: Include all artifacts (may be large)
+    type: bool
+    default: false
+
+sources:
+  - name: ConfigArtifacts
+    query: |
+      LET home = expand(path=HomeDir)
+
+      SELECT FullPath, Mtime, Size, hash(path=FullPath) AS FileHash,
+             "config" AS ArtifactType,
+             if(condition=OSPath =~ "(?i)(cursor)",
+                then="cursor",
+                else=if(condition=OSPath =~ "(?i)(claude)",
+                   then="claude_code",
+                   else=if(condition=OSPath =~ "(?i)(codex)",
+                      then="codex",
+                      else=if(condition=OSPath =~ "(?i)(aider)",
+                         then="aider",
+                         else=if(condition=OSPath =~ "(?i)(openclaw|clawdbot|moltbot|nanoclaw)",
+                            then="openclaw",
+                            else=if(condition=OSPath =~ "(?i)(antigravity)",
+                               then="antigravity",
+                               else=if(condition=OSPath =~ "(?i)(devin)",
+                                  then="devin",
+                                  else=if(condition=OSPath =~ "(?i)(eigent)",
+                                     then="eigent",
+                                     else=if(condition=OSPath =~ "(?i)(copilot)",
+                                        then="copilot",
+                                        else=if(condition=OSPath =~ "(?i)(gemini)",
+                                           then="gemini_cli",
+                                           else="shadow_ai")))))))))) AS Platform
+      FROM glob(globs=[
+          home + "/.cursor/**",
+          home + "/.claude/**",
+          home + "/.codex/**",
+          home + "/.aider*",
+          home + "/.openclaw/**",
+          home + "/.clawdbot/**",
+          home + "/.moltbot/**",
+          home + "/.nanoclaw/**",
+          home + "/.antigravity/**",
+          home + "/.devin/**",
+          home + "/.eigent/**",
+          home + "/.copilot/**",
+          home + "/.gemini/**",
+      ], accessor="file")
+      WHERE DeepCollection

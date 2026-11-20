@@ -1,0 +1,240 @@
+name: IONSEC.TRACE.AI.HuggingFace
+description: |
+  IONSEC TRACE — Collect HuggingFace Hub cache artifacts including model
+  metadata, references, snapshots (config.json only, not large model files),
+  token files, and version information.
+
+  Version: 0.1.0
+  Author: IONSEC
+
+  This artifact collects:
+  - HuggingFace Hub cache model metadata (refs, snapshots)
+  - Config.json files from cached models (not large binary model files)
+  - Authentication tokens
+  - Cache version information
+  - Downloaded model inventory
+
+type: CLIENT
+parameters:
+  - name: CollectChatHistory
+    description: Include conversation history from HuggingFace chat tools
+    type: bool
+    default: true
+  - name: CollectLogs
+    description: Collect HuggingFace download and error logs
+    type: bool
+    default: true
+  - name: DeepCollection
+    description: Include snapshot config.json from all cached models (may be numerous)
+    type: bool
+    default: false
+
+sources:
+  - name: HuggingFace_Linux
+    precondition: SELECT OS FROM info() WHERE OS = 'linux'
+    query: |
+      LET home = expand(path=HomeDir)
+      LET hf_base = home + "/.cache/huggingface"
+
+      LET hf_token = SELECT FullPath, Mtime, Size, hash(path=FullPath) AS FileHash,
+                 "auth_token" AS ArtifactType, "huggingface" AS Platform
+          FROM glob(globs=[
+              hf_base + "/token",
+              hf_base + "/token.json",
+              home + "/.huggingface/token",
+              home + "/.huggingface/credentials",
+          ], accessor="file")
+
+      LET hf_version = SELECT FullPath, Mtime, Size, hash(path=FullPath) AS FileHash,
+                 "version" AS ArtifactType, "huggingface" AS Platform
+          FROM glob(globs=[
+              hf_base + "/version.txt",
+              hf_base + "/hub/version.txt",
+          ], accessor="file")
+
+      LET hf_refs = SELECT FullPath, Mtime, Size, hash(path=FullPath) AS FileHash,
+                 "model_ref" AS ArtifactType, "huggingface" AS Platform
+          FROM glob(globs=[
+              hf_base + "/hub/models--*/refs/**",
+          ], accessor="file")
+
+      LET hf_snapshot_configs = SELECT FullPath, Mtime, Size, hash(path=FullPath) AS FileHash,
+                 "model_config" AS ArtifactType, "huggingface" AS Platform
+          FROM glob(globs=[
+              hf_base + "/hub/models--*/snapshots/*/config.json",
+              hf_base + "/hub/models--*/snapshots/*/tokenizer_config.json",
+              hf_base + "/hub/models--*/snapshots/*/model.safetensors.index.json",
+              hf_base + "/hub/models--*/snapshots/*/pytorch_model.bin.index.json",
+          ], accessor="file")
+
+      LET hf_model_info = SELECT FullPath, Mtime, Size, hash(path=FullPath) AS FileHash,
+                 "model_metadata" AS ArtifactType, "huggingface" AS Platform
+          FROM glob(globs=[
+              hf_base + "/hub/models--*/blobs/**",
+          ], accessor="file")
+          WHERE Size < 1048576
+
+      LET hf_dataset_configs = SELECT FullPath, Mtime, Size, hash(path=FullPath) AS FileHash,
+                 "dataset_config" AS ArtifactType, "huggingface" AS Platform
+          FROM glob(globs=[
+              hf_base + "/hub/datasets--*/snapshots/*/config.json",
+              hf_base + "/hub/datasets--*/refs/**",
+          ], accessor="file")
+          WHERE DeepCollection
+
+      LET hf_logs = SELECT FullPath, Mtime, Size, hash(path=FullPath) AS FileHash,
+                 "log" AS ArtifactType, "huggingface" AS Platform
+          FROM glob(globs=[
+              hf_base + "/hub/**/*.log",
+              home + "/.cache/huggingface/logs/**",
+          ], accessor="file")
+          WHERE CollectLogs
+
+      LET hf_proc = SELECT Name AS ProcessName, Pid, CommandLine, Exe,
+                 create_time AS CreateTime, "process" AS ArtifactType,
+                 "huggingface" AS Platform
+          FROM pslist() WHERE Name =~ "(?i)huggingface" OR CommandLine =~ "(?i)huggingface-cli|from_hf|transformers"
+
+      SELECT * FROM chain(a=hf_token, b=hf_version, c=hf_refs, d=hf_snapshot_configs, e=hf_model_info, f=hf_dataset_configs, g=hf_logs, h=hf_proc)
+
+  - name: HuggingFace_macOS
+    precondition: SELECT OS FROM info() WHERE OS = 'darwin'
+    query: |
+      LET home = expand(path=HomeDir)
+      LET hf_base = home + "/.cache/huggingface"
+
+      LET hf_token = SELECT FullPath, Mtime, Size, hash(path=FullPath) AS FileHash,
+                 "auth_token" AS ArtifactType, "huggingface" AS Platform
+          FROM glob(globs=[
+              hf_base + "/token",
+              hf_base + "/token.json",
+              home + "/.huggingface/token",
+              home + "/.huggingface/credentials",
+          ], accessor="file")
+
+      LET hf_version = SELECT FullPath, Mtime, Size, hash(path=FullPath) AS FileHash,
+                 "version" AS ArtifactType, "huggingface" AS Platform
+          FROM glob(globs=[
+              hf_base + "/version.txt",
+              hf_base + "/hub/version.txt",
+          ], accessor="file")
+
+      LET hf_refs = SELECT FullPath, Mtime, Size, hash(path=FullPath) AS FileHash,
+                 "model_ref" AS ArtifactType, "huggingface" AS Platform
+          FROM glob(globs=[
+              hf_base + "/hub/models--*/refs/**",
+          ], accessor="file")
+
+      LET hf_snapshot_configs = SELECT FullPath, Mtime, Size, hash(path=FullPath) AS FileHash,
+                 "model_config" AS ArtifactType, "huggingface" AS Platform
+          FROM glob(globs=[
+              hf_base + "/hub/models--*/snapshots/*/config.json",
+              hf_base + "/hub/models--*/snapshots/*/tokenizer_config.json",
+              hf_base + "/hub/models--*/snapshots/*/model.safetensors.index.json",
+              hf_base + "/hub/models--*/snapshots/*/pytorch_model.bin.index.json",
+          ], accessor="file")
+
+      LET hf_model_info = SELECT FullPath, Mtime, Size, hash(path=FullPath) AS FileHash,
+                 "model_metadata" AS ArtifactType, "huggingface" AS Platform
+          FROM glob(globs=[
+              hf_base + "/hub/models--*/blobs/**",
+          ], accessor="file")
+          WHERE Size < 1048576
+
+      LET hf_dataset_configs = SELECT FullPath, Mtime, Size, hash(path=FullPath) AS FileHash,
+                 "dataset_config" AS ArtifactType, "huggingface" AS Platform
+          FROM glob(globs=[
+              hf_base + "/hub/datasets--*/snapshots/*/config.json",
+              hf_base + "/hub/datasets--*/refs/**",
+          ], accessor="file")
+          WHERE DeepCollection
+
+      LET hf_logs = SELECT FullPath, Mtime, Size, hash(path=FullPath) AS FileHash,
+                 "log" AS ArtifactType, "huggingface" AS Platform
+          FROM glob(globs=[
+              hf_base + "/hub/**/*.log",
+              home + "/.cache/huggingface/logs/**",
+          ], accessor="file")
+          WHERE CollectLogs
+
+      LET hf_proc = SELECT Name AS ProcessName, Pid, CommandLine, Exe,
+                 create_time AS CreateTime, "process" AS ArtifactType,
+                 "huggingface" AS Platform
+          FROM pslist() WHERE Name =~ "(?i)huggingface" OR CommandLine =~ "(?i)huggingface-cli|from_hf|transformers"
+
+      SELECT * FROM chain(a=hf_token, b=hf_version, c=hf_refs, d=hf_snapshot_configs, e=hf_model_info, f=hf_dataset_configs, g=hf_logs, h=hf_proc)
+
+  - name: HuggingFace_Windows
+    precondition: SELECT OS FROM info() WHERE OS = 'windows'
+    query: |
+      LET home = expand(path=HomeDir)
+      LET hf_base = home + "\\.cache\\huggingface"
+
+      LET hf_token = SELECT FullPath, Mtime, Size, hash(path=FullPath) AS FileHash,
+                 "auth_token" AS ArtifactType, "huggingface" AS Platform
+          FROM glob(globs=[
+              hf_base + "\\token",
+              hf_base + "\\token.json",
+              home + "\\.huggingface\\token",
+              home + "\\.huggingface\\credentials",
+          ], accessor="file")
+
+      LET hf_version = SELECT FullPath, Mtime, Size, hash(path=FullPath) AS FileHash,
+                 "version" AS ArtifactType, "huggingface" AS Platform
+          FROM glob(globs=[
+              hf_base + "\\version.txt",
+              hf_base + "\\hub\\version.txt",
+          ], accessor="file")
+
+      LET hf_refs = SELECT FullPath, Mtime, Size, hash(path=FullPath) AS FileHash,
+                 "model_ref" AS ArtifactType, "huggingface" AS Platform
+          FROM glob(globs=[
+              hf_base + "\\hub\\models--*\\refs\\**",
+          ], accessor="file")
+
+      LET hf_snapshot_configs = SELECT FullPath, Mtime, Size, hash(path=FullPath) AS FileHash,
+                 "model_config" AS ArtifactType, "huggingface" AS Platform
+          FROM glob(globs=[
+              hf_base + "\\hub\\models--*\\snapshots\\*\\config.json",
+              hf_base + "\\hub\\models--*\\snapshots\\*\\tokenizer_config.json",
+              hf_base + "\\hub\\models--*\\snapshots\\*\\model.safetensors.index.json",
+              hf_base + "\\hub\\models--*\\snapshots\\*\\pytorch_model.bin.index.json",
+          ], accessor="file")
+
+      LET hf_model_info = SELECT FullPath, Mtime, Size, hash(path=FullPath) AS FileHash,
+                 "model_metadata" AS ArtifactType, "huggingface" AS Platform
+          FROM glob(globs=[
+              hf_base + "\\hub\\models--*\\blobs\\**",
+          ], accessor="file")
+          WHERE Size < 1048576
+
+      LET hf_dataset_configs = SELECT FullPath, Mtime, Size, hash(path=FullPath) AS FileHash,
+                 "dataset_config" AS ArtifactType, "huggingface" AS Platform
+          FROM glob(globs=[
+              hf_base + "\\hub\\datasets--*\\snapshots\\*\\config.json",
+              hf_base + "\\hub\\datasets--*\\refs\\**",
+          ], accessor="file")
+          WHERE DeepCollection
+
+      LET hf_logs = SELECT FullPath, Mtime, Size, hash(path=FullPath) AS FileHash,
+                 "log" AS ArtifactType, "huggingface" AS Platform
+          FROM glob(globs=[
+              hf_base + "\\hub\\**\\*.log",
+              home + "\\.cache\\huggingface\\logs\\**",
+          ], accessor="file")
+          WHERE CollectLogs
+
+      LET hf_proc = SELECT Name AS ProcessName, Pid, CommandLine, Exe,
+                 create_time AS CreateTime, "process" AS ArtifactType,
+                 "huggingface" AS Platform
+          FROM pslist() WHERE Name =~ "(?i)huggingface" OR CommandLine =~ "(?i)huggingface-cli|from_hf|transformers"
+
+      SELECT * FROM chain(a=hf_token, b=hf_version, c=hf_refs, d=hf_snapshot_configs, e=hf_model_info, f=hf_dataset_configs, g=hf_logs, h=hf_proc)
+
+column_types:
+  - name: ArtifactType
+    type: string
+  - name: Platform
+    type: string
+  - name: FileHash
+    type: string
