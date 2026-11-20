@@ -1,0 +1,229 @@
+name: Server.Monitor.Errors.Alert
+author: Andreas Misje – @misje
+description: |
+  Create alerts from errors logged by server event queries.
+
+  Server event queries are often used for important monitoring and automation,
+  but failures in these queries may otherwise go unnoticed in the server logs.
+  This artifact periodically inspects the monitoring logs for active server event
+  artifacts and creates alerts for log entries that match `IncludeFilter` and
+  are not rejected by `ExcludeFilter`.
+
+  Matching can be controlled by artifact name, log level, and message content.
+  This allows you to alert on all server event query errors, or to focus on a
+  smaller set of important artifacts and known failure patterns.
+
+  Each alert includes useful context such as the artifact name, log level, error
+  message, and the original log timestamp. Duplicate alerts may be suppressed for
+  a configurable interval to avoid repeated notifications for the same problem.
+  Deduplication is performed on the alert name, which includes the event artifact
+  name. This means that at most one alert is produced per artifact within the
+  deduplication interval. You should check the event query log for errors; there
+  may be more than one.
+
+  If `SeverityField` is set, the alert will also include a severity value taken
+  from the matching `IncludeFilter` row's `Severity` column. This can be used by
+  [`Server.Monitor.Alerts`](/exchange/artifacts/pages/server.monitor.alerts/)
+  to format, filter, and forward the alert as an e-mail notification, or by
+  [`Server.Monitor.Alerts.UserMessage`](/exchange/artifacts/pages/server.monitor.alerts.usermessage/)
+  to post it as an in-app notification. The severity values can be anything,
+  but [`Server.Monitor.Alerts`](/exchange/artifacts/pages/server.monitor.alerts/) expects the
+  following unless overridden:
+
+  - low
+  - medium
+  - high
+
+  `IncludeFilter` must contain columns `Artifact`, `Level`, and `Message`, plus
+  the optional `Severity` column. Any additional columns you add are passed
+  through to the alert under the same name as extra context. For instance, if
+  you want to add a helpful description to a particular error, you can use
+  `IncludeFilter` as follows:
+
+  | Artifact | Level | Message | Severity | Explanation |
+  | -------- | ----- | ------- | -------- | ----------- |
+  | .+ | DEFAULT | fork/exec .+ no such file or directory | high | Executable not found on system |
+  | .+ | ERROR | .+ | medium | |
+
+  With this filter we pick up any attempt to use [`execve`](/vql_reference/popular/execve/) with a non-existent
+  binary. This would normally not produce an `ERROR`-level log entry (only a
+  `DEFAULT`-level one), but it would definitely break important functionality
+  in most artifacts. Remember that the filters are matched from top to bottom,
+  so put your most specific filters at the top.
+
+  Note that many errors produced by native VQL functions and plugins
+  are logged with the `DEFAULT` level rather than `ERROR`. To alert on
+  these, either add your own checks that log `ERROR` to artifacts, or
+  match the native log messages with `IncludeFilter`. See [this
+  reference](/knowledge_base/tips/vql_error_catalogue/) for a list of
+  regexes matching `DEFAULT`-level errors worth monitoring.
+
+  #monitoring #alerts #notifications #errors
+
+type: SERVER_EVENT
+
+parameters:
+  - name: Period
+    type: int
+    description: |
+      Seconds between each monitoring log inspection
+    default: 60
+
+  - name: DedupInterval
+    type: int
+    description: |
+      Suppress duplicate alerts from the same artifact within this many
+      seconds. Inspect the event query log for the full set of errors.
+    default: 3600
+
+  - name: IncludeFilter
+    type: csv
+    description: |
+      Include only log entries matching one of these rows. Each column is a
+      regex; empty means "any". The optional `Severity` column is copied into
+      the alert (see `SeverityField`). Any extra columns are passed through
+      to the alert under the same name. Rows are evaluated top-to-bottom and
+      the first match wins, so place specific rules before broad catch-alls.
+    default: |
+      Artifact,Level,Message,Severity
+      .+,ERROR,.+,medium
+
+  - name: ExcludeFilter
+    type: csv
+    description: |
+      Reject log entries matching one of these rows, applied after
+      `IncludeFilter`. The default excludes artifacts that would
+      create alert loops if they fail, so do not remove them from the
+      filter.
+    default: |
+      Artifact,Level,Message
+      Server\.Monitor\.Alerts$,.+,.+
+      Server\.Monitor\.Alerts\.UserMessage$,.+,.+
+      Server\.Monitor\.Errors\.Alert$,.+,.+
+
+  - name: SeverityField
+    type: str
+    description: |
+      Name of the alert field that will receive the value from the matching
+      `IncludeFilter` row's `Severity` column. Leave empty to omit severity
+      from alerts entirely.
+    default: Severity
+
+export: |
+  // Combine a timestamp and a duration string:
+  LET TimestampString(Timestamp) = if(
+      condition=Timestamp.Unix,
+      then=format(format='%v (%v)',
+                  args=(Timestamp.String, humanize(time=Timestamp))),
+      else='(never)')
+
+  LET RemoveEmptyStrs(Item) = to_dict(item={
+      SELECT _key,
+             _value
+      FROM items(item=Item)
+      WHERE _value != ""
+    })
+
+  LET _FilterLogic = (NOT Artifact OR artifact =~ Artifact)
+     AND (NOT Level OR level =~ Level)
+          AND (NOT Message OR message =~ Message)
+
+  // Return true if any CSV filter row matches the artifact, level, and message.
+  // This lets both include and exclude tables share the same matching logic.
+  LET IncludeLog(artifact, level, message, filter) =
+      any(items={
+      SELECT _FilterLogic AS Result
+      FROM filter
+    },
+          filter='x=>x.Result')
+
+  LET IncludeArtifact(artifact, filter) = any(items={
+      SELECT artifact =~ Artifact AS Result
+      FROM filter
+    },
+                                              filter='x=>x.Result')
+
+  LET GetSeverity(artifact, level, message) = SELECT Severity
+    FROM IncludeFilter
+    WHERE _FilterLogic
+    LIMIT 1
+
+  LET GetErrorContext(artifact, level, message) = SELECT *
+    FROM column_filter(exclude='^(Artifact|Level|Message|Severity)$',
+                       query={
+      SELECT *
+      FROM IncludeFilter
+      WHERE _FilterLogic
+      LIMIT 1
+    })
+
+  // Add an optional severity field to the alert payload:
+  LET SeverityArgs = if(condition=SeverityField,
+                        then=set(item=dict(),
+                                 field=get(field='SeverityField'),
+                                 value=GetSeverity(
+                                   artifact=Artifact,
+                                   level=Level,
+                                   message=Message).Severity[0]),
+                        else=dict())
+
+  LET ErrorContext = GetErrorContext(artifact=Artifact,
+                                     level=Level,
+                                     message=Message)[0]
+
+sources:
+  - query: |
+      LET MonitoredArtifacts = SELECT _value.artifact AS Artifact
+        FROM foreach(row=get_server_monitoring().specs)
+        WHERE IncludeArtifact(artifact=Artifact, filter=IncludeFilter)
+
+      LET _ <= SELECT
+          log(level='DEBUG',
+              message='Monitoring event artifact %v',
+              args=Artifact,
+              dedup=-1)
+        FROM MonitoredArtifacts
+
+      // Poll logs for every currently active server monitoring artifact and emit
+      // only entries that match filters:
+      LET EventErrors(StartTime) = SELECT *
+        FROM foreach(row=MonitoredArtifacts,
+                     query={
+          SELECT Artifact,
+                 *
+          FROM monitoring_logs(client_id='server',
+                               artifact=Artifact,
+                               start_time=StartTime)
+          WHERE IncludeLog(artifact=Artifact,
+                           level=Level,
+                           message=Message,
+                           filter=IncludeFilter)
+           AND NOT IncludeLog(artifact=Artifact,
+                              level=Level,
+                              message=Message,
+                              filter=ExcludeFilter)
+        },
+                     async=true)
+
+      // Build the final alert context from the matching log row, including a
+      // human-readable log timestamp:
+      LET AlertArgs = RemoveEmptyStrs(Item=SeverityArgs + ErrorContext) +
+          dict(
+            dedup=DedupInterval,
+            name=format(format='Server event query error in %v', args=Artifact),
+            Level=Level,
+            Error=Message,
+            `Log timestamp`=TimestampString(Timestamp=timestamp(string=Timestamp)),
+            Artifact=Artifact)
+
+      // On each interval, inspect only the recent log window and raise alerts for
+      // matching entries:
+      SELECT *
+      FROM foreach(row={
+          SELECT Unix
+          FROM clock(period=Period)
+        },
+                   query={
+          SELECT *, alert(`**`=AlertArgs) AS Alert
+          FROM EventErrors(StartTime=Unix - Period)
+        })

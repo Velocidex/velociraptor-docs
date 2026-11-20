@@ -1,0 +1,269 @@
+name: Exchange.Windows.EventLogs.Hayabusa.Takajo
+author: Eric Capuano - @eric_capuano, Whitney Champion - @shortxstack, Zach Mathis - @yamatosecurity
+type: SERVER
+description: |
+  Analyze previously uploaded Windows EVTX files with Hayabusa and Takajo
+  entirely on the server. No analysis binaries are deployed to an endpoint.
+
+  For Hayabusa analysis without Takajo, use the separate
+  `Server.Analysis.Windows.EventLogs.HayabusaEngine` artifact. It has its own
+  pinned Hayabusa version and queryable detection results. This combined
+  workflow retains its existing versions, parameters, and uploaded outputs.
+
+  This replaces the endpoint collection version of this artifact. First collect
+  raw EVTX files (for example `Generic.Collectors.File` with `Root` = `C:`,
+  `Accessor` = `ntfs`, and `collectionSpec` Glob
+  `Windows\System32\winevt\Logs\*.evtx`), then
+  supply that collection's ClientId and FlowId. All nonempty uploaded .evtx files are copied
+  into an isolated temporary directory; duplicate basenames are preserved.
+  The source collection and its files are not modified.
+
+  Requires a Linux amd64 server with permission to execute external programs
+  and the libpcre3 shared library (libpcre.so.3) required by Takajo 2.5.0.
+  Pinned Hayabusa 2.14.0 and Takajo 2.5.0 bundles are downloaded and hash checked.
+  Hayabusa creates a verbose JSONL timeline, then Takajo automagic analyzes it.
+  The complete timeline, input manifest, and every Takajo output file are uploaded
+  into this server collection. Temporary files are removed when the query ends.
+  Allow temporary disk space for the collected EVTX files, extracted tools,
+  and generated results. If security.allowed_file_accessor_prefix is configured,
+  it must permit the server temporary directory.
+  An empty timeline is uploaded but does not invoke Takajo.
+
+  https://github.com/Yamato-Security/hayabusa
+  https://github.com/Yamato-Security/takajo
+
+required_permissions:
+  - SERVER_ADMIN
+  - EXECVE
+  - READ_RESULTS
+  - FILESYSTEM_READ
+  - FILESYSTEM_WRITE
+  - NETWORK
+
+tools:
+  - name: Hayabusa-2.14.0-Linux-amd64
+    url: https://github.com/Yamato-Security/hayabusa/releases/download/v2.14.0/hayabusa-2.14.0-linux-intel.zip
+    expected_hash: d6bca2be50ebd23bf2ce4ed145f2c79d423b793a375db2c9cebd9cb47e0f18f4
+  - name: Takajo-2.5.0-Linux-amd64
+    url: https://github.com/Yamato-Security/takajo/releases/download/v2.5.0/takajo-2.5.0-linux.zip
+    expected_hash: 6a3407b3954008acf4eff7a27d68a99bcf3e3d802305efde9e46fb64bdf5b2d2
+
+parameters:
+  - name: ClientId
+    description: Client ID whose completed collection contains uploaded EVTX files.
+  - name: FlowId
+    description: Completed collection ID containing uploaded EVTX files.
+
+precondition: SELECT * FROM info() WHERE OS = 'linux' AND Architecture = 'amd64'
+
+sources:
+  - name: Upload
+    query: |
+      LET S = scope()
+      LET Inputs <= SELECT vfs_path,
+                           client_path,
+                           file_size
+        FROM if(condition=ClientId AND FlowId,
+                then={
+          SELECT *
+          FROM uploads(client_id=ClientId, flow_id=FlowId)
+        },
+                else={
+          SELECT *
+          FROM scope()
+          WHERE log(level="ERROR", message="ClientId and FlowId are required.")
+            AND FALSE
+        })
+        WHERE NOT S.Type = "idx"
+          AND (client_path || str(str=vfs_path)) =~ '(?i)[.]evtx$'
+          AND file_size > 0
+
+      LET WorkDir <= tempdir()
+
+      LET HayabusaDir <= tempdir()
+
+      LET TakajoDir <= tempdir()
+
+      LET EvtxDir <= path_join(components=[WorkDir, "evtx"])
+
+      LET Timeline <= path_join(components=[WorkDir, "hayabusa_results.jsonl"])
+
+      LET TakajoOutput <= path_join(components=[WorkDir, "case-0"])
+
+      -- Copy from the filestore accessor: works with nonlocal filestores too.
+      -- A numeric prefix prevents collisions and preserves every uploaded file.
+      LET Staged <= SELECT vfs_path,
+                           client_path,
+                           file_size,
+                           copy(filename=vfs_path,
+                                accessor="fs",
+                                create_directories=TRUE,
+                                dest=path_join(
+                                  components=[EvtxDir, format(
+                                    format="%08d.evtx",
+                                    args=[count()])])) AS LocalPath
+        FROM Inputs
+
+      -- Aggregate by iterating the stored query, including when it spills to
+      -- disk for large collections. len() does not count spilled query rows.
+      LET StageStats <= SELECT
+          count() AS Total,
+          sum(item=if(condition=LocalPath, then=1, else=0)) AS Successful
+        FROM Staged
+        GROUP BY 1
+
+      LET Ready <= StageStats.Total[0] > 0
+         AND StageStats.Total[0] = StageStats.Successful[0]
+
+      LET _ <= if(
+          condition=NOT Ready,
+          then=log(
+            level="ERROR",
+            message="No nonempty uploaded EVTX files found, or staging failed."))
+
+      LET Manifest <= SELECT *
+        FROM if(condition=Ready,
+                then={
+          SELECT *
+          FROM write_jsonl(filename=path_join(
+                           components=[WorkDir, "input_manifest.jsonl"]),
+                           query=Staged)
+        })
+
+      LET HBArchive <= SELECT OSPath
+        FROM if(condition=Ready,
+                then={
+          SELECT *
+          FROM Artifact.Generic.Utils.FetchBinary(
+            ToolName="Hayabusa-2.14.0-Linux-amd64",
+            IsExecutable=FALSE)
+        })
+
+      -- Extract the entire bundle, but retain only the executable row. This
+      -- avoids materializing thousands of rule-file rows into a spilled query.
+      LET HBExtract <= SELECT NewPath
+        FROM if(condition=HBArchive,
+                then={
+          SELECT *
+          FROM unzip(filename=HBArchive.OSPath, output_directory=HayabusaDir)
+        })
+        WHERE OriginalPath = "hayabusa-2.14.0-lin-x64-musl"
+
+      LET HBExe <= if(
+          condition=HBExtract,
+          then=copy(filename=path_join(
+                    components=[HayabusaDir, "hayabusa-2.14.0-lin-x64-musl"]),
+                    dest=path_join(components=[HayabusaDir, "hayabusa"]),
+                    permissions="x"))
+
+      LET HBRun <= SELECT *
+        FROM if(condition=HBExe,
+                then={
+          SELECT *
+          FROM execve(argv=[HBExe, "json-timeline", "-d",
+                      EvtxDir, "-L", "-o", Timeline, "-w", "-p", "verbose"],
+                      cwd=HayabusaDir,
+                      sep="\n",
+                      length=65536)
+          WHERE log(message="Hayabusa: %v %v", args=[Stdout, Stderr])
+        })
+
+      LET HBSuccess <= SELECT *
+        FROM HBRun
+        WHERE Complete
+         AND ReturnCode = 0
+
+      LET _ <= if(
+          condition=Ready
+           AND NOT HBSuccess,
+          then=log(level="ERROR",
+                   message="Hayabusa failed; see command output in collection logs."))
+
+      LET TimelineFiles <= SELECT Size
+        FROM if(condition=HBSuccess, then={ SELECT * FROM stat(filename=Timeline) })
+
+      -- Preserve the timeline even if it is empty or Takajo fails later.
+      LET HBUploads <= SELECT *
+        FROM if(condition=HBSuccess,
+                then={
+          SELECT "Timeline" AS Kind,
+                 upload(file=Timeline, name="hayabusa_results.jsonl") AS Uploads
+          FROM scope()
+        })
+
+      LET ManifestUploads <= SELECT *
+        FROM if(condition=Ready,
+                then={
+          SELECT
+            "Manifest" AS Kind,
+            upload(file=path_join(components=[WorkDir, "input_manifest.jsonl"]),
+                   name="input_manifest.jsonl") AS Uploads
+          FROM scope()
+        })
+
+      LET TKReady <= HBSuccess
+         AND TimelineFiles.Size[0] > 0
+
+      LET _ <= if(
+          condition=HBSuccess
+           AND NOT TKReady,
+          then=log(message="Hayabusa produced an empty timeline; skipping Takajo."))
+
+      LET TKArchive <= SELECT OSPath
+        FROM if(condition=TKReady,
+                then={
+          SELECT *
+          FROM Artifact.Generic.Utils.FetchBinary(
+            ToolName="Takajo-2.5.0-Linux-amd64",
+            IsExecutable=FALSE)
+        })
+
+      LET TKExtract <= SELECT *
+        FROM if(condition=TKArchive,
+                then={
+          SELECT *
+          FROM unzip(filename=TKArchive.OSPath, output_directory=TakajoDir)
+        })
+
+      LET TKExe <= if(
+          condition=TKExtract,
+          then=copy(filename=path_join(components=[TakajoDir, "takajo"]),
+                    dest=path_join(components=[TakajoDir, "takajo-executable"]),
+                    permissions="x"))
+
+      LET TKRun <= SELECT *
+        FROM if(condition=TKExe,
+                then={
+          SELECT *
+          FROM execve(argv=[TKExe, "automagic", "-q", "-s", "-t",
+                      Timeline, "-o", TakajoOutput],
+                      cwd=TakajoDir,
+                      sep="\n",
+                      length=65536)
+          WHERE log(message="Takajo: %v %v", args=[Stdout, Stderr])
+        })
+
+      LET TKSuccess <= SELECT *
+        FROM TKRun
+        WHERE Complete
+         AND ReturnCode = 0
+
+      LET _ <= if(
+          condition=TKReady
+           AND NOT TKSuccess,
+          then=log(level="ERROR",
+                   message="Takajo failed; see command output in collection logs."))
+
+      SELECT *
+      FROM chain(timeline=HBUploads,
+                 manifest=ManifestUploads,
+                 takajo={
+          SELECT "Takajo" AS Kind,
+            upload(file=OSPath, name=relpath(path=OSPath, base=WorkDir)) AS Uploads
+          FROM if(condition=TKSuccess,
+                  then={
+          SELECT *
+          FROM glob(globs="**", root=TakajoOutput)
+        })
+          WHERE NOT IsDir
+        })

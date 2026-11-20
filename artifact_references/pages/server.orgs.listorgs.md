@@ -1,0 +1,48 @@
+# Server.Orgs.ListOrgs
+
+Lists all configured organizations on the Velociraptor server with
+optional downloadable client config for each org.
+
+NOTE: This artifact is only available to users with the `ORG_ADMIN`
+permission, which is normally only granted to users with the
+`administrator` role within the root org (that means you might need
+to switch to the root org in the GUI before collecting this
+artifact).
+
+
+---
+
+````yaml
+name: Server.Orgs.ListOrgs
+description: |
+  Lists all configured organizations on the Velociraptor server with
+  optional downloadable client config for each org.
+
+  NOTE: This artifact is only available to users with the `ORG_ADMIN`
+  permission, which is normally only granted to users with the
+  `administrator` role within the root org (that means you might need
+  to switch to the root org in the GUI before collecting this
+  artifact).
+
+type: SERVER
+
+parameters:
+- name: AlsoDownloadClientConfigs
+  type: bool
+  description: When set also downloads client configs from each org
+
+sources:
+- query: |
+    SELECT * FROM if(condition=AlsoDownloadClientConfigs,
+    then={
+      SELECT *, upload(file=_client_config,
+         accessor="data",
+         name=format(format="client.%s.config.yaml", args=OrgId || "RootOrg")) AS ClientConfig
+      FROM orgs()
+    }, else={
+      SELECT * FROM orgs()
+    })
+````
+
+
+

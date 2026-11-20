@@ -1,0 +1,46 @@
+# Windows.Applications.OfficeMacros
+
+Scans directories for Office documents (xls, xlsm, doc, docx, ppt,
+pptm) and extracts embedded VBA macros via OLE parsing.
+
+Office macros are a prominent initial infection vector. Many users
+click through the warning dialogs, thus leading to infection.
+
+If you find that any macro calls an external program (e.g.
+PowerShell) that is very suspicious!
+
+
+---
+
+````yaml
+name: Windows.Applications.OfficeMacros
+description: |
+  Scans directories for Office documents (xls, xlsm, doc, docx, ppt,
+  pptm) and extracts embedded VBA macros via OLE parsing.
+  
+  Office macros are a prominent initial infection vector. Many users
+  click through the warning dialogs, thus leading to infection.
+
+  If you find that any macro calls an external program (e.g.
+  PowerShell) that is very suspicious!
+
+parameters:
+  - name: officeExtensions
+    default: "*.{xls,xlsm,doc,docx,ppt,pptm}"
+  - name: officeFileSearchGlob
+    default: C:\Users\**\
+    description: The directory to search for office documents.
+
+sources:
+  - query: |
+        SELECT * FROM foreach(
+           row={
+              SELECT OSPath FROM glob(globs=officeFileSearchGlob + officeExtensions)
+           },
+           query={
+               SELECT * from olevba(file=OSPath)
+           })
+````
+
+
+

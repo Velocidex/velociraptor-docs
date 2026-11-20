@@ -1,0 +1,65 @@
+# Windows.NTFS.Recover
+
+Uploads all data streams from a specified MFT ID on an NTFS volume
+for deleted file recovery purposes.
+
+If the MFT entry is not allocated there is a chance that the cluster
+that contains the actual data of the file will still be intact on
+the disk. Therefore it may be possible to recover such deleted
+files, which is what this artifact attempts to do.
+
+A common use case is to recover deleted directory entries using the
+`Windows.NTFS.I30` artifact first to identify MFT entries of
+interest. This artifact can then be used to attempt recovery of the
+file data.
+
+
+---
+
+````yaml
+name: Windows.NTFS.Recover
+description: |
+  Uploads all data streams from a specified MFT ID on an NTFS volume
+  for deleted file recovery purposes.
+
+  If the MFT entry is not allocated there is a chance that the cluster
+  that contains the actual data of the file will still be intact on
+  the disk. Therefore it may be possible to recover such deleted
+  files, which is what this artifact attempts to do.
+
+  A common use case is to recover deleted directory entries using the
+  `Windows.NTFS.I30` artifact first to identify MFT entries of
+  interest. This artifact can then be used to attempt recovery of the
+  file data.
+
+parameters:
+ - name: MFTId
+   default: "81978"
+ - name: Drive
+   default: '\\.\C:'
+
+precondition:
+  SELECT * FROM info() where OS = 'windows'
+
+sources:
+  - name: Upload
+    query: |
+       LET Parsed <= parse_ntfs(device=Drive, inode=MFTId)
+
+       SELECT *, upload(accessor="mft", file=Drive + Inode,
+                        name=Parsed.OSPath + Inode) AS IndexUpload
+       FROM foreach(
+            row=Parsed.Attributes,
+            query={
+              SELECT _value.Type AS Type,
+                     _value.TypeId AS TypeId,
+                     _value.Id AS Id,
+                     _value.Inode AS Inode,
+                     _value.Size AS Size,
+                     _value.Name AS Name
+              FROM scope()
+            })
+````
+
+
+

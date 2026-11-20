@@ -1,0 +1,520 @@
+# Generic.Applications.PHPInventory
+
+Inventory PHP installations on Windows, Linux and macOS for remediation scoping.
+Collect package versions, common binary/module paths and running PHP processes.
+Each row retains its evidence source; an unknown version is not a negative result.
+
+No PHP execution by default. ProbeBinaries runs discovered PHP executables with
+-n -v (ignore php.ini and print version), under the client account. Enable only
+for trusted installations: filenames and -n do not make an executable safe.
+RPM inventory runs the system rpm query command; other package sources are read
+directly. No downloads, uploads, HTTP probes, configuration changes or restarts.
+
+The 20 October 2026 PHP notice announces two CVSS 9.2 vulnerabilities, with
+details due 21 October at 14:00 UTC. Affected/fixed versions were not published
+when this artifact was written. This is inventory, not a vulnerability verdict.
+Retain vendor package revisions when checking backported fixes.
+
+Default paths are bounded and cannot cover every custom application, container,
+chroot or embedded runtime. Add custom paths with AdditionalGlobs. Host inventory
+does not inspect container images/namespaces or prove web exposure. An on-disk
+version does not establish the version already loaded in a running service.
+
+
+---
+
+````yaml
+  name: Generic.Applications.PHPInventory
+  author: Matt Green - @mgreen27
+  type: CLIENT
+  description: |
+    Inventory PHP installations on Windows, Linux and macOS for remediation scoping.
+    Collect package versions, common binary/module paths and running PHP processes.
+    Each row retains its evidence source; an unknown version is not a negative result.
+
+    No PHP execution by default. ProbeBinaries runs discovered PHP executables with
+    -n -v (ignore php.ini and print version), under the client account. Enable only
+    for trusted installations: filenames and -n do not make an executable safe.
+    RPM inventory runs the system rpm query command; other package sources are read
+    directly. No downloads, uploads, HTTP probes, configuration changes or restarts.
+
+    The 20 October 2026 PHP notice announces two CVSS 9.2 vulnerabilities, with
+    details due 21 October at 14:00 UTC. Affected/fixed versions were not published
+    when this artifact was written. This is inventory, not a vulnerability verdict.
+    Retain vendor package revisions when checking backported fixes.
+
+    Default paths are bounded and cannot cover every custom application, container,
+    chroot or embedded runtime. Add custom paths with AdditionalGlobs. Host inventory
+    does not inspect container images/namespaces or prove web exposure. An on-disk
+    version does not establish the version already loaded in a running service.
+  reference:
+    - https://www.php.net/archive/2026.php#2026-10-20-1
+    - https://www.php.net/manual/en/features.commandline.options.php
+  implied_permissions:
+    - EXECVE
+    - IMPERSONATION
+    - MACHINE_STATE
+  resources:
+    timeout: 600
+  parameters:
+    - name: CollectPackages
+      type: bool
+      default: Y
+      description: Read DPKG/APK databases, Homebrew receipts and Windows uninstall entries; query system RPM on Linux.
+    - name: CollectProcesses
+      type: bool
+      default: Y
+      description: Report PHP process paths/PIDs/command lines and include their executable paths in discovery.
+    - name: CollectLoadedModules
+      type: bool
+      default: N
+      description: Inspect all visible processes for loaded PHP runtime modules on Linux and Windows; emit one row per module with hosting processes and their scan details.
+    - name: ResolveAliases
+      type: bool
+      default: Y
+      description: Resolve POSIX executable symlinks with bounded traversal. Windows returns unsupported_platform. Original paths and exact counts are retained.
+    - name: DetailedProcesses
+      type: bool
+      default: N
+      description: Emit one process row per PID. Default groups by executable path and retains PID lists and distinct users/command lines.
+    - name: ProbeBinaries
+      type: bool
+      default: N
+      description: Execute discovered PHP CLI/CGI/FPM binaries with -n -v. Runs as the client account. DLLs/modules are never executed.
+    - name: CommandTimeout
+      type: int64
+      default: 10
+      description: Per-command timeout in seconds, including RPM queries. Values below one use one second.
+    - name: MaxCandidates
+      type: int64
+      default: 500
+      description: Maximum distinct binary/module paths to inspect; emit a diagnostic if exceeded. Minimum one.
+    - name: AdditionalGlobs
+      type: multiline
+      default: ''
+      description: Additional absolute file globs, one per line. Files must still match PHP binary/module names. Avoid broad filesystem recursion.
+    - name: BinaryGlobs
+      type: csv
+      default: |
+        OS,Glob
+        linux,"/usr/{bin,sbin}/php*"
+        linux,"/usr/local/{bin,sbin}/php*"
+        linux,"/usr/{lib,lib64}/apache2/modules/libphp*.so"
+        linux,"/usr/{lib,lib64}/httpd/modules/libphp*.so"
+        linux,"/opt/remi/php*/root/usr/{bin,sbin}/php*"
+        linux,"/opt/plesk/php/*/{bin,sbin}/php*"
+        linux,"/opt/cpanel/ea-php*/root/usr/{bin,sbin}/php*"
+        linux,"/opt/alt/php*/usr/{bin,sbin}/php*"
+        linux,"/usr/local/php*/{bin,sbin}/php*"
+        linux,"/opt/lampp/{bin,sbin}/php*"
+        linux,"/opt/bitnami/php/{bin,sbin}/php*"
+        darwin,"/usr/{bin,sbin}/php*"
+        darwin,"/usr/local/{bin,sbin}/php*"
+        darwin,"/opt/homebrew/{bin,sbin}/php*"
+        darwin,"/opt/homebrew/Cellar/php*/*/{bin,sbin}/php*"
+        darwin,"/usr/local/Cellar/php*/*/{bin,sbin}/php*"
+        darwin,"/opt/local/{bin,sbin}/php*"
+        darwin,"/Applications/MAMP/bin/php/php*/bin/php*"
+        darwin,"/Applications/XAMPP/xamppfiles/{bin,sbin}/php*"
+        windows,"C:/php*/php*"
+        windows,"C:/Program Files/PHP*/**3/php*"
+        windows,"C:/Program Files (x86)/PHP*/**3/php*"
+        windows,"C:/xampp/php/php*"
+        windows,"C:/wamp*/bin/php/php*/php*"
+        windows,"C:/laragon/bin/php/php*/php*"
+        windows,"C:/Program Files (x86)/Plesk/Additional/PHP*/php*"
+    - name: DpkgStatus
+      default: /var/lib/dpkg/status
+      description: Native DPKG status database. Override for acquired/mounted package metadata.
+    - name: ApkInstalled
+      default: /lib/apk/db/installed
+      description: Native Alpine installed-package database.
+    - name: BrewReceipts
+      default: /{opt/homebrew,usr/local}/Cellar/php*/*/INSTALL_RECEIPT.json
+      description: Homebrew installed PHP receipts. Folder version is retained as package evidence.
+  export: |
+    LET PHPVersion(Text) = parse_string_with_regex(string=Text,
+      regex='''^(?:[0-9]+:)?(?P<Version>[0-9]+\.[0-9]+\.[0-9]+(?:(?:RC|alpha|beta)[0-9]+)?)''').Version
+    LET PHPPackage = '''(?i)^(?:(?:ea-|alt-)?php(?:[0-9.]|$|-)|libapache2-mod-php|apache2-mod_php)'''
+    LET PHPRuntimePackage = '''(?i)^(?:(?:ea-|alt-)?php[0-9.]*(?:-php)?(?:-(?:cli|fpm|cgi|common|core|embed|apache2))?|libapache2-mod-php[0-9.]*|apache2-mod_php[0-9.]*)$'''
+    LET PHPExecutable = '''(?i)^php(?:[0-9]+(?:\.[0-9]+)*)?(?:-(?:cgi|fpm))?(?:[0-9]+(?:\.[0-9]+)*)?(?:\.exe)?$'''
+    LET PHPFile = '''(?i)^(?:php(?:[0-9]+(?:\.[0-9]+)*)?(?:-(?:cgi|fpm))?(?:[0-9]+(?:\.[0-9]+)*)?(?:\.exe)?|php[0-9]*(?:ts|apache[0-9_]*|embed)?\.dll|libphp[0-9.]*\.(?:so|dylib))$'''
+    LET PHPDpkg(File) = SELECT P.Package AS Name, P.Version AS RawVersion,
+        P.Architecture AS Architecture, P.State AS PackageState
+      FROM foreach(row={
+        SELECT parse_string_with_regex(string=Record, regex=[
+          '''(?m)^Package: (?P<Package>[^\r\n]+)''',
+          '''(?m)^Version: (?P<Version>[^\r\n]+)''',
+          '''(?m)^Architecture: (?P<Architecture>[^\r\n]+)''',
+          '''(?m)^Status: \S+ \S+ (?P<State>[^\r\n]+)''']) AS P
+        FROM parse_records_with_regex(file=File,
+          regex='''(?ms)^(?P<Record>Package:.*?)(?:\r?\n\r?\n|\z)''')
+      }) WHERE Name =~ PHPPackage AND NOT PackageState IN ('not-installed', 'config-files')
+    LET PHPApk(File) = SELECT P.Package AS Name, P.Version AS RawVersion,
+        P.Architecture AS Architecture, 'installed' AS PackageState
+      FROM foreach(row={
+        SELECT parse_string_with_regex(string=Record, regex=[
+          '''(?m)^P:(?P<Package>[^\r\n]+)''',
+          '''(?m)^V:(?P<Version>[^\r\n]+)''',
+          '''(?m)^A:(?P<Architecture>[^\r\n]+)''']) AS P
+        FROM parse_records_with_regex(file=File,
+          regex='''(?ms)^(?P<Record>[^\r\n].*?)(?:\r?\n\r?\n|\z)''')
+      }) WHERE Name =~ PHPPackage
+    LET PHPCommand(Argv) = SELECT * FROM query(
+      query={SELECT * FROM execve(argv=CommandArgv, length=65536, sep='\n')},
+      env=dict(CommandArgv=Argv),
+      timeout=if(condition=CommandTimeout > 0, then=CommandTimeout, else=1))
+    LET Host <= SELECT Hostname, OS FROM info()
+    LET Platform = Host[0].OS
+    LET CandidateLimit = if(condition=MaxCandidates > 0, then=MaxCandidates, else=1)
+    // One PHP process snapshot per invocation, shared by serial sources.
+    LET ProcessRows <= SELECT * FROM if(condition=CollectProcesses, then={
+      SELECT Name, Exe, Pid, Ppid, CommandLine, Username FROM pslist()
+      WHERE Name =~ '''(?i)^php(?:[0-9.]|$|-|\.exe)'''
+        OR basename(path=Exe) =~ PHPExecutable
+    })
+    // Walk components in order: resolving only the final link misses /etc/alternatives
+    // and parent-directory aliases. No shell commands are used.
+    LET ResolveStep(State) = SELECT * FROM query(inherit=TRUE, query='''
+          LET Part <= State.Pending[0]
+          LET Rest <= slice(list=State.Pending, start=1, end=len(list=State.Pending))
+          LET Next <= if(condition=State.Current = '/', then='/' + Part, else=State.Current + '/' + Part)
+          LET Key <= Next + '/' + join(array=Rest, sep='/')
+          LET Info <= SELECT * FROM if(condition=State.Pending AND NOT Part IN ('', '.', '..'), then={SELECT * FROM stat(filename=Next)})
+          SELECT * FROM switch(
+            end={SELECT set(item=State, field='Status', value='resolved') FROM scope() WHERE NOT State.Pending},
+            skip={SELECT set(item=State, field='Pending', value=Rest) AS B FROM scope() WHERE Part IN ('', '.')},
+            parent={SELECT set(item=State, field='Current', value=str(str=dirname(path=State.Current))),
+              set(item=State, field='Pending', value=Rest) AS B FROM scope() WHERE Part = '..'},
+            absent={SELECT set(item=State, field='Status', value='missing_or_inaccessible') FROM scope() WHERE NOT Info},
+            loop={SELECT set(item=State, field='Status', value='symlink_loop') FROM scope()
+              WHERE Info[0].IsLink AND get(item=State.Seen, field=Key)},
+            bound={SELECT set(item=State, field='Status', value='symlink_limit') FROM scope()
+              WHERE Info[0].IsLink AND State.Links >= 32},
+            link={SELECT set(item=State.Seen, field=Key, value=TRUE) AS A,
+              set(item=State, field='Links', value=State.Links + 1) AS B,
+              set(item=State, field='Pending', value=split(string=Info[0].Data.Link, sep='/') + Rest) AS C,
+              set(item=State, field='Current', value=if(condition=Info[0].Data.Link =~ '^/', then='/', else=State.Current))
+              FROM scope() WHERE Info[0].IsLink AND Info[0].Data.Link},
+            unknown={SELECT set(item=State, field='Status', value='link_target_unavailable') FROM scope() WHERE Info[0].IsLink},
+            notdir={SELECT set(item=State, field='Status', value='not_directory') FROM scope()
+              WHERE Rest AND NOT Info[0].IsDir},
+            normal={SELECT set(item=State, field='Current', value=Next),
+              set(item=State, field='Pending', value=Rest) AS B FROM scope()})
+    ''')
+    LET ResolvePath(InputPath) = SELECT * FROM query(inherit=TRUE, query='''
+     LET State <= dict(Current='/', Pending=split(string=str(str=InputPath), sep='/'), Seen=dict(), Links=0, Status=if(condition=NOT ResolveAliases, then='disabled', else=if(condition=Platform = 'windows', then='unsupported_platform', else=if(condition=NOT InputPath, then='unknown_path', else=if(condition=str(str=InputPath) =~ '^/', then='resolving', else='not_absolute')))))
+     LET Walk <= SELECT * FROM foreach(row={SELECT * FROM range(end=512) WHERE State.Status = 'resolving'}, query={SELECT * FROM ResolveStep(State=State)})
+     SELECT if(condition=State.Status = 'resolved', then=State.Current) AS ResolvedPath,
+     if(condition=State.Status = 'resolving', then='path_step_limit', else=State.Status) AS ResolutionStatus FROM scope()
+    ''')
+    LET ModuleHosts = SELECT Pid, Name, Exe FROM pslist()
+      GROUP BY Pid
+    LET ModuleScan(HostPid, HostName, HostExe) = SELECT * FROM query(inherit=TRUE, query='''
+      LET MapsPath <= format(format='/proc/%d/maps', args=HostPid)
+      LET MapsData <= read_file(filename=MapsPath, length=2097153)
+      // A capped read must not turn its incomplete last line into module evidence.
+      LET ParseData <= if(condition=len(list=MapsData) > 2097152,
+        then=regex_replace(source=MapsData, re='[^\n]*$', replace=''), else=MapsData)
+      // Filter before structured parsing; most mappings are unrelated to PHP.
+      LET Parsed = SELECT M.Device AS Device, M.Inode AS Inode, M.ModulePath AS ModulePath FROM foreach(row={
+        SELECT parse_string_with_regex(string=Line,
+          regex='^([0-9a-f]+)-([0-9a-f]+) +[^ ]+ +[0-9a-f]+ +(?P<Device>[0-9a-f]+:[0-9a-f]+) +(?P<Inode>[0-9]+) +(?P<ModulePath>/.*)$') AS M
+        FROM parse_lines(filename=ParseData, accessor='data')
+        WHERE Line =~ '/libphp'
+      }) WHERE ModulePath =~ '/libphp[^/]*[.]so(?:[.][0-9]+)*(?: [(]deleted[)])?$'
+      LET Matches <= SELECT *, serialize(item=dict(Device=Device, Inode=Inode, Path=ModulePath)) AS ModuleKey
+        FROM Parsed GROUP BY ModuleKey
+      SELECT * FROM chain(
+        mappings={SELECT 'loaded_module' AS RecordType, HostPid AS Pid,
+          HostName AS HostProcessName, HostExe AS HostExecutable,
+          ModulePath, Device, Inode, ModuleKey,
+          ModulePath =~ ' [(]deleted[)]$' AS Deleted,
+          'mapped_version_unknown' AS Status FROM Matches},
+        health={SELECT 'module_scan' AS RecordType, HostPid AS Pid,
+          HostName AS HostProcessName, HostExe AS HostExecutable,
+          if(condition=len(list=MapsData) > 2097152, then='maps_size_limit_exceeded',
+            else='maps_read') AS Status,
+          len(list=Matches) AS MatchedModuleCount, MapsPath AS MapsPath
+          FROM scope() WHERE Matches})
+    ''')
+    LET PHPDLL = '(?i)^php[0-9]+(ts|apache[0-9_]+)?[.]dll$'
+    LET WindowsPathText(FilePath) = regex_replace(source=str(str=FilePath), re='\\\\', replace='/')
+    // modules() exposes rows, not a structured completion result. An empty
+    // enumeration is unknown; nonempty results can still be partial.
+    LET WindowsModuleScan(HostPid, HostName, HostExe) = SELECT * FROM query(inherit=TRUE, query='''
+      LET AllModules <= SELECT ModuleName, ExePath FROM modules(pid=HostPid)
+      LET Matches <= SELECT ExePath AS ModulePath,
+        lowcase(string=WindowsPathText(FilePath=ExePath)) AS NormalizedModulePath,
+        lowcase(string=WindowsPathText(FilePath=ExePath)) AS ModuleKey
+        FROM AllModules
+        WHERE ExePath AND (ModuleName =~ PHPDLL
+          OR basename(path=WindowsPathText(FilePath=ExePath)) =~ PHPDLL)
+        GROUP BY ModuleKey
+      SELECT * FROM chain(
+        mappings={SELECT 'loaded_module' AS RecordType, HostPid AS Pid,
+          HostName AS HostProcessName, HostExe AS HostExecutable,
+          ModulePath, NormalizedModulePath, ModuleKey,
+          NULL AS Device, NULL AS Inode, NULL AS Deleted,
+          'mapped_version_unknown' AS Status FROM Matches},
+        health={SELECT 'module_scan' AS RecordType, HostPid AS Pid,
+          HostName AS HostProcessName, HostExe AS HostExecutable,
+          'modules_returned' AS Status,
+          len(list=AllModules) AS EnumeratedModuleCount,
+          len(list=Matches) AS MatchedModuleCount
+          FROM scope() WHERE Matches})
+    ''')
+    LET ResolveInputs = SELECT str(str=LookupPath) AS LookupPath FROM ResolutionInputs GROUP BY LookupPath
+    LET ResolutionRows = SELECT * FROM foreach(row=ResolveInputs, query={
+      SELECT LookupPath, * FROM ResolvePath(InputPath=LookupPath)
+    })
+    LET ResolutionFor(FilePath) = get(item=PathResolutions, field=str(str=FilePath))
+    LET Patterns = SELECT Glob FROM BinaryGlobs WHERE OS = Platform
+    LET ExtraPatterns = SELECT Line AS Glob FROM parse_lines(
+      filename=AdditionalGlobs, accessor='data') WHERE Line
+    LET FoundFiles = SELECT OSPath AS Path, Name, Size, Mtime
+      FROM glob(globs=Patterns.Glob + ExtraPatterns.Glob)
+      WHERE NOT IsDir AND Name =~ PHPFile
+    // FPM workers commonly share one executable. Stat each nonempty path once.
+    LET ProcessPaths = SELECT Exe FROM ProcessRows WHERE Exe GROUP BY Exe
+    LET ProcessFiles = SELECT * FROM foreach(row=ProcessPaths, query={
+      SELECT OSPath AS Path, Name, Size, Mtime FROM stat(filename=Exe)
+      WHERE Exe AND NOT IsDir AND Name =~ PHPFile
+    })
+    LET Candidates = SELECT * FROM query(inherit=TRUE, query=format(
+      format='SELECT * FROM chain(a=FoundFiles, b=ProcessFiles) GROUP BY Path LIMIT %d',
+      args=CandidateLimit + 1))
+    LET SelectedFiles = slice(list=Candidates, start=0, end=CandidateLimit)
+    LET Files = SELECT * FROM foreach(row={
+      SELECT *, if(condition=Name =~ '''(?i)\.(exe|dll)$''', then=parse_pe(file=Path).VersionInformation) AS PE
+      FROM SelectedFiles
+    }, query={
+      SELECT 'binary' AS RecordType, 'file' AS EvidenceSource, Name, Path,
+        PHPVersion(Text=PE.ProductVersion || PE.FileVersion) AS Version,
+        PE.ProductVersion || PE.FileVersion AS RawVersion,
+        if(condition=PE, then='pe_version_resource', else='unknown') AS VersionSource,
+        Size, Mtime, PE AS Details
+      FROM scope()
+    })
+    LET Probes = SELECT * FROM if(condition=ProbeBinaries, then={
+      SELECT * FROM foreach(row={SELECT * FROM SelectedFiles WHERE Name =~ PHPExecutable}, query={
+        SELECT * FROM query(inherit=TRUE, query='''
+        LET Output <= SELECT * FROM PHPCommand(Argv=[str(str=Path), '-n', '-v'])
+        LET Successful <= SELECT * FROM Output WHERE Complete AND ReturnCode = 0
+        LET Banner <= SELECT Stdout, parse_string_with_regex(string=Stdout,
+          regex='(?m)^PHP (?P<Version>[0-9]+[.][0-9]+[.][0-9]+[^[:space:]]*)').Version AS ParsedVersion
+          FROM Output WHERE Stdout =~ '(?m)^PHP [0-9]+[.][0-9]+[.][0-9]+'
+        SELECT 'version_probe' AS RecordType, 'php_-n_-v' AS EvidenceSource,
+          Name, Path, Banner[0].ParsedVersion AS Version, Banner[0].Stdout AS RawVersion,
+          'binary_version_output' AS VersionSource,
+          if(condition=Banner AND Successful, then='version_reported',
+            else=if(condition=Banner, then='version_reported_command_incomplete_or_failed',
+              else='no_version_returned')) AS Status,
+          Output AS Details
+        FROM scope()
+        ''')
+      })
+    })
+    LET Deb = SELECT * FROM if(condition=CollectPackages AND Platform = 'linux', then={
+      SELECT * FROM foreach(row={SELECT OSPath FROM glob(globs=DpkgStatus)}, query={
+        SELECT 'package' AS RecordType, 'dpkg' AS EvidenceSource,
+          OSPath AS Path, * FROM PHPDpkg(File=OSPath)
+      })
+    })
+    LET Apk = SELECT * FROM if(condition=CollectPackages AND Platform = 'linux', then={
+      SELECT * FROM foreach(row={SELECT OSPath FROM glob(globs=ApkInstalled)}, query={
+        SELECT 'package' AS RecordType, 'apk' AS EvidenceSource,
+          OSPath AS Path, * FROM PHPApk(File=OSPath)
+      })
+    })
+    LET Rpm = SELECT * FROM if(condition=CollectPackages AND Platform = 'linux', then={
+      SELECT * FROM foreach(row={SELECT OSPath FROM glob(globs='/usr/bin/rpm')}, query={
+        SELECT * FROM query(inherit=TRUE, query='''
+        LET Output <= SELECT * FROM PHPCommand(Argv=[str(str=OSPath), '-qa', '--qf',
+          '%{NAME}\\t%{EPOCHNUM}:%{VERSION}-%{RELEASE}\\t%{ARCH}\\n'])
+        LET Successful <= SELECT * FROM Output WHERE Complete AND ReturnCode = 0
+        SELECT * FROM chain(
+          packages={SELECT 'package' AS RecordType, 'rpm' AS EvidenceSource, OSPath AS Path,
+            R.Name AS Name, R.RawVersion AS RawVersion, R.Architecture AS Architecture,
+            'installed' AS PackageState
+            FROM foreach(row={SELECT parse_string_with_regex(string=Stdout,
+              regex='^(?P<Name>[^\\t]+)\\t(?P<RawVersion>[^\\t]+)\\t(?P<Architecture>[^\\r\\n]+)') AS R
+              FROM Output}) WHERE Name =~ PHPPackage},
+          diagnostic={SELECT 'diagnostic' AS RecordType, 'rpm' AS EvidenceSource,
+            OSPath AS Path, 'rpm_query_incomplete_or_failed' AS Status, Output AS Details FROM scope()
+            WHERE NOT Successful})
+        ''')
+      })
+    })
+    LET Brew = SELECT * FROM if(condition=CollectPackages AND Platform = 'darwin', then={
+      SELECT 'package' AS RecordType, 'homebrew_receipt' AS EvidenceSource,
+        basename(path=dirname(path=dirname(path=OSPath))) AS Name,
+        basename(path=dirname(path=OSPath)) AS RawVersion, OSPath AS Path,
+        'receipt_present' AS PackageState
+      FROM glob(globs=BrewReceipts) WHERE NOT IsDir
+    })
+    LET WinPackages = SELECT * FROM if(condition=CollectPackages AND Platform = 'windows', then={
+      SELECT 'package' AS RecordType, 'windows_uninstall' AS EvidenceSource,
+        DisplayName AS Name, DisplayVersion AS RawVersion, KeyPath AS Path,
+        InstallLocation, Publisher, 'registry_entry' AS PackageState
+      FROM Artifact.Windows.Sys.Programs()
+      WHERE DisplayName =~ '''(?i)\bPHP\b'''
+    })
+    LET Packages = SELECT *,
+        if(condition=RecordType = 'package' AND (Name =~ PHPRuntimePackage OR EvidenceSource = 'homebrew_receipt'
+          OR (EvidenceSource = 'windows_uninstall' AND Name =~ '(?i)^PHP [0-9]')),
+          then=PHPVersion(Text=RawVersion)) AS Version,
+        if(condition=RecordType = 'package', then='package_metadata') AS VersionSource
+      FROM chain(a=Deb, b=Apk, c=Rpm, d=Brew, e=WinPackages)
+  sources:
+    - name: Packages
+      query: |
+        LET CollectedAt <= timestamp(epoch=now())
+        SELECT Host[0].Hostname AS Hostname, Platform AS OS, CollectedAt,
+          RecordType, EvidenceSource, get(field='Name') AS Name,
+          get(field='Path') AS Path, Version, get(field='RawVersion') AS RawVersion,
+          VersionSource, get(field='Architecture') AS Architecture,
+          get(field='PackageState') AS PackageState,
+          get(field='InstallLocation') AS InstallLocation, get(field='Publisher') AS Publisher,
+          get(field='Status') AS Status, get(field='Details') AS Details
+        FROM Packages
+    - name: Binaries
+      query: |
+        // Index the pre-probe snapshot; exact path lookup avoids a scan per row.
+        LET ProcessCounts <= memoize(key='Exe', query={
+          SELECT Exe, count() AS Total FROM ProcessRows WHERE Exe GROUP BY Exe
+        })
+        LET Candidates <= SELECT * FROM Candidates
+        LET SelectedFiles <= slice(list=Candidates, start=0, end=CandidateLimit)
+        LET CollectedAt <= timestamp(epoch=now())
+        LET ResolutionInputs = SELECT * FROM chain(
+          files={SELECT Path AS LookupPath FROM SelectedFiles},
+          processes={SELECT Exe AS LookupPath FROM ProcessRows})
+        LET ResolutionSnapshot <= SELECT * FROM ResolutionRows
+        LET PathResolutions <= memoize(key='LookupPath', query={SELECT * FROM ResolutionSnapshot})
+        LET ResolvedProcessRows <= SELECT Pid, ResolutionFor(FilePath=Exe).ResolvedPath AS ResolvedPath,
+          ResolutionFor(FilePath=Exe).ResolutionStatus AS ResolutionStatus FROM ProcessRows GROUP BY Pid
+        LET UnresolvedProcesses <= SELECT Pid FROM ResolvedProcessRows WHERE ResolutionStatus != 'resolved'
+        LET ResolvedCounts <= memoize(key='ResolvedPath', query={
+          SELECT ResolvedPath, count() AS Total FROM ResolvedProcessRows
+          WHERE ResolutionStatus = 'resolved' GROUP BY ResolvedPath
+        })
+        SELECT Host[0].Hostname AS Hostname, Platform AS OS,
+          RecordType, EvidenceSource, get(field='Name') AS Name,
+          get(field='Path') AS Path, get(field='Version') AS Version,
+          get(field='RawVersion') AS RawVersion, get(field='VersionSource') AS VersionSource,
+          if(condition=CollectProcesses AND RecordType IN ('binary', 'version_probe')
+            AND get(field='Name') =~ PHPExecutable,
+            then=get(item=ProcessCounts, field=str(str=Path)).Total || 0) AS ProcessCount,
+          if(condition=RecordType IN ('binary', 'version_probe'), then=ResolutionFor(FilePath=Path).ResolvedPath) AS ResolvedPath,
+          if(condition=RecordType IN ('binary', 'version_probe'), then=ResolutionFor(FilePath=Path).ResolutionStatus) AS ResolutionStatus,
+          if(condition=CollectProcesses AND get(field='Name') =~ PHPExecutable
+            AND ResolutionFor(FilePath=Path).ResolutionStatus = 'resolved' AND NOT UnresolvedProcesses,
+            then=get(item=ResolvedCounts, field=ResolutionFor(FilePath=Path).ResolvedPath).Total || 0) AS ResolvedProcessCount,
+          if(condition=NOT get(field='Name') =~ PHPExecutable, then='not_applicable',
+            else=if(condition=NOT CollectProcesses, then='disabled', else=if(condition=ResolutionFor(FilePath=get(field='Path')).ResolutionStatus != 'resolved',
+            then='path_resolution_unavailable', else=if(condition=UnresolvedProcesses,
+            then='unresolved_process_paths', else='complete_for_collected_processes')))) AS ResolvedCorrelationStatus,
+          CollectedAt,
+          get(field='Size') AS Size, get(field='Mtime') AS Mtime,
+          get(field='Status') AS Status, get(field='Details') AS Details
+        FROM chain(files=Files, probes=Probes,
+          overflow={SELECT 'diagnostic' AS RecordType, 'discovery' AS EvidenceSource,
+            'candidate_limit_exceeded' AS Status, dict(CandidateLimit=CandidateLimit) AS Details
+            FROM scope() WHERE len(list=Candidates) > CandidateLimit})
+    - name: Processes
+      query: |
+        LET CollectedAt <= timestamp(epoch=now())
+        LET ResolutionInputs = SELECT Exe AS LookupPath FROM ProcessRows
+        LET ResolutionSnapshot <= SELECT * FROM ResolutionRows
+        LET PathResolutions <= memoize(key='LookupPath', query={SELECT * FROM ResolutionSnapshot})
+        LET Grouped = SELECT Exe AS Path, count() AS ProcessCount,
+          enumerate(items=Pid) AS Pids, enumerate(items=Ppid) AS ParentPids
+          FROM ProcessRows GROUP BY Exe
+        LET UsersFor(Executable) = SELECT Username FROM ProcessRows
+          WHERE Exe = Executable GROUP BY Username
+        LET CommandsFor(Executable) = SELECT CommandLine FROM ProcessRows
+          WHERE Exe = Executable GROUP BY CommandLine
+        LET Summary = SELECT * FROM foreach(row=Grouped, query={
+          SELECT 'process' AS RecordType, 'pslist' AS EvidenceSource,
+            Path, basename(path=Path) AS Name, ProcessCount, Pids, ParentPids,
+            UsersFor(Executable=Path).Username AS Users,
+            CommandsFor(Executable=Path).CommandLine AS CommandLines,
+            'unknown_running_version' AS VersionSource
+          FROM scope()
+        })
+        LET Detailed = SELECT 'process' AS RecordType, 'pslist' AS EvidenceSource,
+          Name, Exe AS Path, Pid, Ppid, Username, CommandLine,
+          1 AS ProcessCount, dict(Items=[Pid]).Items AS Pids, dict(Items=[Ppid]).Items AS ParentPids,
+          'unknown_running_version' AS VersionSource FROM ProcessRows
+        SELECT Host[0].Hostname AS Hostname, Platform AS OS,
+          RecordType, EvidenceSource, Name, Path, VersionSource, ProcessCount, Pids, ParentPids,
+          ResolutionFor(FilePath=Path).ResolvedPath AS ResolvedPath,
+          ResolutionFor(FilePath=Path).ResolutionStatus AS ResolutionStatus, CollectedAt,
+          get(field='Users') AS Users, get(field='CommandLines') AS CommandLines,
+          get(field='Pid') AS Pid, get(field='Ppid') AS Ppid,
+          get(field='Username') AS Username, get(field='CommandLine') AS CommandLine
+        FROM if(condition=DetailedProcesses, then=Detailed, else=Summary)
+    - name: LoadedModules
+      query: |
+        LET CollectedAt <= timestamp(epoch=now())
+        LET Hosts <= SELECT * FROM if(
+          condition=CollectLoadedModules AND Platform IN ('linux', 'windows'),
+          then=ModuleHosts)
+        LET Scans <= SELECT * FROM foreach(row=Hosts, query={
+          SELECT * FROM if(condition=Platform = 'windows',
+            then={SELECT * FROM WindowsModuleScan(HostPid=Pid, HostName=Name, HostExe=Exe)},
+            else={SELECT * FROM ModuleScan(HostPid=Pid, HostName=Name, HostExe=Exe)})
+        })
+        // Scans is the shared snapshot; this single-use projection can stream.
+        LET Mappings = SELECT * FROM Scans WHERE RecordType = 'loaded_module'
+        LET ScanHealth <= memoize(key='Pid', query={
+          SELECT * FROM Scans WHERE RecordType = 'module_scan'
+        })
+        LET HealthFor(ProcessId) = get(item=ScanHealth, field=str(str=ProcessId))
+        LET NamesFor(Processes) = SELECT Name FROM foreach(row=Processes)
+          WHERE Name GROUP BY Name ORDER BY Name
+        LET ExecutablesFor(Processes) = SELECT Exe FROM foreach(row=Processes)
+          WHERE Exe GROUP BY Exe ORDER BY Exe
+        LET Groups = SELECT ModuleKey, ModulePath, Device, Inode, Deleted,
+          get(field='NormalizedModulePath') AS NormalizedModulePath,
+          count() AS LoadedProcessCount, enumerate(items=Pid) AS Pids,
+          enumerate(items=dict(Pid=Pid, Name=HostProcessName, Exe=HostExecutable,
+            ModulePath=ModulePath, ScanStatus=HealthFor(ProcessId=Pid).Status,
+            MapsPath=HealthFor(ProcessId=Pid).MapsPath,
+            MatchedModuleCount=HealthFor(ProcessId=Pid).MatchedModuleCount,
+            EnumeratedModuleCount=HealthFor(ProcessId=Pid).EnumeratedModuleCount)) AS HostingProcesses
+          FROM Mappings GROUP BY ModuleKey
+        SELECT Host[0].Hostname AS Hostname, Platform AS OS,
+          get(field='ModulePath') AS ModulePath,
+          join(array=NamesFor(Processes=get(field='HostingProcesses')).Name, sep=', ') AS ProcessNames,
+          get(field='LoadedProcessCount') AS LoadedProcessCount,
+          join(array=ExecutablesFor(Processes=get(field='HostingProcesses')).Exe, sep='; ') AS HostExecutables,
+          Status, get(field='Deleted') AS Deleted, get(field='Pids') AS Pids,
+          get(field='HostingProcesses') AS HostingProcesses,
+          get(field='NormalizedModulePath') AS NormalizedModulePath,
+          get(field='Device') AS Device, get(field='Inode') AS Inode,
+          CollectedAt, RecordType,
+          if(condition=Platform = 'windows', then='windows_modules',
+            else=if(condition=Platform = 'linux', then='proc_pid_maps', else='module_scope')) AS EvidenceSource
+        FROM if(condition=CollectLoadedModules, then={
+          SELECT 'loaded_module' AS RecordType, *, 'mapped_version_unknown' AS Status FROM Groups
+        })
+    - name: Coverage
+      query: |
+        LET Candidates <= SELECT * FROM Candidates
+        SELECT Host[0].Hostname AS Hostname, Platform AS OS,
+          'coverage' AS RecordType, 'collection_scope' AS EvidenceSource,
+          'inventory_only_not_vulnerability_assessment' AS Status,
+          CollectPackages, CollectProcesses, ProbeBinaries, DetailedProcesses, CollectLoadedModules, ResolveAliases,
+          timestamp(epoch=now()) AS CollectedAt,
+          Patterns.Glob + ExtraPatterns.Glob AS SearchedGlobs,
+          len(list=Candidates) AS CandidateCount, CandidateLimit,
+          len(list=Candidates) > CandidateLimit AS CandidateLimitExceeded,
+          len(list=ProcessRows) AS ProcessCount,
+          'Review collection logs for access/parser failures; no matches does not prove PHP absent.' AS Details
+        FROM scope()
+````
+
+
+
