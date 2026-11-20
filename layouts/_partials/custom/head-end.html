@@ -1,0 +1,20 @@
+{{- /*
+LLM discovery hints (llms.txt v2, https://llmstxt.org/).
+
+Two standard link relations let an agent that lands on an HTML page find the
+machine-readable versions without guessing paths:
+
+  rel="describedby"                    -> the llms.txt that covers this page
+  rel="alternate" type="text/markdown" -> this page's markdown twin
+
+The alternate is only emitted when the page actually publishes the format, so
+we never advertise a 404. Pages with "noindex: true" are skipped: their twins
+are still reachable and still included in llms-full.txt, but they should not be
+advertised from the HTML.
+*/ -}}
+{{- if not .Params.noindex -}}
+  <link rel="describedby" href="{{ "llms.txt" | absURL }}" />
+  {{- with .OutputFormats.Get "markdown" }}
+  <link rel="alternate" type="text/markdown" href="{{ .Permalink }}" />
+  {{- end }}
+{{- end -}}
