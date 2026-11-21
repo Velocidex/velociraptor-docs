@@ -1,0 +1,39 @@
+{{- /*
+Recursively walk a content directory and return the pages that Hugo keeps out
+of every page collection because their front matter sets `build.list: never`.
+
+Takes a dict with:
+  path  - content-relative directory, e.g. "vql_reference/popular"
+  known - slice of page paths already present in a collection (skip those)
+
+Directories that resolve to a page (leaf bundles) are returned as pages;
+directories that resolve to nothing are walked one level deeper, which is how
+the flat `artifact_references/pages/*.md` catalog is reached.
+*/ -}}
+{{- $dir := .path -}}
+{{- $known := .known -}}
+{{- $pages := slice -}}
+{{- with (readDir (path.Join "content" $dir)) -}}
+  {{- range . -}}
+    {{- $path := "" -}}
+    {{- if .IsDir -}}
+      {{- $path = path.Join $dir .Name -}}
+    {{- else if and (strings.HasSuffix .Name ".md") (not (in (slice "_index.md" "index.md") .Name)) -}}
+      {{- $path = path.Join $dir (strings.TrimSuffix ".md" .Name) -}}
+    {{- end -}}
+    {{- with $path -}}
+      {{- if not (in $known (lower .)) -}}
+        {{- with site.GetPage . -}}
+          {{- if eq .Kind "page" -}}
+            {{- if and (ne .Params.llms false) (ne .Params.llmsFull false) -}}
+              {{- $pages = $pages | append . -}}
+            {{- end -}}
+          {{- end -}}
+        {{- else -}}
+          {{- $pages = $pages | append (partial "llms-walk-pages.html" (dict "path" . "known" $known)) -}}
+        {{- end -}}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+{{- return $pages -}}

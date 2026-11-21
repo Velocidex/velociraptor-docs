@@ -1,0 +1,22 @@
+{{- /*
+Pages below a section that Hugo keeps out of every page collection because
+their front matter sets `build.list: never`.
+
+Such pages are invisible to .Pages/.RegularPages (and to .Site.Pages), but
+site.GetPage still resolves them, so we find them by walking the section's
+content directory and resolving paths back to pages.
+
+Currently the generated VQL reference pages and the Artifact Reference catalog
+use `build.list: never`: hidden from navigation, but an AI corpus should still
+contain them.
+*/ -}}
+{{- $section := . -}}
+{{- $dir := strings.TrimPrefix "/" $section.Path -}}
+{{- $known := slice -}}
+{{- range $section.RegularPages -}}
+  {{- $known = $known | append (lower (strings.TrimPrefix "/" .Path)) -}}
+{{- end -}}
+{{- range $section.Sections -}}
+  {{- $known = $known | append (lower (strings.TrimPrefix "/" .Path)) -}}
+{{- end -}}
+{{- return (partial "llms-walk-pages.html" (dict "path" $dir "known" $known)) -}}
