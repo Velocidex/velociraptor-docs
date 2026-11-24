@@ -11,13 +11,3 @@ description: |
 ---
 
 ## Required Permissions
-
-`required_permissions` - A list of permissions required to collect this
-artifact.
-
-Commonly used:
-
-- EXECVE
-- MACHINE_STATE
-- SERVER_ADMIN
-

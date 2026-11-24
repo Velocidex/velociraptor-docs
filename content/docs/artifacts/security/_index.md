@@ -2,84 +2,80 @@
 menutitle: "Security"
 title: "Artifact Security"
 date: 2025-01-25
+last_reviewed: 2026-11-19
 weight: 140
 summary: "How to create and use artifacts securely"
 description: |
-  Artifacts are the main way in which users interact with Velociraptor:
-  Users launch artifact collections from clients and collect artifacts
-  on the Velociraptor server.
+  How Velociraptor controls which artifacts a user can collect, including
+  hidden and basic artifacts, required and implied permissions, artifact
+  impersonation, and artifact obfuscation.
 ---
 
-Artifacts are the main way in which users interact with Velociraptor:
-Users launch artifact collections from clients and collect artifacts
-on the Velociraptor server.
+Artifacts are the main way users interact with Velociraptor. You launch an
+artifact collection against clients, and then collect the results on the
+Velociraptor server.
 
-At its core an artifact is simply a way to package VQL queries to make
-them easier to use.
+At its core, an artifact is a way to package VQL queries to make them easier
+to use.
 
-However, for new users the number of artifacts can be
-overwhelming. Coupled with the power that artifacts can wield there is
-a need to control which users are able to access which artifacts: This
-helps to avoid mistakes due to inexperience. For example running a
-`Windows.KapeFiles.Target` collections as a large scale hunt is almost
-always a bad idea!
+For new users the number of artifacts can be overwhelming. Artifacts also
+carry real power, so you need to control which users can access which
+artifacts. This helps avoid mistakes due to inexperience. For example,
+running a `Windows.KapeFiles.Target` collection as a large-scale hunt is
+almost always a bad idea.
 
-Most users develop their own operating procedures specifying:
-1. Which artifacts are to be used in which situation
+Most users develop their own operating procedures that specify:
+
+1. Which artifacts to use in which situation
 2. Who is allowed to launch more sensitive artifacts
-3. How artifacts are to be used (what type of arguments are allowed).
+3. How artifacts are used (what type of arguments are allowed)
 
-In the below page we discuss how Velociraptor enabled each of these
-goals.
+Velociraptor supports each of these goals.
 
-> [!WARNING] Artifact Security is complicated!
-> Being able to collect sensitive forensic information from endpoints at
-> all is a very powerful permissions. It is important to emphasize that
-> the below security measures are **not comprehensive**! There are many
-> escalation paths for an `investigator` role to take over the
-> endpoints - for example, acquiring `lsass.exe` memory or downloading
-> the `SAM` or `NTDS.dit`
+> [!WARNING] Artifact security is complicated
+> Collecting sensitive forensic information from endpoints is a powerful
+> permission. The security measures described here are **not
+> comprehensive**. An `investigator` role has many escalation paths to take
+> over an endpoint, for example by acquiring `lsass.exe` memory or
+> downloading the `SAM` or `NTDS.dit` files.
 >
-> You should consider the restrictions described below as best effort to
-> avoid accidental errors - the true security boundary is in the ability
-> to collect artifacts at all.
+> Treat these restrictions as a best effort to avoid accidental errors. The
+> true security boundary is the ability to collect artifacts at all.
 >
-> Do not grant the `investigator` role to users you do not trust!
+> Do not grant the `investigator` role to users you do not trust. Do not
+> grant the `reader` role to users you do not trust to view all collected
+> data, including PII and security sensitive data collected as part of the
+> forensic process.
 >
-> Similarly, do not grant the `reader` role to users you do not trust to
-> view all collected data (including PII and security sensitive data
-> that is collected as part of the forensic process).
->
-> Be especially careful with the implementation of `SOAR` like
-> functionality via the API - extending the API to external programs
-> increases the attack surface, especially if the `SOAR` application is
-> able to schedule collections on endpoints. You can mitigate this to
-> some extent using `Basic Artifacts` (see below).
+> Be especially careful when implementing SOAR-like functionality through
+> the API. Extending the API to external programs increases the attack
+> surface, especially if the SOAR application can schedule collections on
+> endpoints. You can limit this risk by marking selected artifacts as
+> basic.
 
 ## Hidden artifacts
 
-The first goal is to clean up the vast number of artifacts that are
-presented through the GUI. Because Velociraptor allows artifacts to be
-customized, new artifacts to be added to large number of artifacts
-imported from external sources (i.e. `Artifact Packs`), there could be
-hundreds or thousands of artifacts loaded in the system. Many have
-similar but different functionality. This can overwhelm a user with
-too much choice and be confusing.
+The first goal is to reduce the number of artifacts presented in the GUI.
+Velociraptor lets you customize artifacts and import large numbers of them
+from external sources such as `Artifact Packs`, so a deployment can hold
+hundreds or thousands of artifacts. Many have similar but different
+functionality, which overwhelms users with too much choice and makes the
+interface confusing.
 
-To clean up the interface, Velociraptor allows artifacts to be hidden
-from the GUI. This means that they are not shown as part of the search
-functionality in the artifact collections wizard or in the
-artifact. However the artifacts still exist in Velociraptor and can be
-seen as part of the `artifact_definitions()` plugin output.
+To clean up the interface, Velociraptor lets you hide artifacts from the
+GUI. A hidden artifact does not appear in the search functionality of the
+artifact collection wizard or in the artifact list. The artifact still
+exists, and it is visible in the output of the `artifact_definitions()`
+plugin.
 
-The visibility of an artifact is controlled by `artifact metadata` - a
-field attached to each artifact in the system. You can hide or show
-each artifact using the `artifact_set_metadata()` function.
+Visibility is stored in the artifact **metadata**, a field attached to each
+artifact in the system. You hide or show an artifact with the
+`artifact_set_metadata()` function.
 
-###### Example: Making only certain artifacts visible.
+###### Example: Making only certain artifacts visible
 
-The following VQL can be run in a notebook to hide all artifacts other
-than a selected set:
+The following VQL hides all artifacts other than a selected set. Run it in
+a notebook:
 
 ```vql
 LET VisibleArtifacts <= SELECT * FROM parse_csv(accessor="data",
@@ -90,59 +86,52 @@ Windows.NTFS.MFT
 Generic.Client.Info
 ''')
 
-
 SELECT name, name in VisibleArtifacts.Artifacts AS Visible
 FROM artifact_definitions()
 WHERE artifact_set_metadata(hidden=NOT name in VisibleArtifacts.Artifacts, name=name) OR TRUE
 ```
 
-This results in only those artifacts appearing in the GUI.
+Only the listed artifacts then appear in the GUI.
 
-![Hidden Artifacts](hidden_artifacts.svg)
+![Artifact selection list with unselected artifacts hidden](hidden_artifacts.svg)
 
-This reduced view can help guide users into more preferred playbooks
-and procedures, reducing confusion.
-
+This reduced view guides users toward preferred playbooks and procedures,
+which reduces confusion.
 
 ## Basic artifacts
 
-While hiding the artifacts in the GUI helps to reduce clutter, it
-does not stop someone from launching those artifacts (for example
-using a VQL query). The artifacts are actually still available but
-they are just hidden. Therefore hiding an artifact **is not a security
+Hiding artifacts reduces clutter in the GUI, but it does not stop someone
+from launching them, for example with a VQL query. A hidden artifact is
+still available, only hidden. Hiding an artifact **is not a security
 measure**.
 
-In Velociraptor, a user's permissions control what actions they can
-take in the GUI **or** using a VQL query. If a user is allowed to
-collect artifacts from the client, they can collect **any** artifact,
-including hidden artifacts.
+A user's permissions control which actions they can take, both in the GUI
+and in a VQL query. If a user can collect artifacts from the client, they
+can collect **any** artifact, including hidden artifacts.
 
-However some artifacts are more dangerous than others and require more
-experienced operators.
+Some artifacts are more dangerous than others and require more experienced
+operators. Velociraptor grants permissions through a **Role**, or you can
+add them directly to the user policy.
 
-Velociraptor user permission are given as part of `Roles` or
-specifically granted in the user policy.
+![User policy with the Read Only role and three additional permissions](user_permissions.svg)
 
-![Giving a user reduced roles and additional permissions](user_permissions.svg)
+In this example the user has the **Read Only** role. This role does not let
+the user collect new artifacts from the endpoint, and it does not let the
+user update notebook cells, although they can read notebooks.
 
-The above example shows a user given the `Read Only` role. This role
-does not allow the user to collect new artifacts from the endpoint,
-nor does it allow them to update notebook cells (but they can read
-notebooks).
+The user is also granted three permissions on top of that role:
 
-However, here I give the user additional permissions on top of their role:
+1. **Label Clients**: the user can change client labels.
+2. **Collect Basic Client**: the user can collect basic artifacts from the
+   client.
+3. **Notebook Editor**: the user can update notebook cells, and by
+   extension evaluate VQL queries on the server.
 
-1. Label Clients - the user is allowed to manipulate client labels
-2. Collect Basic Client - The user is allowed to collect basic artifacts from the client.
-3. Notebook Editor - The user is allowed to update notebook cells (and
-   by extension evaluate VQL queries on the server).
+If the user tries to collect an artifact from a client, the request is
+denied because they do not have the `COLLECT_CLIENT` permission.
 
-
-If the user attempts to collect an artifact from a client, they will
-be denied because they do not have the `COLLECT_CLIENT` permission.
-
-However we can allow the user to collect **Some** artifacts that we
-deem to be safe.
+You can still allow the user to collect selected artifacts that you
+consider safe:
 
 ```vql
 LET BasicArtifacts <= SELECT * FROM parse_csv(accessor="data",
@@ -150,206 +139,175 @@ filename='''Artifacts
 Generic.Client.Info
 ''')
 
-
 SELECT name, name in BasicArtifacts.Artifacts AS Basic
 FROM artifact_definitions()
-WHERE artifact_set_metadata(basic=NOT name in BasicArtifacts.Artifacts, name=name) OR TRUE
+WHERE artifact_set_metadata(basic=name in BasicArtifacts.Artifacts, name=name) OR TRUE
 ```
 
-The artifact `Generic.Client.Info` is deemed basic and therefore this
-user can collect it.
+`Generic.Client.Info` is marked as basic, so this user can collect it.
 
 ## Controlling access to client artifacts
 
-Now that we have learned how to hide artifacts in the search GUI, and
-how to mark some artifacts as basic, we can proceed to tie down some
-artifacts in a safe way.
+You can now combine hidden artifacts with basic artifacts to safely limit
+what a user can do.
 
-To illustrate this approach, suppose I wanted to allow my low
-privilege user to run `ipconfig` on the remote system. I know that I
-can shell out to the system shell using the artifact
-`Windows.System.CmdShell`. However, giving the user access to that
-artifact is extremely dangerous - because that artifact allows
-arbitrary commands to be launched on the endpoint.
+Suppose you want to let a low-privilege user run `ipconfig` on a remote
+system. You could give the user access to the `Windows.System.CmdShell`
+artifact, which runs commands in the system shell. That is dangerous,
+because the artifact accepts arbitrary commands and runs them on the
+endpoint.
 
-I want to further reduce the way in which the
-`Windows.System.CmdShell` artifact is called by **removing the user's
-choices for the artifact parameters**.
-
-I can create a new artifact
+Instead, reduce the ways in which the `Windows.System.CmdShell` artifact
+can be called by **removing the user's choice of artifact parameters**.
+Create a new artifact:
 
 ```yaml
-name: Custom.Ifconfig
+name: Custom.Ipconfig
 sources:
   - query: |
         SELECT * FROM Artifact.Windows.System.CmdShell(Command="ipconfig")
 ```
 
-This artifact takes no parameters and so the user can not change the
-command to anything other than `ipconfig` (which I deem safe to run on
-any endpoint).
+Because this artifact takes no parameters, the user cannot change the
+command to anything other than `ipconfig`, which you consider safe to run
+on any endpoint.
 
-Now I will add the `basic` metadata to this artifact which will allow
-the user to launch it. However the user is unable to change the
-parameters or run arbitrary code.
+Adding the `basic` metadata to this artifact lets the user launch it,
+without any ability to change the parameters or run arbitrary code.
 
-In this way it is possible to lock down a standard operating procedure
-for users:
+You can use this approach to lock down a standard operating procedure:
 
-* Velociraptor Built in artifacts are very powerful and very generic -
-  their actions can be controlled by many parameters.
-* You can write **wrapper artifacts** to narrow down the choices
-* Setting those artifacts as basic can allow users to use a reduced
-  functionality version of the artifacts safely.
+- Velociraptor built-in artifacts are powerful and generic, and their
+  actions are controlled by many parameters.
+- You can write **wrapper artifacts** to narrow the available choices.
+- Marking those artifacts as basic lets users run a reduced version of the
+  artifact safely.
 
 > [!WARNING] Allowing users to modify artifacts
-> Users with the `ARTIFACT_WRITER` permission are allowed to modify the
-> artifact itself. Therefore, if the user can change the artifact the
-> above access control is bypassed.
+> Users with the `ARTIFACT_WRITER` permission can modify the artifact
+> itself. If a user can change the artifact, the access control described
+> here is bypassed.
 >
-> We consider users with `ARTIFACT_WRITER` as admin equivalent since it
-> is easy to escalate to full admin with that permission.
+> Treat `ARTIFACT_WRITER` as admin equivalent, because a user with that
+> permission can escalate to full admin.
 
 ### Restricting dangerous client artifacts
 
-In the previous section we saw how to allow users **without the
-`COLLECT_CLIENT`** permission to launch some curated `basic`
-artifacts.
+Users without the `COLLECT_CLIENT` permission can launch curated basic
+artifacts. A user who has `COLLECT_CLIENT` can launch any client artifact.
+The client then runs that artifact without any ACL enforcement. Not every
+client artifact is equally safe.
 
-However, if the user has `COLLECT_CLIENT` permissions, they are able
-to launch any client artifact. Once launched, the client will run the
-artifact without any ACL enforcement at all. However, not all client
-artifacts are created equal. Some client artifacts are more powerful
-than others.
+Some client artifacts run arbitrary commands on the endpoint. The
+`Windows.System.CmdShell` artifact, for example, runs arbitrary shell
+commands, because the command to run is a user-supplied parameter passed
+directly to the shell through the `execve()` plugin. An attacker can use
+this for a complete domain compromise, for example by running a malicious
+command on every asset in the environment.
 
-Some client artifacts allow running arbitrary commands on the
-endpoint. For example, as we have seen previously, the
-`Windows.System.CmdShell` artifact allows running arbitrary shell
-commands, because the commandline to run is a user supplied parameter
-directly passed to the shell, using the `execve()` plugin. This
-can be leveraged for a complete domain compromise by e.g. running a
-malicious command on all assets in the environment.
+The `Windows.Sysinternals.Autoruns` artifact also calls the `execve()`
+plugin, but it sanitizes its arguments from user input.
 
-On the other hand, while the `Windows.Sysinternals.Autoruns` artifact
-also called the `execve()` plugin, the arguments supplied are
-sanitized from user input.
+An untrusted user may be allowed to collect `Windows.Sysinternals.Autoruns`,
+but must be prevented from collecting `Windows.System.CmdShell`.
 
-If a user is not fully trusted, they may be allowed to collect the
-`Windows.Sysinternals.Autoruns` but definitely should be prevented
-from collecting the `Windows.System.CmdShell`.
+Because client artifacts have no ACL protection, artifact writers must be
+careful not to give users more permissions on the endpoint than intended.
 
-Because client artifacts do not use any ACL protection, as artifact
-writers, we need to be careful to not inadvertently give the user more
-permissions than intended on the endpoint.
+Client artifacts can set the `required_permissions` field to make the
+server check that the launching user holds those permissions before it
+schedules the artifact. Use this field to restrict collection of powerful,
+risky artifacts to administrators.
 
-Client artifacts can specify the `required_permissions` field to
-direct the server to check the initiating user has those permissions
-before allowing the artifact to be scheduled. This field is used to
-restrict collection of powerful, risky artifacts to only
-administrative users.
+Sanitize user input as far as possible to restrict the use of dangerous
+functions. For example:
 
-The corollary is that we should try to sanitize user input as much as
-possible to restrict the use of dangerous functions. For example:
+1. When you use `execve()`, build the command line from user input without
+   letting that input change the meaning of the command.
 
-1. When using `execve()`, build the command line based on user input
-   but do not allow user input to be directly interpolated into the
-   command in such a way that it can change the meaning of the
-   command.
-
-2. When using an artifact that uses plugins that allow writing to
-   arbitrary files (e.g. `copy()`), do not allow the user to specify
-   the path and content of the files to write. This can be misused to
-   e.g. write startup locations and take over the endpoint. Similar
-   advice applies to writing registry keys, deleting files etc.
+2. When an artifact uses a plugin that writes to arbitrary files, such as
+   `copy()`, do not let the user specify the path and content of the
+   files. Otherwise the user can write to startup locations and take over
+   the endpoint. The same applies to writing registry keys, deleting
+   files, and similar operations.
 
 > [!TIP] Safely using execve()
-> The `execve()` plugin allows artifacts to launch external
-> commands. This plugin accepts a list of parameters (called `argv`)
-> instead of a single command line. The plugin will construct a safe
-> command line by escaping single arguments if necessary, so you should
-> not need to worry about escaping.
+> The `execve()` plugin launches external commands. It accepts a list of
+> parameters called `argv` instead of a single command line, and it
+> escapes individual arguments when necessary, so you do not need to
+> handle escaping yourself.
 >
-> Specifically, do not launch commands via the shell:
+> Do not launch commands through the shell:
 >
 > ```vql
 > SELECT * FROM execve(argv=["cmd.exe", "/c", "cacls " + DirectoryName])
 > ```
 >
-> Instead always directly run the target binary - Velociraptor will
-> suitable escape the command line if required.
+> Run the target binary directly instead. Velociraptor escapes the command
+> line when required.
 >
 > ```vql
 > SELECT * FROM execve(argv=["cacls.exe", DirectoryName])
 > ```
 
+How do you know whether a client artifact gives extra permissions to
+users? Velociraptor includes a VQL query static analyzer that, among other
+warnings, suggests checking permissions:
 
-How can we tell if a client artifact gives extra permissions to users?
-
-In recent versions, Velociraptor has a VQL query static analyzer,
-which among other warnings also suggests to check permissions:
-
-```
+```text
 $ velociraptor -v artifacts verify ./content/exchange/artifacts/*
 ...
 [ERROR] 2025-05-23T11:55:30Z ./content/exchange/artifacts/RemoteIconForcedAuth.yaml: Call to Artifact.Windows.Forensics.Lnk contain unknown parameter Glob
 [INFO] 2025-05-23T11:55:30Z ./content/exchange/artifacts/RemoteIconForcedAuth.yaml: Suggestion: Add EXECVE to artifact's required_permissions or implied_permissions fields
 ```
 
-The artifact verifier checks all plugins and functions in the artifact
-and ensures that dangerous permissions are listed in either of the
-following fields:
+The artifact verifier checks every plugin and function in an artifact and
+confirms that dangerous permissions appear in one of two fields:
 
-1. The `required_permissions` field is used to restrict who can launch
-   the artifact. Only users who already have that permission can
-   launch it, therefore the artifact does not add additional
-   permissions.
+1. `required_permissions` restricts who can launch the artifact. Only users
+   who already hold that permission can launch it, so the artifact grants
+   no additional permissions.
 
-2. The `implied_permissions` field is used to declare that this
-   permission is handled appropriately in this artifact. For example,
-   the `execve()` plugin arguments are properly sanitized. Therefore,
-   the verifier can suppress this warning.
+2. `implied_permissions` declares that the artifact handles a permission
+   safely. For example, an artifact that sanitizes its `execve()` arguments
+   can declare the permission here, which suppresses the warning.
 
-Ideally you should aim to have no verifier warnings.
+Aim for no verifier warnings.
 
-### Client artifacts collection permissions model
+### Client artifact collection permissions model
 
-To summarize, when collecting client artifacts the following security
-features are available:
+When you collect client artifacts, these security features apply:
 
-1. If a user does not have the `COLLECT_CLIENT` permission, they can
-   not collect any artifacts.
-
-2. Giving a user the `COLLECT_BASIC` permissions allows them to collect
-   `Basic` artifacts. Any artifact can be denoted as `Basic` by
-   setting the metadata field.
-
-3. Giving the user the `COLLECT_CLIENT` permission allows the user to
-   collect any client artifact, as long as they also have the
-   permissions specified in the `required_permissions` fields of that
+1. A user without the `COLLECT_CLIENT` permission cannot collect any
    artifact.
 
-4. Artifacts with open ended capabilities (e.g. running arbitrary
-   commands), should restrict their `required_permissions` field to
-   users who already have that permission. This ensures users can not
-   collect artifacts that give them additional permissions.
+2. A user with the `COLLECT_BASIC` permission can collect artifacts marked
+   as `basic`.
 
-5. Artifacts that properly sanitize use of dangerous permissions,
-   should declare those in `implied_permissions` which allows the
-   verifier to suppress these warnings.
+3. A user with the `COLLECT_CLIENT` permission can collect any client
+   artifact, provided they also hold the permissions listed in that
+   artifact's `required_permissions` field.
 
-## Server artifacts and Impersonation
+4. Artifacts with open-ended capabilities, such as running arbitrary
+   commands, should list a restrictive `required_permissions` field so that
+   only users who already hold that permission can collect them. This
+   prevents an artifact from granting additional permissions.
 
-The above discussion centered around controlling access to client
-artifacts. But sometimes we need to also control access to server
-artifacts. For example, suppose I wanted to allow the restricted user
-above to create a hunt with the `Generic.Client.Info` artifact in it.
+5. Artifacts that sanitize the use of a dangerous permission should declare
+   it in `implied_permissions`, which suppresses the corresponding verifier
+   warning.
 
-In order for users to create hunts, they need the `Start Hunt`
-permission. However giving users this permission allows them to create
-**any** hunt which is dangerous. I really only want to allow the user
-to create a **specific** hunt.
+## Server artifacts and impersonation
 
-I can use the above approach to create a wrapper artifact:
+The discussion so far covers client artifacts. Sometimes you also need to
+control access to server artifacts. Suppose you want to let the restricted
+user create a hunt that contains `Generic.Client.Info`.
+
+Creating a hunt requires the **Start Hunt** permission. Granting that
+permission lets the user create **any** hunt, which is dangerous, and you
+only want to allow one specific hunt.
+
+The wrapper artifact approach works here as well:
 
 ```yaml
 name: Start.Hunt.Generic.Client.Info
@@ -362,26 +320,19 @@ sources:
       FROM scope()
 ```
 
-This artifact allows a user to start a hunt. I can mark it as a basic
-artifact and allow my user to launch it.
+This artifact starts a hunt. Mark it as basic and the user can launch it.
 
-However, this still does not work!
+That still does not work.
 
 ![Server artifacts run with the permissions of the launching user](server_artifacts_permissions.svg)
 
-The reason is that server artifacts are running on the server, where
-ACL permissions are enforced. The VQL query itself is running with the
-user token and so can only ever do the same permissions that the user
-is allowed to do.
+Server artifacts run on the server, where ACL permissions are enforced.
+The VQL query runs with the user token, so it can only do what the user is
+permitted to do. Marking the artifact as `basic` lets the user run it, but
+the VQL inside it cannot exceed the user's permissions.
 
-This means that the while I can mark the artifact itself as `basic`
-and allow the user to run the artifact, the VQL inside the artifact
-can not exceed the permissions of the user.
-
-In order to achieve what I want here (which is to give the user a
-controlled privilege to do just one thing), I need to have the server
-artifact running with different credentials than the launching user -
-In order words I need to `Impersonate` the admin user.
+To give the user a controlled privilege to do one specific thing, run the
+server artifact with different credentials: impersonate the admin user.
 
 ```yaml
 name: Start.Hunt.Generic.Client.Info
@@ -395,59 +346,49 @@ sources:
       FROM scope()
 ```
 
-The `impersonate: admin` directive tells Velociraptor that when
-running this artifact, the server will use the permissions of the
-admin user instead of the launching user.
+The `impersonate: admin` directive tells Velociraptor to run the artifact
+with the permissions of the admin user instead of the launching user. This
+is similar to the Linux `suid` mechanism, except that the effect applies to
+one artifact rather than to a binary.
 
-This is exactly the same as the Linux `suid` mechanism or the windows
-`Impersonation` mechanism.
+![Server artifact collection succeeding with the impersonated user](impersonation.png)
 
-![This time the artifact works with the impersonated user](impersonation.png)
+## Artifact obfuscation
 
-## Artifact Obfuscation
+When you collect an artifact, Velociraptor compiles it into a set of basic
+VQL statements and sends it to the client in a **Collection Request**. The
+**Request** tab in the GUI shows the raw request.
 
-When an artifact is collected, it is compiled into a set of basic VQL
-statements and sent to the client in a **Collection Request**. You can
-see the raw request in the **Request** tab in the GUI.
+The client can see the original query while it runs the request. This is a
+risk for sensitive artifacts. A custom artifact that searches for a
+sensitive IOC pattern, for example, exposes current threat intel or
+threat-hunting methodology to a rogue client, such as a compromised
+endpoint running an attacker-controlled Velociraptor client.
 
-While the request is executed by the client, the client is able to see
-what the original query was. This represents a risk for sensitive
-artifacts - for example consider a custom artifact searching for a
-sensitive IOC pattern. A rogue client (for example, a compromised
-endpoint running an attacker-controlled Velociraptor client) may
-receive the request in a hunt and gain insight into the current threat
-intel or threat-hunting methodology.
+Consider this risk when you craft custom artifacts or collect artifacts
+that target specific IOCs:
 
-This risk has to be considered when crafting custom artifacts, or
-collecting artifacts targeting specific IOCs:
+- Never add sensitive information to the artifact definition. The request
+  strips the artifact description, comments, and some non-essential parts,
+  but variable names remain unaltered.
 
-* Never add sensitive information to the artifact definition. The
-  client's request will strip out the artifact description, comments
-  and some non-essential parts but variable names remain unaltered.
+- Treat artifact parameters as public information. Never send sensitive
+  IOCs as artifact parameters. Treat API keys the same way: never write a
+  client-side artifact that needs API keys to upload data directly to a
+  service provider. A rogue client can intercept artifact parameters.
 
-* Treat artifact parameters as public information. Never send
-  sensitive IOCs directly as artifact parameters. This also goes for
-  API keys - never write a client side artifact that requires API keys
-  to upload data directly to a service provider. Artifact parameters
-  can be easily intercepted by rogue clients.
+- If you search for a specific IOC that is sensitive, such as a unique
+  name, search for a less sensitive and more generic IOC instead, then
+  post-process the results on the server to remove false positives.
 
-* If you are searching for a very specific, but sensitive IOC (for
-  example a specific name which is very unique), consider reworking
-  the artifact to search for a less sensitive and more generic IOC,
-  and post-process the results on the server to remove false
-  positives.
+  For example, searching for the string `ThreatActorXYZ` is highly
+  specific, and the threat actor may realize they are being targeted.
+  Search for the regular expression `Threat[^ ]+` instead, then filter the
+  false positives on the server.
 
-  For example, if the IOC is searching for the string `ThreatActorXYZ`
-  it is very specific and the threat actor may know they are being
-  specifically targeted. Instead search for the regular expression
-  `Threat[^ ]+`, and post-process by filtering down the false
-  positives on the server.
+  This is a trade-off between specific searches that return few high-value
+  results, and broader searches that risk more false positives while
+  hiding what you are looking for from an adversary.
 
-  There is obviously a trade-off between being very specific and
-  getting few, very high-value, results, vs being less specific and
-  potentially increasing the false positive rate, while making it
-  harder for an adversary to know what you are searching for.
-
-Velociraptor implements an experimental form of obfuscation for
-artifact names but this should not be regarded as a security
-mechanism.
+Velociraptor implements an experimental form of obfuscation for artifact
+names, but do not treat it as a security mechanism.
