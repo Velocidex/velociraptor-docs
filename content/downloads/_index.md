@@ -14,7 +14,7 @@ base_release: 0.77.4
 arches:
   - desc: Windows AMD64 (64-bit) Executable
     name: windows-amd64.exe.gz
-    hash: 4570025c080537ae2d5eb6780e84a4439e05bae42811d9891761f54da117a36a
+    hash: e90820fc0a129bb76e9990560d8620d4a3b7759a902e473c9887e8bcbe128512
     platform: windows
 
   - desc: Windows AMD64 (64-bit) MSI
@@ -24,7 +24,7 @@ arches:
 
   - desc: Windows ARM64 Executable
     name: windows-arm64.exe.gz
-    hash: c4dd78efa1b91417a35ed74dafa1289d9f834617dcc3e1a073577e609d1f1907
+    hash: 00d4e81f0f69c05d774a979fc65bf1136d534b7fceaeda56748f305148fa71aa
     platform: windows
 
   - desc: Windows ARM64 MSI
@@ -34,32 +34,32 @@ arches:
 
   - desc: Linux Ubuntu 26.04 AMD64 and later. Recommended for servers.
     name: linux-amd64.gz
-    hash: 38adab21db7cd5850770ad9123061bd94375e1af85fbe826837ceb831e2ce01a
+    hash: 890c1b8458276909cfbbfb2edad2e0b9c31672b95532e41516c39d2537925157
     platform: linux
 
   - desc: Linux Ubuntu 26.04 ARM and later. Recommended for servers or containers.
     name: linux-arm64.gz
-    hash: d8d18949aa7cbd46af6bd564dd47a45efce05f96a9391225e7e114b6640791a4
+    hash: 908eda7aaaf46f4a988b282cabbe7844c273ad185d5c9846aa33518ff5e2708c
     platform: linux
 
   - desc: Linux Static Build (Older Releases, e.g. RHEL, Centos) Recommended for clients.
     name: linux-amd64-musl.gz
-    hash: 3d467bf0432ecee8626d50657bab0de43a057f7fe4e2e39f553e5519f12f0f9c
+    hash: dc093453cd9e2da8778fed58f165fdc040f9484fd199814b6ddb0fc29b665b10
     platform: linux
 
   - desc: Linux Sumo build. Recommended for servers.
     name: linux-amd64-sumo-musl.gz
-    hash: 19eb67b295bc89258cad46dd027985927e43173a8f2dd67c248c8bd02b7ead47
+    hash: 329fcf775ffd8b0f58ce4f457684b0df5c1c943f8a6d8d089a448013d391088d
     platform: linux
 
   - desc: MacOS AMD64
     name: darwin-amd64.gz
-    hash: 8327c35f6719c4c80962c556c3f435206d68cab9d98b334739896f4bee10de91
+    hash: 551251457f9f499998636828cba4fc152296cb2360063a99df1bbd8d5dc55161
     platform: apple
 
   - desc: MacOS ARM (M1, M2 chipsets)
     name: darwin-arm64.gz
-    hash: d8d18949aa7cbd46af6bd564dd47a45efce05f96a9391225e7e114b6640791a4
+    hash: a8943c78b10dde9edeba1810038816e89fd5626bae4e5f5fe88a045b9fbf06fa
     platform: apple
 
   - desc: FreeBSD AMD64

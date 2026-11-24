@@ -21,16 +21,10 @@ description: |
   and incident response (DFIR) tool.
 ---
 
- <!-- Disabled in favour of the global announcement banner (params.banner).
-{{< alert icon="triangle-exclamation" >}}
-Please update to the latest release [0.77.2](/downloads/) to address
-[Multiple CVEs](/announcements/advisories/v0-77-2/).
-{{< /alert >}} -->
-
 {{< feature-grid >}}
 
   {{< feature icon="calendar" title="Announcements" url="/announcements/" banner=true kicker="Releases, security advisories & community news" >}}
-    **2026-10-05 - Velociraptor 0.77.3 is now available!**
+    **2026-11-23 - Velociraptor 0.77.4 is now available!**
   {{< /feature >}}
 
   {{< feature icon="fast-forward" title="Quickstart" url="/docs/deployment/quickstart/" >}}
