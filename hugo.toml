@@ -150,7 +150,7 @@ enableRobotsTXT = true
 
 [[menus.main]]
   name = "Config Reference"
-  pageRef = "/docs/deployment/references/"
+  pageRef = "/config_reference/"
   weight = 38
   [menus.main.params]
     button = true
