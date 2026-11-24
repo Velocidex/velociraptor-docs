@@ -123,7 +123,7 @@ sources:
             row=results.KnockKnockResults.`Login Items`,
             query={SELECT * FROM foreach(row=_value)} )
 
-  - name: Login/Logout Hooks
+  - name: Login and Logout Hooks
     query: |
       SELECT * FROM foreach(
             row=results.KnockKnockResults.`Login/Logout Hooks`,
