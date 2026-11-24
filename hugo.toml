@@ -302,10 +302,26 @@ enableRobotsTXT = true
   [params.search]
     enable = true
 
-  # Global announcement strip above the navbar (theme banner.html); dismissible
-  # per-browser via the ✕ button (localStorage banner-closed).
+  # Announcement strips above the navbar (layouts/_partials/banner.html); each
+  # one is dismissible on its own, remembered per-browser under its `key`.
+  # Keep an advisory's key stable across releases so readers who dismissed it
+  # stay dismissed, and bump the release key with every release so the new
+  # announcement reaches everyone again.
+  #
+  # [params.banner] must stay defined but empty: the theme's head script reads
+  # site.Params.banner.key, and an empty table is falsy in templates, which
+  # keeps the theme's single-banner script out of the build.
   [params.banner]
-    message = "Please update to 0.77.3 or later to address [multiple CVEs](/announcements/advisories/v0-77-2/). The latest release is [0.77.4](/downloads/)."
+
+  [[params.banners]]
+    key = "banner-closed"
+    variant = "advisory"
+    message = "Please update to 0.77.3 or later to address [multiple CVEs](/announcements/advisories/v0-77-2/)."
+
+  [[params.banners]]
+    key = "banner-closed-release-0.77.4"
+    variant = "release"
+    message = "Velociraptor [0.77.4](/downloads/) is now available!"
 
   [params.toc]
     displayTags = false
