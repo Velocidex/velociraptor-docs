@@ -39,7 +39,7 @@ arches:
 
   - desc: Linux Ubuntu 26.04 ARM and later. Recommended for servers or containers.
     name: linux-arm64.gz
-    hash: d8d18949aa7cbd46af6bd564dd47a45efce05f96a9391225e7e114b6640791a4
+    hash: 365e70d020f76afcecb1ccb0302157fbeac6ae5bdf9f777077a9e17e9844fb70
     platform: linux
 
   - desc: Linux Static Build (Older Releases, e.g. RHEL, Centos) Recommended for clients.

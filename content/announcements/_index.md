@@ -14,6 +14,6 @@ description: |
   Velociraptor.
 ---
 
-- 2026-10-05 - Velociraptor 0.77.3 is now [available](/downloads/)!
+- 2026-11-23 - Velociraptor 0.77.4 is now [available](/downloads/)!
 
 {{% children  %}}
