@@ -823,13 +823,9 @@ html.dark .hextra-nav-btn[aria-current] {
   --hextra-max-page-width: 84rem;
   --hextra-max-navbar-width: 84rem;
   --hextra-max-footer-width: 84rem;
-  /* The theme's static default --hextra-banner-height: 2rem is smaller than
-     the real banner (its h-10 close button makes it 2.5rem tall), and the
-     theme only re-measures that variable in deferred core/banner.js.  Pre-set
-     the correct height here so first paint is already right and the floating
-     TOC chevrons (which offset by this variable) don't jump once the script
-     runs.  When the banner is dismissed, head/banner.js sets the variable to
-     0 inline before paint, which overrides this default. */
+  /* Fallback height for one strip. layouts/_partials/banner.html measures the
+     banner stack inline before paint and sets the real value on <html>; this
+     value only matters without JavaScript. */
   --hextra-banner-height: 2.5rem;
 }
 
@@ -1503,15 +1499,34 @@ html.dark .hextra-card-subtitle a {
 html.dark .hextra-card-subtitle code {
   background: var(--hx-color-neutral-700, #404040);
 }
-/* --- Announcement banner (params.banner): green release/security strip. ---
-   Overrides the theme's neutral-900/800 background so the banner reads as a
-   security/release notice. Text stays near-white for contrast. */
+/* --- Announcement banners (params.banners): one strip per entry, coloured by
+   that entry's `variant` field. The default (release) is green; `advisory` is
+   the orange security notice. A new colour is one `.hextra-banner-<variant>`
+   block here plus `variant = "<name>"` on the entry - no template change. --- */
 .hextra-banner {
   background-color: #15803d; /* green-700 */
 }
 
 html.dark .hextra-banner {
   background-color: #14532d; /* green-900 */
+}
+
+/* Security advisory. #E85E26 with white 14px text is 3.5:1 - under WCAG AA -
+   so light mode pairs it with near-black text (5:1). Dark mode deepens the
+   orange and goes back to near-white (7:1). */
+.hextra-banner.hextra-banner-advisory {
+  background-color: #e85e26;
+  color: #1c1917;
+}
+
+html.dark .hextra-banner.hextra-banner-advisory {
+  background-color: #9a3412; /* orange-800 */
+  color: #fafafa;
+}
+
+/* Match the ✕ to the strip's text colour instead of the theme's white. */
+.hextra-banner-advisory .hextra-banner-close-button {
+  color: inherit;
 }
 
 /* --- Announcements banner card (hextra-card-banner): dark mode. ---

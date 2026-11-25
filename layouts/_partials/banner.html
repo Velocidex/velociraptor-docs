@@ -1,0 +1,105 @@
+{{- /*
+  Announcement strips above the navbar.
+
+  Overrides the theme's banner.html, which renders exactly one strip and
+  remembers its dismissal under a single localStorage key
+  (site.Params.banner.key). That means a new announcement either re-shows a
+  notice the reader already closed, or never shows at all. Here each strip
+  carries its own key, so an advisory dismissal survives release-banner
+  changes while a bumped release key reaches everyone again.
+
+  Configure with an array in hugo.toml:
+
+    [[params.banners]]
+      key = "banner-closed"                 # stable across releases
+      variant = "advisory"                  # orange
+      message = "Please update to ... [multiple CVEs](/...)"
+
+    [[params.banners]]
+      key = "banner-closed-release-0.77.4"  # bump per release
+      variant = "release"                   # green (the default)
+      message = "Velociraptor [0.77.4](/downloads/) is now available!"
+
+  `variant` picks the strip colour in assets/css/custom.css: `release` is
+  green, `advisory` is orange, an unknown value falls back to green. Adding a
+  colour means adding a `.hextra-banner-<variant>` block there, nothing else.
+
+  [params.banner] must stay defined but empty: the theme's head script reads
+  site.Params.banner.key, and an empty table is falsy, which keeps the theme's
+  own core/banner.js out of the build.
+*/ -}}
+{{- $page := . -}}
+{{- with site.Params.banners }}
+<div id="hextra-banners" class="hx:max-md:sticky hx:top-0 hx:z-20">
+  {{- range . }}
+  {{- $key := .key | default "banner-closed" }}
+  <div
+    class="hextra-banner hextra-banner-{{ .variant | default "release" }} hx:px-6 hx:text-center hx:text-slate-50 hx:dark:text-white hx:print:[display:none]"
+    data-banner-key="{{ $key }}"
+  >
+    <div class="hx:relative hx:flex hx:items-center hx:justify-center hx:font-medium hx:text-sm hx:py-2.5">
+      <div style="white-space: pre-wrap" class="hx:px-8">
+        {{- with .message }}{{ . | $page.RenderString }}{{ end -}}
+      </div>
+      <button
+        type="button"
+        class="hextra-banner-close-button hx:cursor-pointer hx:absolute hx:right-0 hx:text-white hx:font-bold hx:leading-none hx:hover:opacity-75 hx:transition hx:w-10 hx:h-10 hx:-mr-2 hx:md:mr-0 hx:flex hx:items-center hx:justify-center"
+        aria-label="{{ T "closeBanner" | default "Close banner" }}"
+      >
+        {{- partial "utils/icon.html" (dict "name" "x" "attributes" "height=16") -}}
+      </button>
+    </div>
+  </div>
+  {{- end }}
+</div>
+<script>
+  /* Runs while the body is still parsing, so a dismissed strip is gone and
+     --hextra-banner-height is correct before the first paint: the floating TOC
+     and the mobile sidebar offset by that variable. */
+  (function () {
+    var wrap = document.getElementById("hextra-banners");
+    if (!wrap) return;
+    var root = document.documentElement;
+    var bars = Array.prototype.slice.call(wrap.querySelectorAll("[data-banner-key]"));
+
+    function keyOf(bar) { return bar.getAttribute("data-banner-key"); }
+
+    /* Restore earlier dismissals. The legacy "banner-closed" key is reused by
+       the advisory strip, so readers who closed the old single banner stay
+       closed; a new release strip still appears. */
+    bars = bars.filter(function (bar) {
+      var closed = false;
+      try { closed = !!localStorage.getItem(keyOf(bar)); } catch (e) {}
+      if (closed) bar.remove();
+      return !closed;
+    });
+
+    function sync() {
+      var left = wrap.querySelectorAll("[data-banner-key]").length;
+      if (left) {
+        root.classList.remove("hextra-banner-hidden");
+        wrap.style.display = "";
+        root.style.setProperty("--hextra-banner-height", wrap.offsetHeight + "px");
+      } else {
+        root.classList.add("hextra-banner-hidden");
+        wrap.style.display = "none";
+        root.style.setProperty("--hextra-banner-height", "0px");
+      }
+    }
+
+    bars.forEach(function (bar) {
+      var btn = bar.querySelector(".hextra-banner-close-button");
+      if (!btn) return;
+      btn.addEventListener("click", function () {
+        try { localStorage.setItem(keyOf(bar), "0"); } catch (e) {}
+        bar.remove();
+        sync();
+      });
+    });
+
+    sync();
+    /* Wrapping changes the strip height; keep the offset variable honest. */
+    window.addEventListener("resize", sync);
+  })();
+</script>
+{{- end }}
