@@ -355,7 +355,27 @@ amounts to a sneakernet Velociraptor deployment!
 
 ### Collections Over SSH
 
-[Collections Over SSH](/docs/file_collection/ssh/)
+Velociraptor's SSH accessor lets you read files and run file-based
+collections on a remote SSH-enabled system without deploying a client
+on it. This is useful when installing the client isn't justified or
+possible, for example on routers, firewalls, and other appliances, or
+on architectures the client doesn't support, but the system still
+provides SSH access.
+
+You can use it in two ways:
+
+- **Ad-hoc queries.** Run VQL directly on the server, in a notebook or
+  server artifact, using the `ssh` accessor. Add a remapping config
+  when you want to run artifacts whose file access must be redirected
+  to the remote host.
+- **A dedicated virtual client.** This makes the remote system look and
+  behave like a regular client - selectable in the GUI, browsable in
+  the VFS, targetable by hunts. It can run anywhere it can reach both
+  the target and the server, and doesn't need to match the target's
+  platform or architecture.
+
+The [Collections and File Acquisition over SSH](/docs/file_collection/ssh/)
+page covers the full details, including worked examples.
 
 
 
