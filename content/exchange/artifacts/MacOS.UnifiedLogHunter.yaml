@@ -10,6 +10,8 @@ description: |
 
         Users may need to adjust the `Length` parameter to accommodate a large number of events being returned.
 
+        Native command stderr is logged as a warning; nonzero command status is logged as an error. The server may also classify warning text as an error. If stdout is split into chunks, an error requests a larger `Length` because returned events may be incomplete. Any successfully parsed events are retained, including when a complete JSON array is followed by whitespace in another chunk. Review collection logs even when results are empty; an empty result alone does not establish a successful or complete collection.
+
         If you would like to perform an offline collection, or only care about collecting the raw files associated with this data, consider using [Exchange.MacOS.UnifiedLogParser](https://docs.velociraptor.app/exchange/artifacts/pages/macos.unifiedlogparser/).
 reference:
   - https://github.com/jamf/jamfprotect/tree/main/unified_log_filters
@@ -89,7 +91,24 @@ sources:
                      "--predicate",
                      Q,
                      "--style",
-                     "json"])}, async=TRUE) WHERE NOT Stdout = "[]"
+                     "json"])
+                   -- Log diagnostics before removing rows with no event output.
+                   WHERE if(condition=Stderr,
+                            then=log(level="WARN", dedup=-1,
+                                     message="MacOS.UnifiedLogHunter: log show stderr for predicate [%v]: %v",
+                                     args=[Q, Stderr]),
+                            else=TRUE)
+                     AND if(condition=ReturnCode != 0,
+                            then=log(level="ERROR", dedup=-1,
+                                     message="MacOS.UnifiedLogHunter: log show failed with status %v for predicate [%v]",
+                                     args=[ReturnCode, Q]),
+                            else=TRUE)
+                     -- Intermediate stdout means execve split the output into chunks.
+                     AND if(condition=Stdout AND NOT Complete,
+                            then=log(level="ERROR",
+                                     message=format(format="MacOS.UnifiedLogHunter: log show stdout exceeded its buffer for predicate [%v]; returned events may be incomplete. Increase Length and rerun.",
+                                                    args=[Q])),
+                            else=TRUE)}, async=TRUE) WHERE Stdout AND NOT Stdout = "[]"
       SELECT
         timestamp(string=get(member="timestamp")) AS EventTime,
         get(member="machTimestamp") AS _TimeSinceBoot,
