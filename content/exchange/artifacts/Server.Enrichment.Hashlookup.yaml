@@ -1,0 +1,76 @@
+name: Server.Enrichment.Hashlookup
+author: JCROSSM
+description: |
+  This artifact checks the presence of files hashs in the database provided by hashlookup.lu.
+  This aims to pre-filter files hashes which could be sumbitted to another enrichment such as VT or Hybrid Analysis for example.
+  
+  https://circl.lu/services/hashlookup/
+  
+    `SELECT * from Artifact.Server.Enrichment.Hashlookup(Algorithm=$ALGO,Hash=$YOURHASH)`
+
+type: SERVER
+
+parameters:
+    - name: Hash
+      type: string
+      description: The file hash to submit.
+      default: 
+
+    - name: Algorithm
+      type: string
+      description: (MD5, SHA1, SHA256).
+      default: md5
+
+    - name: UserAgent
+      type: string
+      description: Name of the user agent used for submitting hashes.
+      default: Velociraptor
+
+sources:
+  - query: |
+        
+        LET URL <= 'https://hashlookup.circl.lu/lookup/' + lowcase(string=Algorithm) + '/' + Hash
+        
+        LET DATA = SELECT parse_json(data=Content) AS Content
+          FROM http_client(
+            url=URL,
+            headers=dict(`accept`="application/json", `user-agent`=UserAgent),
+            params=dict(hash=Hash),
+            method='GET')
+        
+        LET RESULT = SELECT *
+                FROM foreach(
+                            row=DATA,
+                            query=
+                                {SELECT Content.FileName AS FileName,
+                                Content.FileSize AS FileSize,
+                                Content.MD5 AS MD5,
+                                Content["RDS:package_id"] AS PackageId,
+                                Content["SHA-1"] AS SHA1,
+                                Content["SHA-256"] AS SHA256,
+                                Content["SSDEEP"] AS SSDEEP,
+                                Content.TLSH AS TLSH,
+                                split(sep_string=".",
+                                string=Content["insert-timestamp"]) AS time,
+                                Content.source AS Source,
+                                Content["hashlookup:trust"] AS HashlookupTrust,
+                                if(
+                                condition=Content.message,
+                                then=False,
+                                else=True) AS Known
+                                FROM scope()
+                                }
+                            )
+          
+          SELECT FileName,
+                FileSize,
+                MD5,
+                SHA1,
+                SHA256,
+                SSDEEP,
+                TLSH,
+                PackageId,
+                HashlookupTrust,
+                Known,
+                timestamp(epoch=time[0]) AS InsertTime 
+          FROM RESULT
