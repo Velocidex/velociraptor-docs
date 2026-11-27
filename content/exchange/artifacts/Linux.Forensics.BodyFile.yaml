@@ -1,0 +1,30 @@
+name: Linux.Forensics.BodyFile
+author:  Chris DiSalle - @chrisdfir, David Roman - @countz3r0
+description: |
+  This artifact collects detailed file metadata from all Linux directories. 
+  It gathers information such as file size, modification time, access time, creation time, and whether the file is a directory or a symbolic link. 
+  For symbolic links, the artifact also captures the target path that the symlink points to. The collection is limited to 10 directory levels deep to ensure efficient analysis.
+  
+reference:
+  - https://trustedsec.com/blog/incident-response-bring-out-the-body-file
+  - https://wiki.sleuthkit.org/index.php?title=Body_file
+
+precondition: SELECT OS FROM info() WHERE OS = 'linux'
+
+sources:
+  - name: BodyFileStats
+    query: |
+        SELECT OSPath, 
+        Name, 
+        Size, 
+        IsDir,
+        IsLink, 
+        Data.Link, 
+        Mtime, 
+        Atime, 
+        Ctime,
+        Btime,
+        format(format="%o", args=[Mode]) AS OctalMode,
+        Mode.String AS StringMode, 
+        Data 
+        FROM glob(globs='**10', root='''/''')
