@@ -35,7 +35,7 @@ for download from GitHub. Less common platforms may not be built at the latest r
     </td>
   <td class="hash">{{.hash}}</td>
   <td class="signature">
-    <a href="https://github.com/Velocidex/velociraptor/releases/download/v{{- $br -}}/velociraptor-v{{- $rr }}-{{- .name -}}.sig" target="_blank" rel="noopener">
+    <a href="https://github.com/Velocidex/velociraptor/releases/download/v{{- $br -}}/velociraptor-v{{- $rr }}-{{- strings.TrimSuffix ".gz" .name -}}.sig" target="_blank" rel="noopener">
       signature
     </a>
   </td>
