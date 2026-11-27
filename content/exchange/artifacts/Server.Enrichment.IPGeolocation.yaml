@@ -1,0 +1,167 @@
+name: Server.Enrichment.IPGeolocation
+author: IPGeolocation.io
+description: |
+  Enrich IP addresses with location, ASN, company, abuse contact and
+  security data from IPGeolocation.io databases (MMDB files) stored on
+  the Velociraptor server. Security data includes the threat score and
+  VPN, proxy, residential proxy, Tor, relay, bot, spam and known attacker
+  flags. Lookups run locally on the server: no API calls and no data
+  leaves your network.
+
+  The built-in Server.Enrichment.GeoIP artifacts read MaxMind's field
+  names. IPGeolocation.io databases use their own field names, so use this
+  artifact (or its exported functions) for them.
+
+  Setup: copy the .mmdb files of your IPGeolocation.io databases into one
+  folder on the server, for example /opt/ipgeolocation, and add one entry
+  to the server metadata (Welcome screen > View Server Configuration):
+
+  - `IPGeolocationDatabases`: the folder, for example `/opt/ipgeolocation`
+
+  The artifact reads every .mmdb file in the folder and recognises what
+  each file contains, so separate databases, combined databases and every
+  database version work without more setup. Instead of a folder, you can
+  give a list of .mmdb files, separated by commas or new lines.
+
+  Keep only your current IPGeolocation.io files in the folder. When two
+  files hold the same kind of data, the first one in alphabetical order
+  is used.
+
+  When you collect the artifact, the IPGeolocationDatabases parameter is
+  filled from the server metadata. A value you type there takes precedence.
+
+  Collect this artifact to look up a list of IPs, or import it into your
+  own artifacts to use the functions in its export section, for example
+  `IPGeoThreatScore(IP=RemoteAddress)`.
+
+  Columns are empty when no database has data for the IP. Flags are
+  `true` or `false` only when the security database has the IP and the
+  field: no data does not mean the IP is safe.
+
+  #enrichment #geoip #threatintel #networking
+
+reference:
+  - https://ipgeolocation.io/documentation/velociraptor-integration
+  - https://github.com/IPGeolocation/ipgeolocation-guides/tree/main/integrations/velociraptor
+  - https://ipgeolocation.io/documentation/databases.html
+
+type: SERVER
+
+parameters:
+  - name: IP
+    description: One IP address, or a list of IP addresses (IPv4 or IPv6).
+    type: json_array
+    default: '["5.255.111.52"]'
+  - name: IPGeolocationDatabases
+    type: server_metadata
+    description: Folder with your IPGeolocation.io .mmdb files, or a list of .mmdb files separated by commas or new lines.
+
+export: |
+  -- The database files: every .mmdb file in a folder, or the files listed.
+  LET IPGeoFilesOf(Value) = SELECT * FROM foreach(
+      row={
+        SELECT strip(string=_value) AS Entry
+        FROM foreach(row=split(string=Value, sep='[,\r\n]+'))
+        WHERE Entry
+      },
+      query={
+        SELECT * FROM if(condition=Entry =~ '(?i)[.]mmdb$',
+          then={ SELECT Entry AS Path FROM scope() },
+          else={
+            SELECT OSPath AS Path FROM glob(globs='*.mmdb', root=Entry)
+            ORDER BY OSPath
+          })
+      })
+  LET IPGeoFiles <= IPGeoFilesOf(Value=server_metadata().IPGeolocationDatabases)
+
+  -- The records of an IP: one for each database file that has the IP.
+  LET IPGeoRecords(IP) = SELECT geoip(db=Path, ip=IP) AS R FROM IPGeoFiles WHERE R
+
+  -- The first value of a field (a dotted path such as "asn.organization")
+  -- in the records, in file order.
+  LET IPGeoFirst(Records, Member) = SELECT get(item=R, member=Member) AS V
+      FROM foreach(row=Records)
+      WHERE V
+      LIMIT 1
+  LET IPGeoValue(Records, Member) = IPGeoFirst(Records=Records, Member=Member)[0].V
+
+  -- The record from the IP Security database (it has the security flags)
+  -- and from the Residential Proxy database (it has the proxy providers).
+  LET IPGeoSecurityRows(Records) = SELECT R FROM foreach(row=Records)
+      WHERE R.is_tor
+      LIMIT 1
+  LET IPGeoSecurityOf(Records) = IPGeoSecurityRows(Records=Records)[0].R
+  LET IPGeoResidentialProxyRows(Records) = SELECT R FROM foreach(row=Records)
+      WHERE NOT R.is_tor AND (R.proxy_providers OR R.proxy_provider OR R.last_seen)
+      LIMIT 1
+  LET IPGeoResidentialProxyOf(Records) = IPGeoResidentialProxyRows(Records=Records)[0].R
+
+  -- A security flag: true or false, or empty when there is no security
+  -- record or the database has no such field. No data does not mean the
+  -- IP is safe.
+  LET IPGeoFlagOf(Record, Name) = if(condition=get(item=Record, field=Name),
+                                     then=get(item=Record, field=Name) = "true")
+
+  -- Values that can come from more than one kind of database.
+  LET IPGeoCountryOf(Records) = IPGeoValue(Records=Records, Member="location.country.name.en") ||
+                                IPGeoValue(Records=Records, Member="country.name.en")
+  LET IPGeoCountryCodeOf(Records) = IPGeoValue(Records=Records, Member="location.country.code2") ||
+                                    IPGeoValue(Records=Records, Member="country.code2")
+  LET IPGeoASNumberOf(Records) = IPGeoValue(Records=Records, Member="asn.as_number") ||
+                                 IPGeoValue(Records=Records, Member="asn")
+  LET IPGeoASOrganizationOf(Records) = IPGeoValue(Records=Records, Member="asn.organization") ||
+                                       IPGeoValue(Records=Records, Member="as_organization")
+
+  -- Helpers for one IP, for your own artifacts and notebooks.
+  LET IPGeoCountry(IP) = IPGeoCountryOf(Records=IPGeoRecords(IP=IP))
+  LET IPGeoCountryCode(IP) = IPGeoCountryCodeOf(Records=IPGeoRecords(IP=IP))
+  LET IPGeoCity(IP) = IPGeoValue(Records=IPGeoRecords(IP=IP), Member="location.city.name.en")
+  LET IPGeoASNumber(IP) = IPGeoASNumberOf(Records=IPGeoRecords(IP=IP))
+  LET IPGeoASOrganization(IP) = IPGeoASOrganizationOf(Records=IPGeoRecords(IP=IP))
+  LET IPGeoSecurity(IP) = IPGeoSecurityOf(Records=IPGeoRecords(IP=IP))
+  LET IPGeoThreatScore(IP) = IPGeoSecurity(IP=IP).threat_score
+  LET IPGeoFlag(IP, Name) = IPGeoFlagOf(Record=IPGeoSecurity(IP=IP), Name=Name)
+  LET IPGeoHostingProvider(IP) = IPGeoValue(Records=IPGeoRecords(IP=IP), Member="hosting_provider")
+
+sources:
+  - query: |
+      LET IPGeoFiles <= IPGeoFilesOf(
+          Value=IPGeolocationDatabases || server_metadata().IPGeolocationDatabases)
+
+      -- Look each IP up once in every database file.
+      LET Lookups = SELECT * FROM foreach(row=IP, query={
+        SELECT _value AS IP, IPGeoRecords(IP=_value) AS Recs FROM scope()
+      })
+
+      LET Matched = SELECT IP, Recs,
+             IPGeoSecurityOf(Records=Recs) AS Sec,
+             IPGeoResidentialProxyOf(Records=Recs) AS Resi
+      FROM Lookups
+
+      SELECT IP,
+             IPGeoCountryOf(Records=Recs) AS Country,
+             IPGeoCountryCodeOf(Records=Recs) AS CountryCode,
+             IPGeoValue(Records=Recs, Member="location.state.name.en") AS State,
+             IPGeoValue(Records=Recs, Member="location.city.name.en") AS City,
+             IPGeoValue(Records=Recs, Member="location.coordinates.latitude") AS Latitude,
+             IPGeoValue(Records=Recs, Member="location.coordinates.longitude") AS Longitude,
+             IPGeoValue(Records=Recs, Member="time_zone") AS TimeZone,
+             IPGeoValue(Records=Recs, Member="isp") AS ISP,
+             IPGeoASNumberOf(Records=Recs) AS ASN,
+             IPGeoASOrganizationOf(Records=Recs) AS ASOrganization,
+             IPGeoValue(Records=Recs, Member="company.name.en") AS Company,
+             IPGeoValue(Records=Recs, Member="company.type") AS CompanyType,
+             IPGeoValue(Records=Recs, Member="abuse.emails") AS AbuseEmails,
+             Sec.threat_score AS ThreatScore,
+             IPGeoFlagOf(Record=Sec, Name="is_vpn") AS IsVPN,
+             IPGeoFlagOf(Record=Sec, Name="is_proxy") AS IsProxy,
+             IPGeoFlagOf(Record=Sec, Name="is_residential_proxy") AS IsResidentialProxy,
+             IPGeoFlagOf(Record=Sec, Name="is_tor") AS IsTor,
+             IPGeoFlagOf(Record=Sec, Name="is_relay") AS IsRelay,
+             IPGeoFlagOf(Record=Sec, Name="is_known_attacker") AS IsKnownAttacker,
+             IPGeoFlagOf(Record=Sec, Name="is_bot") AS IsBot,
+             IPGeoFlagOf(Record=Sec, Name="is_spam") AS IsSpam,
+             Sec.cloud_provider_name || Sec.cloud_provider AS CloudProvider,
+             IPGeoValue(Records=Recs, Member="hosting_provider") AS HostingProvider,
+             Resi.proxy_providers || Resi.proxy_provider AS ResidentialProxyProviders
+      FROM Matched
