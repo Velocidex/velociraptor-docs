@@ -87,7 +87,7 @@ description: |
 Velociraptor is open source software and is free for anyone to use under the
 [AGPL License](https://github.com/Velocidex/velociraptor?tab=License-1-ov-file#readme).
 
-This page is for the previous release. [The current Release is 0.77.1](/downloads/).
+This page is for the previous release. [The current Release is 0.77.4](/downloads/).
 
 {{< release_download >}}
 
