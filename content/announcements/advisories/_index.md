@@ -20,7 +20,9 @@ cascade:
   type: docs-no-toc
 ---
 
-The following CVEs have been noted.
+The following CVEs have been noted. View the [Summary of recent
+CVEs](/announcements/advisories/v0-77-2/#fixed-in-release-0774) for
+more details.
 
 Please upgrade to [the current release](/downloads/).
 
@@ -28,5 +30,3 @@ Please consider subscribing to our
 [Security Advisories RSS feed](/rss/) to receive timely notifications.
 
 {{% children description=false grid-cols=1 %}}
-
-
