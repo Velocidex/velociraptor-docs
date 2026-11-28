@@ -1,0 +1,25 @@
+# Server.Hunts.List
+
+Enumerates scheduled hunts showing hunt IDs, artifacts, and status.
+
+
+---
+
+````yaml
+name: Server.Hunts.List
+description: |
+  Enumerates scheduled hunts showing hunt IDs, artifacts, and status.
+
+type: SERVER
+
+sources:
+  - query: |
+      SELECT hunt_id,
+             timestamp(epoch=create_time) as Created,
+             join(array=start_request.artifacts, sep=",") as Artifact,
+             state
+      FROM hunts()
+````
+
+
+

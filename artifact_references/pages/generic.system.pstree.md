@@ -1,0 +1,75 @@
+# Generic.System.Pstree
+
+Shows process lineage by following parent PIDs to establish call
+chains.
+
+It is useful for establishing where a process came from - for
+example, if a PowerShell process is spawned from Winword (event via
+several intermediary processes) it could mean word was compromised.
+
+This artifact displays the call chain for every process on the
+system by traversing the process's parent ID.
+
+A more accurate call chain will be available when the
+`Windows.Events.TrackProcesses` artifact is collected (requires
+Sysmon) or `Windows.Events.TrackProcessesBasic` (does not require
+Sysmon)
+
+
+---
+
+````yaml
+name: Generic.System.Pstree
+description: |
+  Shows process lineage by following parent PIDs to establish call
+  chains.
+
+  It is useful for establishing where a process came from - for
+  example, if a PowerShell process is spawned from Winword (event via
+  several intermediary processes) it could mean word was compromised.
+
+  This artifact displays the call chain for every process on the
+  system by traversing the process's parent ID.
+
+  A more accurate call chain will be available when the
+  `Windows.Events.TrackProcesses` artifact is collected (requires
+  Sysmon) or `Windows.Events.TrackProcessesBasic` (does not require
+  Sysmon)
+
+parameters:
+  - name: CommandlineRegex
+    default: .
+    type: regex
+
+  - name: PidFilter
+    description: Filter pids by this regex
+    default: .
+    type: regex
+
+  - name: CallChainFilter
+    default: .
+    type: regex
+
+  - name: CallChainSep
+    default: " -> "
+
+  - name: IncludePstree
+    type: bool
+
+sources:
+  - query: |
+      SELECT Pid, Ppid, Name, Username, Exe, CommandLine, StartTime, EndTime,
+          join(array=process_tracker_callchain(id=Pid).Data.Name, sep=CallChainSep) AS CallChain,
+          if(condition=IncludePstree, then=process_tracker_tree(id=Pid)) AS PSTree
+      FROM process_tracker_pslist()
+      WHERE CommandLine =~ CommandlineRegex
+        AND CallChain =~ CallChainFilter
+        AND Pid =~ PidFilter
+
+column_types:
+  - name: PSTree
+    type: tree
+````
+
+
+

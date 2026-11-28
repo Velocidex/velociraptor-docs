@@ -1,0 +1,48 @@
+# Windows.System.Signers
+
+Scans executable files and groups them by their authenticode signer
+subject.
+
+
+---
+
+````yaml
+name: Windows.System.Signers
+description: |
+   Scans executable files and groups them by their authenticode signer
+   subject.
+
+parameters:
+   - name: ExecutableGlobs
+     default: C:/Windows/**/*.{dll,exe}
+   - name: ShowAllSigners
+     description: When checked we show all signed files instead of stacking them.
+     type: bool
+   - name: DISABLE_DANGEROUS_API_CALLS
+     type: bool
+     description: |
+       Enable this to disable potentially flakey APIs which may cause
+       crashes.
+
+sources:
+  - precondition:
+      SELECT OS From info() where OS = 'windows'
+
+    query: |
+        LET results = SELECT OSPath, count() AS Count,
+               parse_pe(file=OSPath).Authenticode.Signer.Subject AS Signer
+        FROM glob(globs=ExecutableGlobs)
+        WHERE Signer
+
+        SELECT * FROM if(condition=ShowAllSigners,
+        then={
+            SELECT OSPath, Signer FROM results
+        }, else={
+            SELECT Count, Signer FROM results
+            GROUP BY Signer
+            ORDER BY Count DESC
+        })
+````
+
+
+

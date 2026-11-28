@@ -1,0 +1,136 @@
+# Generic.Client.Stats
+
+Records CPU and memory statistics for the Velociraptor client
+process.
+
+To learn about managing endpoint performance with Velociraptor see
+this [blog post](https://docs.velociraptor.app/blog/html/2019/02/10/velociraptor_performance/).
+
+
+---
+
+````yaml
+name: Generic.Client.Stats
+description: |
+    Records CPU and memory statistics for the Velociraptor client
+    process.
+
+    To learn about managing endpoint performance with Velociraptor see
+    this [blog post](https://docs.velociraptor.app/blog/html/2019/02/10/velociraptor_performance/).
+
+parameters:
+  - name: Frequency
+    description: Return stats every this many seconds.
+    type: int
+    default: "10"
+type: CLIENT_EVENT
+
+sources:
+  - precondition: SELECT OS From info() where OS = 'windows'
+    query: |
+      SELECT *, rate(x=CPU, y=Timestamp) AS CPUPercent
+      FROM foreach(
+         row={
+           SELECT UnixNano
+           FROM clock(period=Frequency)
+         },
+         query={
+           SELECT UnixNano / 1000000000 as Timestamp,
+                  User + System as CPU,
+                  Memory.WorkingSetSize as RSS
+           FROM pslist(pid=getpid())
+         })
+
+    notebook:
+      - type: vql_suggestion
+        name: Graph CPU usage
+        template: |
+          /*
+          # Events from Generic.Client.Stats
+          */
+          LET resources = SELECT Timestamp, rate(x=CPU, y=Timestamp) * 100 As CPUPercent,
+               RSS / 1000000 AS MemoryUse
+          FROM source(start_time=StartTime, end_time=EndTime)
+          WHERE CPUPercent >= 0
+          /*
+            {{ Query "SELECT * FROM resources" | LineChart "xaxis_mode" "time" "RSS.yaxis" 2 }}
+          */
+          SELECT * FROM resources
+          LIMIT 50
+
+  - precondition: SELECT OS From info() where OS != 'windows'
+    query: |
+      SELECT *, rate(x=CPU, y=Timestamp) AS CPUPercent
+      FROM foreach(
+         row={
+           SELECT UnixNano
+           FROM clock(period=Frequency)
+         },
+         query={
+           SELECT UnixNano / 1000000000 as Timestamp,
+                  Times.system + Times.user as CPU,
+                  MemoryInfo.RSS as RSS
+           FROM pslist(pid=getpid())
+         })
+
+
+reports:
+  - type: SERVER_EVENT
+    template: |
+      {{ define "resources" }}
+           SELECT Timestamp, rate(x=CPU, y=Timestamp) * 100 As CPUPercent,
+                  RSS / 1000000 AS MemoryUse
+           FROM source()
+           WHERE CPUPercent >= 0
+      {{ end }}
+
+      {{ Query "resources" | LineChart "xaxis_mode" "time" "RSS.yaxis" 2 }}
+
+  - type: MONITORING_DAILY
+    template: |
+      {{ define "resources" }}
+           SELECT Timestamp, rate(x=CPU, y=Timestamp) * 100 As CPUPercent,
+                  RSS / 1000000 AS MemoryUse
+           FROM source()
+           WHERE CPUPercent >= 0
+      {{ end }}
+
+      {{ $client_info := Query "SELECT * FROM clients(client_id=ClientId) LIMIT 1" }}
+
+      # Client Footprint for {{ Get $client_info "0.os_info.fqdn" }}
+
+      The client has a client ID of {{ Get $client_info "0.client_id" }}.
+      Clients report the Velociraptor process footprint to the
+      server every 10 seconds. The data includes the total CPU
+      utilization, and the resident memory size used by the client.
+
+      The following graph shows the total utilization. Memory
+      utilization is meausred in `Mb` while CPU Utilization is
+      measured by `Percent of one core`.
+
+      We would expect the client to use around 1-5% of one core when
+      idle, but if a heavy hunt is running this might climb
+      substantially.
+
+        <div>
+        {{ Query "resources" | LineChart "xaxis_mode" "time" "RSS.yaxis" 2 }}
+        </div>
+
+      ## VQL Query
+
+      The following VQL query was used to plot the graph above.
+
+      ```sql
+      {{ template "resources" }}
+      ```
+
+column_types:
+  - name: Timestamp
+    type: timestamp
+
+  - name: ClientId
+    type: client_id
+````
+
+
+

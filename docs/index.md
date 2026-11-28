@@ -1,0 +1,22 @@
+# Documentation
+
+Welcome to Velociraptor's Documentation site.
+
+{{% children %}}
+
+After learning how Velociraptor's VQL artifacts can be used to gain
+unprecedented visibility into the endpoint, continue on to consulting
+the [VQL reference](/vql_reference/) on this site.
+
+If you are looking for more artifacts, visit our community driven
+[Artifact Exchange](/exchange/) for the latest and
+greatest artifacts.
+
+
+Finally check out the Velociraptor [Blog](/blog/) for articles about
+using Velociraptor in different scenarios and to learn more about
+Velociraptor's features.
+
+> [!NOTE] Using Velociraptor integrated with Rapid7 InsightIDR?
+> Read the [InsightIDR documentation](https://docs.rapid7.com/insightidr/velociraptor-alerts) to learn more about how Velociraptor and InsightIDR work together.
+

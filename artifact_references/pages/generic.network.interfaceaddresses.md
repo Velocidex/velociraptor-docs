@@ -1,0 +1,36 @@
+# Generic.Network.InterfaceAddresses
+
+Collects interface addresses and metadata such as MAC, MTU, and IP
+masks across operating systems.
+
+This artifact works on all supported OSes.
+
+
+---
+
+````yaml
+name: Generic.Network.InterfaceAddresses
+description: |
+  Collects interface addresses and metadata such as MAC, MTU, and IP
+  masks across operating systems.
+
+  This artifact works on all supported OSes.
+
+aliases:
+  - Windows.Network.InterfaceAddresses
+
+sources:
+  - query: |
+        LET interface_address =
+           SELECT Index, MTU, Name,
+                  HardwareAddr.String AS HardwareAddr,
+                  Flags, Addrs
+           from interfaces()
+
+        SELECT Index, MTU, Name, HardwareAddr,
+           Flags, Addrs.IP as IP, Addrs.Mask.String as Mask
+        FROM flatten(query=interface_address)
+````
+
+
+

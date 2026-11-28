@@ -1,0 +1,91 @@
+# Server.Monitor.Shell
+
+Captures stdout, stderr, and command details from shell command
+executions across all clients for auditing purposes.
+
+Velociraptor can issue shell commands on the endpoint by using the
+various wrapper artifacts. To use them, the user must be directly
+logged in to the Velociraptor server GUI and therefore
+authenticated and authorized.
+
+Obviously being able to run arbitrary commands on the end point is
+a powerful feature and should be used sparingly. There is an audit
+trail for shell commands executed and their output is available by
+streaming all shell commands to the "Shell" client event monitoring
+artifact.
+
+This server event artifact centralizes all shell access events from
+all clients into a single audit log.
+
+
+---
+
+````yaml
+name: Server.Monitor.Shell
+description: |
+   Captures stdout, stderr, and command details from shell command
+   executions across all clients for auditing purposes.
+   
+   Velociraptor can issue shell commands on the endpoint by using the
+   various wrapper artifacts. To use them, the user must be directly
+   logged in to the Velociraptor server GUI and therefore
+   authenticated and authorized.
+
+   Obviously being able to run arbitrary commands on the end point is
+   a powerful feature and should be used sparingly. There is an audit
+   trail for shell commands executed and their output is available by
+   streaming all shell commands to the "Shell" client event monitoring
+   artifact.
+
+   This server event artifact centralizes all shell access events from
+   all clients into a single audit log.
+
+# Can be CLIENT, EVENT, SERVER, SERVER_EVENT
+type: SERVER_EVENT
+
+sources:
+  - query: |
+      -- Watch for shell flow completions.
+      LET collections = SELECT Flow
+         FROM watch_monitoring(artifact="System.Flow.Completion")
+         WHERE Flow.artifacts_with_results =~ "Windows.System.PowerShell|Windows.System.CmdShell"
+
+      -- Dump the command and the results.
+      SELECT * FROM foreach(row=collections,
+      query={
+         SELECT Flow.session_id AS FlowId,
+             Flow.client_id AS ClientId,
+             client_info(client_id=Flow.client_id).os_info.fqdn AS Hostname,
+             timestamp(epoch=Flow.create_time / 1000000) AS Created,
+             timestamp(epoch=Flow.active_time / 1000000) AS LastActive,
+             get_flow(flow_id=FlowId,
+                      client_id=ClientId).request.parameters.env[0].value AS Command,
+             Stdout, Stderr FROM source(
+                 client_id=Flow.client_id,
+                 flow_id=Flow.session_id,
+                 artifact=Flow.artifacts_with_results[0])
+      })
+
+
+# Reports can be MONITORING_DAILY, CLIENT
+reports:
+  - type: SERVER_EVENT
+    template: |
+      {{ .Description }}
+
+      {{ $rows := Query "SELECT ClientId, Hostname, \
+           timestamp(epoch=LastActive) AS Timestamp, Command, Stdout FROM source()" }}
+
+      {{ range $row := $rows }}
+
+      * On {{ Get $row "Timestamp" }} we ran {{ Get $row "Command" }} on {{ Get $row "Hostname" }}
+
+      ```text
+      {{ Get $row "Stdout" }}
+      ```
+
+      {{end}}
+````
+
+
+

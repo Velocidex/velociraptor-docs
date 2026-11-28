@@ -1,0 +1,30 @@
+# Network.ExternalIpAddress
+
+Identifies the external IP address of the endpoint using an external
+web service.
+
+
+---
+
+````yaml
+name: Network.ExternalIpAddress
+description: |
+  Identifies the external IP address of the endpoint using an external
+  web service.
+
+required_permissions:
+- NETWORK
+
+parameters:
+  - name: externalUrl
+    default: http://www.myexternalip.com/raw
+    description: The URL of the external IP detection site.
+
+sources:
+  - precondition: SELECT * from info()
+    query: |
+        SELECT Content as IP from http_client(url=externalUrl)
+````
+
+
+

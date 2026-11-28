@@ -1,0 +1,187 @@
+# Windows.Detection.HttpSysListeners
+
+Lists HTTP.sys request queues with their registered URLs and owning
+processes: easy to triage version of
+`netsh http show servicestate view=requestq verbose=yes`.
+
+Built for hunting CerealNeuron (ESET, Nov 2026), a .NET
+HttpListener backdoor on Exchange servers. HTTP.sys routes requests for its
+URL prefixes to the implant rather than IIS, so they may never appear in
+IIS logs.
+
+RequestQueues flags:
+- IocUrl: one of the five URL prefixes ESET reported is registered. Add your 
+own as required.
+- UnexpectedOwner: a 443 URL not in KnownUrlRegex is owned by a process
+  other than an IIS worker. Exchange registers some 443 URLs outside IIS
+  (Mailbox Replication proxy, Submission), so baseline KnownUrlRegex per
+  estate.
+- NotInPslist: HTTP.sys reports a PID that pslist does not (cross-view).
+
+Parses netsh output (English locale). Handles both the newer
+"Processes: ID: n, image: path" format and the older "Process IDs:" list.
+
+QueueHandles lists processes holding an HTTP.sys request queue handle.
+It is locale independent but has no URLs; compare its PIDs with
+RequestQueues.
+
+Live state only: a listener that is not currently running is not shown.
+
+
+---
+
+````yaml
+name: Windows.Detection.HttpSysListeners
+author: Matt Green - @mgreen27
+description: |
+  Lists HTTP.sys request queues with their registered URLs and owning
+  processes: easy to triage version of
+  `netsh http show servicestate view=requestq verbose=yes`.
+
+  Built for hunting CerealNeuron (ESET, Nov 2026), a .NET
+  HttpListener backdoor on Exchange servers. HTTP.sys routes requests for its
+  URL prefixes to the implant rather than IIS, so they may never appear in
+  IIS logs.
+
+  RequestQueues flags:
+  - IocUrl: one of the five URL prefixes ESET reported is registered. Add your 
+  own as required.
+  - UnexpectedOwner: a 443 URL not in KnownUrlRegex is owned by a process
+    other than an IIS worker. Exchange registers some 443 URLs outside IIS
+    (Mailbox Replication proxy, Submission), so baseline KnownUrlRegex per
+    estate.
+  - NotInPslist: HTTP.sys reports a PID that pslist does not (cross-view).
+
+  Parses netsh output (English locale). Handles both the newer
+  "Processes: ID: n, image: path" format and the older "Process IDs:" list.
+
+  QueueHandles lists processes holding an HTTP.sys request queue handle.
+  It is locale independent but has no URLs; compare its PIDs with
+  RequestQueues.
+
+  Live state only: a listener that is not currently running is not shown.
+
+reference:
+  - https://web-assets.esetstatic.com/wls/en/papers/white-papers/turla-cereal-tricks.pdf
+
+type: CLIENT
+
+implied_permissions:
+  - EXECVE
+
+precondition: SELECT OS FROM info() WHERE OS = 'windows'
+
+parameters:
+  - name: IocUrlRegex
+    description: CerealNeuron URL prefixes reported by ESET.
+    type: regex
+    default: '(?i)/(OWA/SDDS|AUTODISCOVER/(MICROSOFT\.EXCHANGE\.PROXYSERVICE|INTEGRATED/API|PROXYSERVICE)|MICROSOFT-SERVER-ACTIVESYNC/INTEGRATED/API)/'
+
+  - name: PortRegex
+    description: URLs in scope for the owner check. Covers both *:443/ and ip:443:ip/ forms.
+    type: regex
+    default: ':443[/:]'
+
+  - name: KnownUrlRegex
+    description: Legitimate non-IIS 443 registrations (Exchange Mailbox Replication proxy and Submission).
+    type: regex
+    default: '(?i)/MICROSOFT\.EXCHANGE\.MAILBOXREPLICATIONSERVICE\.PROXYSERVICE/|://LOCALHOST:443/SYNCDELIVERYSTATUS/'
+
+  - name: ExpectedOwnerRegex
+    description: Image or command line of processes expected to own request queues.
+    type: regex
+    default: '(?i)\\w3wp\.exe'
+
+sources:
+  - name: RequestQueues
+    query: |
+      LET netsh = SELECT Stdout FROM execve(
+          argv=['C:/Windows/System32/netsh.exe', 'http', 'show',
+                'servicestate', 'view=requestq', 'verbose=yes'],
+          length=10000000)
+
+      -- One record per top-level "Request queue name:" block. The indented
+      -- "Request queue name:" lines inside URL groups do not split blocks.
+      LET queues = SELECT Queue, Body
+        FROM parse_records_with_regex(
+          file=netsh.Stdout, accessor='data', buffer_size=10000000,
+          regex='''(?m)^Request queue name: (?P<Queue>[^\r\n]*)\r?\n(?P<Body>(?:[ \t][^\n]*\n|\r?\n)*)''')
+
+      LET ps <= SELECT Pid, Name, CommandLine FROM pslist()
+      LET lookup(P) = SELECT Name, CommandLine FROM ps WHERE Pid = P
+
+      -- Worker processes from "Processes:" (ID: n, image: path) or the older
+      -- "Process IDs:" list. The "Controller process:" entry (WAS) is skipped.
+      LET workers(Body) = SELECT * FROM foreach(
+          row={
+            SELECT parse_string_with_regex(string=Body,
+                regex='''(?:Processes|Process IDs):[ \t]*\r?\n(?P<Procs>(?:[ \t]+(?:ID: )?\d+[^\n]*\n)+)''').Procs AS Procs
+            FROM scope()
+            WHERE Procs
+          },
+          query={
+            SELECT int(int=Pid) AS WPid, Image
+            FROM parse_records_with_regex(
+              file=Procs, accessor='data',
+              regex='''(?m)^[ \t]+(?:ID: )?(?P<Pid>\d+)(?:, image: (?P<Image>[^\r\n]+))?''')
+          })
+
+      LET procs(Body) = SELECT WPid AS Pid, Image,
+             lookup(P=WPid)[0].Name AS Name,
+             lookup(P=WPid)[0].CommandLine AS CommandLine
+        FROM workers(Body=Body)
+
+      LET urls(Body) = SELECT Url
+        FROM parse_records_with_regex(
+          file=Body, accessor='data',
+          regex='''(?m)^[ \t]+(?P<Url>https?://\S+)''')
+
+      LET unexpected_procs(Body) = SELECT Pid FROM procs(Body=Body)
+        WHERE NOT format(format='%v %v', args=[Image, CommandLine]) =~ ExpectedOwnerRegex
+
+      LET unknown_urls(Body) = SELECT Url FROM urls(Body=Body)
+        WHERE Url =~ PortRegex AND NOT Url =~ KnownUrlRegex
+
+      LET missing_procs(Body) = SELECT Pid FROM procs(Body=Body)
+        WHERE NOT Name
+
+      LET results = SELECT * FROM foreach(
+          row=queues,
+          query={
+            SELECT Queue,
+                   procs(Body=Body).Pid AS Pids,
+                   procs(Body=Body).Image AS Images,
+                   procs(Body=Body).Name AS Names,
+                   urls(Body=Body).Url AS Urls,
+                   unexpected_procs(Body=Body).Pid AS UnexpectedPids,
+                   unknown_urls(Body=Body).Url AS UnknownUrls,
+                   missing_procs(Body=Body).Pid AS MissingPids
+            FROM scope()
+          })
+
+      SELECT Queue,
+             Pids[0] AS Pid,
+             Images[0] AS Image,
+             Names[0] AS ProcessName,
+             Urls,
+             join(array=Urls, sep=' ') =~ IocUrlRegex AS IocUrl,
+             len(list=UnexpectedPids) > 0 AND len(list=UnknownUrls) > 0 AS UnexpectedOwner,
+             len(list=MissingPids) > 0 AS NotInPslist
+      FROM results
+
+  - name: QueueHandles
+    query: |
+      SELECT * FROM foreach(
+        row={
+          SELECT Pid AS HandlePid, Name AS HandleName
+          FROM handles(types='File')
+          WHERE HandleName =~ '''(?i)\\Device\\Http\\ReqQueue'''
+        },
+        query={
+          SELECT Pid, Name, CommandLine, HandleName
+          FROM pslist(pid=HandlePid)
+        })
+````
+
+
+
