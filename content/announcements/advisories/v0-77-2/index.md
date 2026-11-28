@@ -1,9 +1,9 @@
 ---
-title: "Security Advisories fixed in release 0.77.3"
+title: "Security Advisories fixed in release 0.77"
 summary: |
-   Velociraptor 0.77.3 release fixed a number of CVEs.
+   Velociraptor 0.77 CVE analysis.
 description: |
-   Velociraptor 0.77.3 release fixed a number of CVEs.
+   Velociraptor 0.77 CVE analysis.
 weight: 10
 date: 2026-08-09T00:00:00Z
 no_edit: true
@@ -15,6 +15,25 @@ no_menu: true
 The Velociraptor project was lucky to receive a number of security
 advisories recently. A number of talented and experienced security
 researchers shared their findings and thorough reviews with our team.
+
+## Fixed in release 0.77.4
+
+### Permission check issues
+
+* [CVE-2026-129973](CVE-2026-129973) Velociraptor path traversal bypass of the native file-accessor sandbox
+* [CVE-2026-132797](CVE-2026-132797) Velociraptor Child orgs can use secrets in root org unconditionally
+* [CVE-2026-130319](CVE-2026-130319) Velociraptor multiple VQL plugins missing permission enforcement
+* [CVE-2026-129965](CVE-2026-129965) Velociraptor query plugin allows cross-tenant information leak
+
+### Web security
+
+* [CVE-2026-123449](CVE-2026-123449) Velociraptor Reflected XSS in the artifact report error view
+
+
+### Stability issues
+
+* [CVE-2026-129964](CVE-2026-129964) Authenticated Velociraptor client can crash the frontend through malformed VQLResponse metadata
+* [CVE-2026-129966](CVE-2026-129966) Velociraptor Server panic (DoS) via smb:// tool URL with a short password
 
 ## Fixed in release 0.77.3
 
